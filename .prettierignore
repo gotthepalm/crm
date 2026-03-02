@@ -1,0 +1,41 @@
+# Node
+node_modules
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+
+# Build output
+dist
+build
+.out
+.next
+.cache
+
+# Logs
+*.log
+
+# Environment
+.env
+.env.*
+!.env.example
+
+# IDE/Editor
+.vscode
+.idea
+
+# Static assets
+*.svg
+*.png
+*.jpg
+*.jpeg
+*.gif
+*.ico
+*.mp4
+*.mp3
+*.woff
+*.woff2
+*.ttf
+
+# Coverage/Reports
+coverage
+*.lcov
