@@ -1,7 +1,7 @@
 'use client';
 import { useState } from 'react';
 
-type Candidates = {
+type Candidate = {
 	id: number;
 	name: string;
 	fullName: string;
@@ -12,7 +12,7 @@ type Candidates = {
 	vacancy: string;
 };
 
-const candidates: Candidates[] = [
+const candidates: Candidate[] = [
 	{
 		id: 1,
 		name: 'Паша',
@@ -37,6 +37,9 @@ const candidates: Candidates[] = [
 
 export default function Candidates() {
 	const [addCandidateForm, setAddCandidateForm] = useState<Boolean>(false);
+	const workTypes = ['Remote', 'Office', 'Hybrid'];
+	const [selectedWorkType, setSelectedWorkType] = useState<false | string>(false);
+	const [workTypeSelectOpen, setWorkTypeSelectOpen] = useState(false);
 
 	return (
 		<div className='w-full'>
@@ -50,9 +53,7 @@ export default function Candidates() {
 			{addCandidateForm && (
 				<div className='fixed inset-0 flex items-center justify-center bg-black/50'>
 					<div className='relative bg-white p-6 rounded-xl shadow-lg'>
-						<h1 className='text-3xl text-center font-extrabold uppercase mb-5'>
-							Add a new candidate
-						</h1>
+						<h1 className='text-3xl text-center font-extrabold uppercase mb-5'>Add a new candidate</h1>
 
 						<form className='flex flex-col gap-3.5 max-w-2xl w-full'>
 							<input
@@ -88,12 +89,37 @@ export default function Candidates() {
 								/>
 							</div>
 							<div className='grid grid-cols-2 gap-4 mb-3.5'>
-								<input
-									type='text'
-									name='workType'
-									placeholder='Type of work'
-									className='w-full p-3 pl-7 rounded-2xl bg-transparent outline-none placeholder:text-black/60 text-black border border-[#d9d9d9]'
-								/>
+								<div className='relative w-full'>
+									<button
+										type='button'
+										onClick={() => setWorkTypeSelectOpen(!workTypeSelectOpen)}
+										className={`w-full p-3 pl-7 pr-10 ${selectedWorkType ? '' : 'text-black/60'} text-left rounded-2xl border border-[#d9d9d9]`}
+									>
+										{selectedWorkType ? selectedWorkType : 'Type of work'}
+									</button>
+									<span
+										className={`material-symbols-rounded pointer-events-none absolute right-4 top-1/2 -translate-y-1/2 component-transition ${workTypeSelectOpen ? '' : '-rotate-90'}`}
+									>
+										keyboard_arrow_down
+									</span>
+
+									{workTypeSelectOpen && (
+										<ul className='absolute mt-2 w-full bg-white border border-[#d9d9d9] rounded-2xl shadow-lg overflow-hidden'>
+											{workTypes.map((workType) => (
+												<li
+													key={workType}
+													onClick={() => {
+														setSelectedWorkType(workType);
+														setWorkTypeSelectOpen(false);
+													}}
+													className='px-6 py-3 cursor-pointer hover:bg-zinc-100'
+												>
+													{workType}
+												</li>
+											))}
+										</ul>
+									)}
+								</div>
 								<input
 									type='text'
 									name='vacancy'
@@ -110,14 +136,17 @@ export default function Candidates() {
 							</button>
 						</form>
 
-						<button className='material-symbols-rounded absolute top-5 right-5 p-2 bg-gray-200 rounded cursor-pointer' onClick={() => setAddCandidateForm(false)}>
+						<button
+							className='material-symbols-rounded absolute top-5 right-5 p-2 bg-gray-200 rounded cursor-pointer'
+							onClick={() => setAddCandidateForm(false)}
+						>
 							close
 						</button>
 					</div>
 				</div>
 			)}
-			<nav className='grid grid-cols-3 gap-5'>
-				{candidates ? (
+			<nav className={`${candidates.length !== 0 ? 'grid grid-cols-3 gap-5' : 'flex justify-center'}`}>
+				{candidates.length !== 0 ? (
 					candidates.map((candidate) => (
 						<article key={candidate.id} className='flex flex-col max-w-120 gap-2 p-5 bg-white rounded-2xl'>
 							<h3 className='pb-2 pl-2 font-semibold text-3xl'>{candidate.name}</h3>
