@@ -1,12 +1,10 @@
 import type { Metadata } from 'next';
-import { Roboto, Gelasio } from 'next/font/google';
+import { Roboto } from 'next/font/google';
 import '@/src/css/index.css';
+import React from 'react';
 
 const roboto = Roboto({
 	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-});
-const charisSIL = Gelasio({
-	weight: ['400', '500', '600', '700'],
 });
 
 export const metadata: Metadata = {
@@ -29,9 +27,6 @@ export default function RootLayout({
 }>) {
 	return (
 		<html lang='en'>
-			<head>
-				<link href='https://fonts.googleapis.com/css2?family=Material+Symbols+Rounded' rel='stylesheet' />
-			</head>
 			<body className={`${roboto.className} text-[20px] bg-white min-h-screen flex flex-col`}>{children}</body>
 		</html>
 	);
