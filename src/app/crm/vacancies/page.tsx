@@ -5,7 +5,7 @@ import { useState } from 'react';
 type Vacancy = {
 	id: number;
 	vacancyName: string;
-	vacancyDesсription: string;
+	vacancyDescription: string;
 	priority: string;
 	department: string;
 	vacancyQuantity: number;
@@ -17,8 +17,8 @@ const vacancies: Vacancy[] = [
 	{
 		id: 1,
 		vacancyName: 'Crypto Facebook Assistant',
-		vacancyDesсription: '...',
-		priority: 'Hight',
+		vacancyDescription: '...',
+		priority: 'High',
 		department: 'Facebook',
 		vacancyQuantity: 6,
 		hiredQuantity: 4,
@@ -28,7 +28,7 @@ const vacancies: Vacancy[] = [
 
 export default function Candidates() {
 	const [addCandidateForm, setAddCandidateForm] = useState<boolean>(false);
-	const prioritys = ['High', 'Medium', 'Low'];
+	const priorities = ['High', 'Medium', 'Low'];
 	const [selectedPriority, setSelectedPriority] = useState<false | string>(false);
 	const [prioritySelectOpen, setPrioritySelectOpen] = useState(false);
 
@@ -88,7 +88,7 @@ export default function Candidates() {
 
 									{prioritySelectOpen && (
 										<ul className='absolute mt-2 w-full bg-white border border-[#d9d9d9] rounded-2xl shadow-lg overflow-hidden'>
-											{prioritys.map((priority) => (
+											{priorities.map((priority) => (
 												<li
 													key={priority}
 													onClick={() => {
@@ -122,7 +122,7 @@ export default function Candidates() {
 				</div>
 			)}
 			<div className='w-full'>
-				<nav className={`${vacancies.length !== 0 ? 'grid grid-cols-3 gap-5' : 'flex justify-center'}`}>
+				<li className={`${vacancies.length !== 0 ? 'grid grid-cols-3 gap-5' : 'flex justify-center'}`}>
 					{vacancies.length !== 0 ? (
 						vacancies.map((vacancy) => (
 							<article
@@ -148,7 +148,7 @@ export default function Candidates() {
 								</p>
 								<p className='pb-2 pl-2 border-b border-zinc-300'>
 									<span className='text-zinc-600 italic text-[18px]'>Vacancy description: </span>
-									{vacancy.vacancyDesсription}
+									{vacancy.vacancyDescription}
 								</p>
 								<p className='pl-2'>
 									<span className='text-zinc-600 italic text-[18px]'>Data: </span>
@@ -159,7 +159,7 @@ export default function Candidates() {
 					) : (
 						<h2 className='text-2xl'>There are no vacancies yet...</h2>
 					)}
-				</nav>
+				</li>
 			</div>
 		</div>
 	);

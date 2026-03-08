@@ -36,7 +36,7 @@ const candidates: Candidate[] = [
 ];
 
 export default function Candidates() {
-	const [addCandidateForm, setAddCandidateForm] = useState<Boolean>(false);
+	const [addCandidateForm, setAddCandidateForm] = useState<boolean>(false);
 	const workTypes = ['Remote', 'Office', 'Hybrid'];
 	const [selectedWorkType, setSelectedWorkType] = useState<false | string>(false);
 	const [workTypeSelectOpen, setWorkTypeSelectOpen] = useState(false);
@@ -145,7 +145,7 @@ export default function Candidates() {
 					</div>
 				</div>
 			)}
-			<nav className={`${candidates.length !== 0 ? 'grid grid-cols-3 gap-5' : 'flex justify-center'}`}>
+			<li className={`${candidates.length !== 0 ? 'grid grid-cols-3 gap-5' : 'flex justify-center'}`}>
 				{candidates.length !== 0 ? (
 					candidates.map((candidate) => (
 						<article key={candidate.id} className='flex flex-col max-w-120 gap-2 p-5 bg-white rounded-2xl'>
@@ -181,7 +181,7 @@ export default function Candidates() {
 				) : (
 					<h2>There are no candidates yet...</h2>
 				)}
-			</nav>
+			</li>
 		</div>
 	);
 }
