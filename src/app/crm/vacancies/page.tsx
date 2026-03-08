@@ -27,7 +27,7 @@ const vacancies: Vacancy[] = [
 ];
 
 export default function Candidates() {
-	const [addCandidateForm, setAddCandidateForm] = useState<Boolean>(false);
+	const [addCandidateForm, setAddCandidateForm] = useState<boolean>(false);
 	const prioritys = ['High', 'Medium', 'Low'];
 	const [selectedPriority, setSelectedPriority] = useState<false | string>(false);
 	const [prioritySelectOpen, setPrioritySelectOpen] = useState(false);
@@ -44,7 +44,7 @@ export default function Candidates() {
 			{addCandidateForm && (
 				<div className='fixed inset-0 flex items-center justify-center bg-black/50'>
 					<div className='relative bg-white p-6 rounded-xl shadow-lg'>
-						<h1 className='text-3xl text-center font-extrabold uppercase mb-5'>Add a new candidate</h1>
+						<h1 className='text-3xl text-center font-extrabold uppercase mb-5'>Add a new vacancy</h1>
 
 						<form className='flex flex-col gap-3.5 max-w-2xl w-full'>
 							<input
