@@ -1,50 +1,50 @@
 import AnimatedText from '@/src/components/AnimatedText';
 import Link from 'next/link';
-import { Roboto, Gelasio } from 'next/font/google';
 import '@/src/css/index.css';
 import Image from 'next/image';
-import { Metadata } from 'next';
+import { auth, signOut } from '@/auth';
+import Footer from '@/src/components/Footer';
+import { Gelasio } from 'next/font/google';
 
-const roboto = Roboto({
-	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-});
-const charisSIL = Gelasio({
+const gelasio = Gelasio({
 	weight: ['400', '500', '600', '700'],
 });
 
-export const metadata: Metadata = {
-	title: 'Bloom CRM',
-	description: 'Crm by gotthepalm & oladok-sites',
-	icons: {
-		icon: [
-			{ url: '/favicons/favicon.ico' },
-			{ url: '/favicons/favicon-16x16.png', sizes: '16x16' },
-			{ url: '/favicons/favicon-32x32.png', sizes: '32x32' },
-		],
-		apple: '/favicon/apple-touch-icon.png',
-	},
-};
-
-export default function Home() {
-	const session = 'bembembem'; // тут будет сессия
+export default async function Home() {
+	const session = await auth();
 	return (
 		<>
 			<header className='w-full border-b border-zinc-300'>
 				<div className='flex items-center justify-between max-w-[1500px] w-full mx-auto h-[80px] px-5'>
 					<Link href='/' className='flex items-center gap-2'>
 						<Image src={'/images/bloom-icon.svg'} height={50} width={50} alt='bloom icon' />
-						<div
-							className={`${charisSIL.className} text-[40px] text-4xl font-medium text-center text-black`}
-						>
+						<div className={`${gelasio.className} text-4xl font-medium text-center text-black`}>
 							Bloom CRM
 						</div>
 					</Link>
-					<Link
-						href='/log-in'
-						className='text-white cursor-pointer bg-purple-700 hover:bg-purple-900 transition-colors duration-200 px-6 py-3 rounded-xl text-lg font-medium'
-					>
-						Log In
-					</Link>
+					{session?.user ? (
+						<form
+							action={async () => {
+								'use server';
+								await signOut();
+							}}
+						>
+							<button
+								className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
+								 py-3 rounded-xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
+							>
+								Sign Out
+								<span className='block cursor-pointer h-5 w-5 bg-[url(/images/sign-out.svg)] bg-contain bg-no-repeat bg-center'></span>
+							</button>
+						</form>
+					) : (
+						<Link
+							href={'/login'}
+							className='text-white cursor-pointer bg-purple-700 hover:bg-purple-900 transition-colors duration-200 px-6 py-3 rounded-xl text-lg font-medium'
+						>
+							Log In
+						</Link>
+					)}
 				</div>
 			</header>
 			<main className='flex-1'>
@@ -52,71 +52,25 @@ export default function Home() {
 					<section className='max-w-4xl w-full text-center flex flex-col items-center'>
 						<h1 className='text-4xl flex flex-col items-center sm:text-6xl font-bold leading-tight tracking-tight mb-10'>
 							<div className='text-black'>The CRM platform</div>
-							<AnimatedText />
+							<AnimatedText words={['for growing teams', 'for modern startups', 'for powerful sales']} />
 						</h1>
-
 						<p className='mt-6 text-lg text-gray-500 max-w-2xl'>
 							Manage clients, automate workflows and scale your business with a clean, powerful and modern
 							CRM system.
 						</p>
-
 						<div className='mt-10'>
 							<Link
-								href={session ? '/crm' : '/log-in'}
+								href={session?.user ? '/crm' : '/login'}
 								className='text-white cursor-pointer bg-purple-700 hover:bg-purple-900 transition-colors duration-200 px-8 py-4 rounded-xl text-lg font-medium'
 							>
-								Let&apos;s try
+								Try CRM
 							</Link>
 						</div>
-
 						<p className='mt-4 text-sm text-gray-700'>No credit card required</p>
 					</section>
 				</div>
 			</main>
-			<footer className='py-10 border-t border-zinc-300 text-[16px] text-zinc-800'>
-				<div className='max-w-6xl w-full mx-auto px-5'>
-					<div className='grid grid-cols-[28%_18%_18%_18%_18%] mb-10'>
-						<div>
-							<div className='flex items-center gap-2'>
-								<Image src={'/images/bloom-icon.svg'} height={40} width={40} alt='bloom icon' />
-								<div
-									className={`${charisSIL.className} text-[26px] text-4xl font-medium text-center text-black`}
-								>
-									Bloom CRM
-								</div>
-							</div>
-						</div>
-						<div className='flex flex-col gap-2'>
-							<Link href='/'>Home</Link>
-							<Link href='/'>Crm</Link>
-							<Link href='/'>Registration</Link>
-							<Link href='/'>Companies</Link>
-							<Link href='/'>Solo</Link>
-						</div>
-						<div className='flex flex-col gap-2'>
-							<Link href='/'>Home</Link>
-							<Link href='/'>Crm</Link>
-							<Link href='/'>Registration</Link>
-							<Link href='/'>Companies</Link>
-							<Link href='/'>Solo</Link>
-						</div>
-						<div className='flex flex-col gap-2'>
-							<Link href='/'>Home</Link>
-							<Link href='/'>Crm</Link>
-							<Link href='/'>Registration</Link>
-							<Link href='/'>Companies</Link>
-							<Link href='/'>Solo</Link>
-						</div>
-						<div>
-							<div>Subscribe to newsletter</div>
-							<form action=''>
-								<input type='text' />
-							</form>
-						</div>
-					</div>
-					<div>©Bloom, Inc.</div>
-				</div>
-			</footer>
+			<Footer />
 		</>
 	);
 }

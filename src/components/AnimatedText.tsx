@@ -3,14 +3,14 @@
 import { useEffect, useState } from 'react';
 
 type Props = {
-	words?: string[];
+	words: string[];
 	typingSpeed?: number;
 	deletingSpeed?: number;
 	pauseTime?: number;
 };
 
 export default function AnimatedText({
-	words = ['for growing teams', 'for modern startups', 'for powerful sales'],
+	words,
 	typingSpeed = 70,
 	deletingSpeed = 40,
 	pauseTime = 1000,
