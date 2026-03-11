@@ -1,38 +1,19 @@
-/*import { auth, signIn } from '@/auth';
-import { redirect } from 'next/navigation';
-import { prisma } from '@/lib/prisma';
-import { VacancyCreateInput } from '@/src/generated/prisma/models/Vacancy';*/
+import Image from 'next/image';
+import Link from 'next/link';
+import CrmHeader from '@/src/app/CrmHeader';
+
 
 export default async function Crm() {
-	/*const session = await auth();
-	if (!session?.user) redirect('/');
-	const user = await prisma.user.findUnique({
-		where: { id: session.user.id },
-		include: {
-			userCrm: {
-				include: {
-					candidates: true,
-				},
-			},
-		},
-	});
-	if (!user?.userCrm) redirect('/');
 	return (
-		<div>
-			<form
-				action={async () => {
-					await signIn('google');
-				}}
-			>
-				<button>Auth with Gogel</button>
-			</form>
-			<form
-				action={async () => {
-					await signIn('github');
-				}}
-			>
-				<button>Auth with Gogel</button>
-			</form>
-		</div>
-	);*/
+		<>
+			<CrmHeader>
+				<div className='w-full h-full max-w-[1600px] ml-10 mr-auto flex justify-between items-center'>
+					<Link href='/' className='flex items-center gap-2'>
+						<Image src={'/images/bloom-icon.svg'} height={40} width={40} alt='bloom icon' />
+					</Link>
+				</div>
+			</CrmHeader>
+			<div className='mt-30'>Home</div>
+		</>
+	)
 }

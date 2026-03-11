@@ -15,7 +15,7 @@ const navItems = [
 export default function Sidebar() {
 	const pathname = usePathname();
 	return (
-		<aside className='w-60 bg-white border-r border-gray-200 p-5'>
+		<aside className='w-60 bg-white border-r border-gray-200 px-5 py-10 fixed h-full'>
 			<nav className='flex flex-col gap-3'>
 				{navItems.map((item) => {
 					const isActive = pathname.startsWith(item.href);

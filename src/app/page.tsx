@@ -40,7 +40,7 @@ export default async function Home() {
 					) : (
 						<Link
 							href={'/login'}
-							className='text-white cursor-pointer bg-purple-700 hover:bg-purple-900 transition-colors duration-200 px-6 py-3 rounded-xl text-lg font-medium'
+							className='text-white cursor-pointer bg-violet-700 hover:bg-violet-800 transition-colors duration-200 px-6 py-3 rounded-xl text-lg font-medium'
 						>
 							Log In
 						</Link>
@@ -61,7 +61,7 @@ export default async function Home() {
 						<div className='mt-10'>
 							<Link
 								href={session?.user ? '/crm' : '/login'}
-								className='text-white cursor-pointer bg-purple-700 hover:bg-purple-900 transition-colors duration-200 px-8 py-4 rounded-xl text-lg font-medium'
+								className='text-white cursor-pointer bg-violet-700 hover:bg-violet-800 transition-colors duration-200 px-8 py-4 rounded-xl text-lg font-medium'
 							>
 								Try CRM
 							</Link>
