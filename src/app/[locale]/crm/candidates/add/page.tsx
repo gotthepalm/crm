@@ -7,6 +7,7 @@ import { useActionState } from 'react';
 import { createCandidate } from '@/src/app/[locale]/crm/candidates/add/createCandidateAction';
 import { useRouter } from 'next/navigation';
 import LanguageSwitcher from '@/src/components/LanguageSwitcher';
+import { useTranslations } from 'use-intl';
 
 export default function CandidatesAdd() {
 	const router = useRouter();
@@ -17,6 +18,9 @@ export default function CandidatesAdd() {
 		}
 		return state;
 	}, null);
+
+	const t = useTranslations('AddCandidate');
+
 	return (
 		<>
 			<CrmHeader>
@@ -30,14 +34,14 @@ export default function CandidatesAdd() {
 							className='cursor-pointer bg-violet-700 text-white hover:bg-violet-800 transition-colors duration-200 px-6
 						py-2 rounded-2xl text-lg flex items-center font-medium border gap-2'
 						>
-							Create
+							{t('Create')}
 						</label>
 						<Link
 							href={'/crm/candidates'}
 							className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
 						py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
 						>
-							Cancel
+							{t('Cancel')}
 						</Link>
 						<LanguageSwitcher />
 					</div>
@@ -46,12 +50,14 @@ export default function CandidatesAdd() {
 			<main className='bg-white'>
 				<div className='w-full max-w-[1500px] mx-auto pt-20'>
 					<div className='w-full py-12 px-32'>
-						<h2 className='text-3xl font-medium text-center pb-5 border-b border-zinc-300'>Create Candidate</h2>
+						<h2 className='text-3xl font-medium text-center pb-5 border-b border-zinc-300'>
+							{t('FormTitle')}
+						</h2>
 						<form action={action} className='flex flex-col gap-3.5 mt-10 w-full'>
 							<div className='grid grid-cols-2 justify-between gap-8 mb-5'>
 								<div className='flex flex-col gap-2'>
 									<div className='w-full flex items-center justify-between text-zinc-600'>
-										Name:
+										{t('Name')}:
 										<input
 											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 											type='text'
@@ -59,31 +65,31 @@ export default function CandidatesAdd() {
 										/>
 									</div>
 									<div className='text-[14px] h-[14px] text-red-500'>
-										{state?.result === 'name-required' && 'Name required'}
+										{state?.result === 'name-required' && t('NameRequired')}
 									</div>
 								</div>
 								<div className='flex flex-col gap-2'>
 									<div className='w-full flex items-center justify-between text-zinc-600'>
-										Status:
+										{t('Status')}:
 										<select
 											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 											name='status'
 										>
-											<option value='NEW'>New</option>
-											<option value='SCREENING'>Screening</option>
-											<option value='INTERVIEW'>Interview</option>
-											<option value='TECH_INTERVIEW'>Tech Interview</option>
-											<option value='OFFER'>Offer</option>
-											<option value='HIRED'>Hired</option>
-											<option value='REJECTED'>Rejected</option>
+											<option value='NEW'>{t('Option.New')}</option>
+											<option value='SCREENING'>{t('Option.Screening')}</option>
+											<option value='INTERVIEW'>{t('Option.Interview')}</option>
+											<option value='TECH_INTERVIEW'>{t('Option.TechInterview')}</option>
+											<option value='OFFER'>{t('Option.Offer')}</option>
+											<option value='HIRED'>{t('Option.Hired')}</option>
+											<option value='REJECTED'>{t('Option.Rejected')}</option>
 										</select>
 									</div>
 									<div className='text-[14px] h-[14px] text-red-500'>
-										{state?.result === 'invalid-status' && 'Invalid status'}
+										{state?.result === 'invalid-status' && t('InvalidStatus')}
 									</div>
 								</div>
 								<div className='flex items-center justify-between text-zinc-600'>
-									Phone:
+									{t('Phone')}:
 									<input
 										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='tel'
@@ -91,7 +97,7 @@ export default function CandidatesAdd() {
 									/>
 								</div>
 								<div className='flex items-center justify-between text-zinc-600'>
-									Email:
+									{t('Email')}:
 									<input
 										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='email'
@@ -99,7 +105,7 @@ export default function CandidatesAdd() {
 									/>
 								</div>
 								<div className='flex items-center justify-between text-zinc-600'>
-									Position:
+									{t('Position')}:
 									<input
 										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='text'
@@ -107,7 +113,7 @@ export default function CandidatesAdd() {
 									/>
 								</div>
 								<div className='flex items-center justify-between text-zinc-600'>
-									Address:
+									{t('Address')}:
 									<input
 										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='text'
@@ -115,17 +121,17 @@ export default function CandidatesAdd() {
 									/>
 								</div>
 								<div className='grid- flex items-center justify-between text-zinc-600'>
-									Experience:
+									{t('Experience')}:
 									<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-zinc-600 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'>
 										<input className='w-10 text-black' type='number' name='experience' />
-										Years
+										{t('Years')}
 									</div>
 								</div>
 								<div className='text-zinc-600 col-span-full'>
-									Expected Salary:
+									{t('ExpectedSalary')}:
 									<div className='grid grid-cols-2 gap-8 w-full'>
 										<div className='flex w-full items-center justify-between text-zinc-600'>
-											From:
+											{t('From')}:
 											<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-zinc-600 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'>
 												<input
 													className='w-full text-black'
@@ -136,7 +142,7 @@ export default function CandidatesAdd() {
 											</div>
 										</div>
 										<div className='flex w-full items-center justify-between text-zinc-600'>
-											To:
+											{t('To')}:
 											<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-zinc-600 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'>
 												<input
 													className='w-full text-black'
@@ -149,7 +155,7 @@ export default function CandidatesAdd() {
 									</div>
 								</div>
 								<div className='flex items-center justify-between text-zinc-600'>
-									Resume Url:
+									{t('ResumeUrl')}:
 									<input
 										className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='url'
@@ -157,7 +163,7 @@ export default function CandidatesAdd() {
 									/>
 								</div>
 								<div className='flex items-center justify-between text-zinc-600'>
-									LinkedIn Url:
+									{t('LinkedInUrl')}:
 									<input
 										className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='url'
@@ -165,7 +171,7 @@ export default function CandidatesAdd() {
 									/>
 								</div>
 								<div className='flex items-center justify-between text-zinc-600'>
-									GitHub Url:
+									{t('GitHubUrl')}:
 									<input
 										className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='url'
@@ -173,7 +179,7 @@ export default function CandidatesAdd() {
 									/>
 								</div>
 								<div className='flex items-center justify-between text-zinc-600'>
-									Portfolio Url:
+									{t('PortfolioUrl')}:
 									<input
 										className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='url'
@@ -181,7 +187,7 @@ export default function CandidatesAdd() {
 									/>
 								</div>
 								<div className='w-full flex flex-col items-start justify-between text-zinc-600 col-span-full'>
-									Note:
+									{t('Note')}:
 									<textarea
 										className='cursor-pointer w-full h-28 mt-2 focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										name='note'

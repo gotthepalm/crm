@@ -1,0 +1,32 @@
+{
+  "Create": "Create",
+  "Cancel": "Cancel",
+  "FormTitle": "Create Candidate",
+  "Name": "Name",
+  "NameRequired": "Name required",
+  "Status": "Status",
+  "Option": {
+    "New": "New",
+    "Screening": "Screening",
+    "Interview": "Interview",
+    "TechInterview": "Tech Interview",
+    "Offer": "Offer",
+    "Hired": "Hired",
+    "Rejected": "Rejected"
+  },
+  "InvalidStatus": "Invalid status",
+  "Phone": "Phone",
+  "Email": "Email",
+  "Position": "Position",
+  "Address": "Address",
+  "Experience": "Experience",
+  "Years": "years",
+  "ExpectedSalary": "Expected Salary",
+  "From": "From",
+  "To": "To",
+  "ResumeUrl": "Resume Url",
+  "LinkedInUrl": "LinkedIn Url",
+  "GitHubUrl": "GitHub Url",
+  "PortfolioUrl": "Portfolio Url",
+  "Note": "Note"
+}

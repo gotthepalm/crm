@@ -41,13 +41,6 @@ export default async function Candidates() {
 						>
 							{t("Filter")}
 						</div>
-						{/*<Link*/}
-						{/*	href={'/crm/candidates/add'}*/}
-						{/*	className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6*/}
-						{/*py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'*/}
-						{/*>*/}
-						{/*	Create New*/}
-						{/*</Link>*/}
 						<LanguageSwitcher />
 					</nav>
 				</div>
@@ -56,9 +49,8 @@ export default async function Candidates() {
 			<main className='w-full max-w-[1500px] mt-20 p-5'>
 				<Link
 					href={'/crm/candidates/add'}
-					className='flex justify-center items-center gap-3 bg-white hover:bg-purple-700 hover:text-white text-[22px] p-3 mb-5 rounded-2xl w-full component-transition cursor-pointer'
+					className='flex justify-center items-center gap-3 bg-white hover:bg-purple-700 hover:text-white border border-zinc-300 text-[22px] p-3 mb-5 rounded-2xl w-full component-transition cursor-pointer'
 				>
-					{/*<Image src="/images/plus.svg" width={24} height={24} alt=""/>*/}
 					<span className='text-4xl font-light'>+</span>
 					{t("AddCandidate")}
 				</Link>
