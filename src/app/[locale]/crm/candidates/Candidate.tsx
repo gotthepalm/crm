@@ -53,8 +53,6 @@ export default async function Candidate({ candidate }: { candidate: CandidateMod
 						{candidate.location}
 					</p>
 				)}
-				{/*{candidate.phone && <p>📞 {candidate.phone}</p>}*/}
-				{/*{candidate.location && <p>📍 {candidate.location}</p>}*/}
 			</div>
 			<div className='flex gap-6 text-[16px] mb-4'>
 				{candidate.experienceYears && (

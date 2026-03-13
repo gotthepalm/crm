@@ -1,0 +1,32 @@
+{
+  "Create": "Створити",
+  "Cancel": "Відміна",
+  "FormTitle": "Створити кандидата",
+  "Name": "Ім'я",
+  "NameRequired": "Необхідне ім'я",
+  "Status": "Статус",
+  "Option": {
+    "New": "Новий",
+    "Screening": "Скринінг",
+    "Interview": "Інтерв'ю",
+    "TechInterview": "Технічне інтерв'ю",
+    "Offer": "Оффер",
+    "Hired": "Найнятий",
+    "Rejected": "Відхилений"
+  },
+  "InvalidStatus": "Недійсний статус",
+  "Phone": "Номер",
+  "Email": "Email",
+  "Position": "Посада",
+  "Address": "Адреса",
+  "Experience": "Досвід",
+  "Years": "років",
+  "ExpectedSalary": "Очікувана зарплата",
+  "From": "З",
+  "To": "По",
+  "ResumeUrl": "Посилання на резюме",
+  "LinkedInUrl": "Посилання на LinkedIn",
+  "GitHubUrl": "Посилання на GitHub",
+  "PortfolioUrl": "Посилання на портфоліо",
+  "Note": "Нотатка"
+}

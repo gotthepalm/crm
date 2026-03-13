@@ -14,14 +14,18 @@ export default getRequestConfig(async ({requestLocale}) => {
 		en: {
 			mainPage: (await import('@/public/messages/en/mainPage.json')).default,
 			footer: (await import('@/public/messages/en/footer.json')).default,
+			LanguageSwitcher: (await import('@/public/messages/en/LanguageSwitcher.json')).default,
 			CandidateCard: (await import('@/public/messages/en/crm/candidates/CandidateCard.json')).default,
-			Candidates: (await import('@/public/messages/en/crm/candidates/Candidates.json')).default
+			Candidates: (await import('@/public/messages/en/crm/candidates/Candidates.json')).default,
+			AddCandidate: (await import('@/public/messages/en/crm/candidates/AddCandidate.json')).default
 		},
 		uk: {
 			mainPage: (await import('@/public/messages/uk/mainPage.json')).default,
 			footer: (await import('@/public/messages/uk/footer.json')).default,
+			LanguageSwitcher: (await import('@/public/messages/uk/LanguageSwitcher.json')).default,
 			CandidateCard: (await import('@/public/messages/uk/crm/candidates/CandidateCard.json')).default,
-			Candidates: (await import('@/public/messages/uk/crm/candidates/Candidates.json')).default
+			Candidates: (await import('@/public/messages/uk/crm/candidates/Candidates.json')).default,
+			AddCandidate: (await import('@/public/messages/uk/crm/candidates/AddCandidate.json')).default
 		}
 	};
 
