@@ -154,18 +154,18 @@ export default function CandidatesAdd() {
 											<input
 												className='w-10 text-black'
 												type='number'
-												name='experience'
+												name='experienceYears'
 												defaultValue={
-													getValue('experience')}
+													getValue('experienceYears')}
 											/>
 											{t('Years')}
 										</div>
-										<div className='text-[14px] h-[14px] text-red-500'>
-											{state?.result === 'validation-error' &&
-												state.errors.experienceYears?.map((err, index) => (
-													<div key={index}>{err}</div>
-												))}
-										</div>
+									</div>
+									<div className='text-[14px] h-[14px] text-red-500'>
+										{state?.result === 'validation-error' &&
+											state.errors.experienceYears?.map((err, index) => (
+												<div key={index}>{err}</div>
+											))}
 									</div>
 								</div>
 								<div className='text-zinc-600 col-span-full'>

@@ -47,7 +47,6 @@ export async function createCandidate(formData: FormData, locale: string) {
 	}
 
 	const data = Object.fromEntries(formData);
-	console.log(Number(formData.get('experienceYears')))
 	const parsedData = candidateSchema.safeParse(data);
 
 	if (!parsedData.success) {
