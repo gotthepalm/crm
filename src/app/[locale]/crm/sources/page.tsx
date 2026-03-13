@@ -3,11 +3,6 @@
 import Link from 'next/link';
 import { useState } from 'react';
 
-const links: string[] = [
-	'https://www.linkedin.com/feed/',
-	'https://github.com/',
-	'https://dou.ua/lenta/articles/front-end-developer-interview-questions/',
-];
 const sources = [
 	{
 		link: 'https://www.linkedin.com/feed/',
@@ -73,7 +68,7 @@ export default function Sources() {
 					</div>
 				</div>
 			)}
-			<nav className={`w-max ${sources.length !== 0 ? 'grid grid-cols-3 gap-5' : 'flex justify-center'}`}>
+			<li className={`w-max ${sources.length !== 0 ? 'grid grid-cols-3 gap-5' : 'flex justify-center'}`}>
 				{sources.map((source) => (
 					<Link key={source.title} href={source.link} target='blank'>
 						<article className='flex flex-col items-center gap-5 w-50 p-5 bg-white rounded-2xl'>
@@ -87,7 +82,7 @@ export default function Sources() {
 						</article>
 					</Link>
 				))}
-			</nav>
+			</li>
 		</div>
 	);
 }
