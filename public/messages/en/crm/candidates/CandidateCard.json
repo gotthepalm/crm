@@ -1,0 +1,16 @@
+{
+  "Status": {
+    "NEW": "New",
+    "SCREENING": "Screening",
+    "INTERVIEW":  "Interview",
+    "TECH_INTERVIEW": "Tech Interview",
+    "OFFER":  "Offer",
+    "HIRED": "Hired",
+    "REJECTED":  "Rejected"
+  },
+  "Experience": "Experience",
+  "Years": "years",
+  "Salary": "Salary",
+  "Resume": "Resume",
+  "Portfolio": "Portfolio"
+}
