@@ -5,7 +5,7 @@ import { useState } from 'react';
 type Vacancy = {
 	id: number;
 	vacancyName: string;
-	vacancyDesсription: string;
+	vacancyDescription: string;
 	priority: string;
 	department: string;
 	vacancyQuantity: number;
@@ -17,7 +17,7 @@ const vacancies: Vacancy[] = [
 	{
 		id: 1,
 		vacancyName: 'Crypto Facebook Assistant',
-		vacancyDesсription: '...',
+		vacancyDescription: '...',
 		priority: 'Hight',
 		department: 'Facebook',
 		vacancyQuantity: 6,
@@ -148,7 +148,7 @@ export default function Candidates() {
 								</p>
 								<p className='pb-2 pl-2 border-b border-zinc-300'>
 									<span className='text-zinc-600 italic text-[18px]'>Vacancy description: </span>
-									{vacancy.vacancyDesсription}
+									{vacancy.vacancyDescription}
 								</p>
 								<p className='pl-2'>
 									<span className='text-zinc-600 italic text-[18px]'>Data: </span>

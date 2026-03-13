@@ -1,12 +1,14 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { Gelasio } from 'next/font/google';
+import { getTranslations } from 'next-intl/server';
 
 const gelasio = Gelasio({
 	weight: ['400', '500', '600', '700'],
 });
 
-export default function Footer() {
+export default async function Footer() {
+	const t = await getTranslations("footer")
     return (
 		<footer className='py-10 border-t border-zinc-300 text-[16px] text-zinc-800'>
 			<div className='max-w-6xl w-full mx-auto px-5'>
@@ -22,30 +24,30 @@ export default function Footer() {
 						</div>
 					</div>
 					<div className='flex flex-col gap-2'>
-						<Link href='/'>Home</Link>
-						<Link href='/'>Crm</Link>
-						<Link href='/'>Registration</Link>
-						<Link href='/'>Companies</Link>
-						<Link href='/'>Solo</Link>
+						<Link href='/'>{t("Home")}</Link>
+						<Link href='/'>{t("Crm")}</Link>
+						<Link href='/'>{t("Registration")}</Link>
+						<Link href='/'>{t("Companies")}</Link>
+						<Link href='/'>{t("Solo")}</Link>
 					</div>
 					<div className='flex flex-col gap-2'>
-						<Link href='/'>Home</Link>
-						<Link href='/'>Crm</Link>
-						<Link href='/'>Registration</Link>
-						<Link href='/'>Companies</Link>
-						<Link href='/'>Solo</Link>
+						<Link href='/'>{t("Home")}</Link>
+						<Link href='/'>{t("Crm")}</Link>
+						<Link href='/'>{t("Registration")}</Link>
+						<Link href='/'>{t("Companies")}</Link>
+						<Link href='/'>{t("Solo")}</Link>
 					</div>
 					<div className='flex flex-col gap-2'>
-						<Link href='/'>Home</Link>
-						<Link href='/'>Crm</Link>
-						<Link href='/'>Registration</Link>
-						<Link href='/'>Companies</Link>
-						<Link href='/'>Solo</Link>
+						<Link href='/'>{t("Home")}</Link>
+						<Link href='/'>{t("Crm")}</Link>
+						<Link href='/'>{t("Registration")}</Link>
+						<Link href='/'>{t("Companies")}</Link>
+						<Link href='/'>{t("Solo")}</Link>
 					</div>
 					<div>
-						<div>Subscribe to newsletter</div>
+						<div>{t("Subscribe")}</div>
 						<form action=''>
-							<input type='text' />
+							<input className="border rounded" type='text' />
 						</form>
 					</div>
 				</div>

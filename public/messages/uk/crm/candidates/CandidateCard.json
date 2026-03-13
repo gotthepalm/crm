@@ -1,0 +1,16 @@
+{
+  "Status": {
+    "NEW": "Новий",
+    "SCREENING": "Скринінг",
+    "INTERVIEW":  "Інтерв'ю",
+    "TECH_INTERVIEW": "Технічне інтерв'ю",
+    "OFFER":  "Оффер",
+    "HIRED": "Найнятий",
+    "REJECTED":  "Відхилений"
+  },
+  "Experience": "Досвід",
+  "Years": "років",
+  "Salary": "Зарплата",
+  "Resume": "Резюме",
+  "Portfolio": "Портфоліо"
+}

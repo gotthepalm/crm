@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import CrmHeader from '@/src/app/CrmHeader';
+import CrmHeader from '@/src/components/CrmHeader';
 
 
 export default async function Crm() {

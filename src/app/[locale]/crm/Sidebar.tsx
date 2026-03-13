@@ -2,6 +2,7 @@
 
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
+import Image from 'next/image';
 
 const navItems = [
 	{ name: 'Candidates', href: '/crm/candidates', icon: 'emoji_people' },
@@ -26,7 +27,7 @@ export default function Sidebar() {
 							className={`flex items-center gap-3 px-4 py-3 text-[18px] rounded-xl component-transition 
 							${isActive ? 'bg-gray-200 font-medium' : 'hover:bg-gray-100'}`}
 						>
-							<span className='material-symbols-rounded'>{item.icon}</span>
+							<Image src={`/images/${item.icon}.svg`} alt="" height={24} width={24} />
 							{item.name}
 						</Link>
 					);
