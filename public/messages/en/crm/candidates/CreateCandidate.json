@@ -1,0 +1,9 @@
+{
+  "NameRequired": "Name is required",
+  "LongName": "Too long name",
+  "InvalidEmail": "Invalid email",
+  "SmallValue": "Too small value",
+  "BigValue": "Too big value",
+  "InvalidStatus": "Invalid status",
+  "InvalidUrl": "Invalid url"
+}

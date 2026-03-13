@@ -25,7 +25,6 @@ export default async function Candidates() {
 			},
 		},
 	});
-
 	const t = await getTranslations("Candidates");
 	return (
 		<>
@@ -45,7 +44,6 @@ export default async function Candidates() {
 					</nav>
 				</div>
 			</CrmHeader>
-
 			<main className='w-full max-w-[1500px] mt-20 p-5'>
 				<Link
 					href={'/crm/candidates/add'}
@@ -59,7 +57,6 @@ export default async function Candidates() {
 						user.userCrm.candidates.map((candidate, i) => <Candidate key={i} candidate={candidate} />)}
 				</li>
 			</main>
-
 		</>
 	);
 }

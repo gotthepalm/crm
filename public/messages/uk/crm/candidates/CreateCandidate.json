@@ -1,0 +1,9 @@
+{
+  "NameRequired": "Ім'я обов'язкове",
+  "LongName": "Занадто довге ім'я",
+  "InvalidEmail": "Невалідний email",
+  "SmallValue": "Занадто мале значення",
+  "BigValue": "Занадто велике значення",
+  "InvalidStatus": "Невалідний статус",
+  "InvalidUrl": "Невалідне посилання"
+}
