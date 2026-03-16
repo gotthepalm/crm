@@ -1,0 +1,29 @@
+{
+  "Create": "Створити",
+  "Cancel": "Відмінити",
+  "FormTitle": "Створити вакансію",
+  "Position": "Посада",
+  "Description": "Опис",
+  "Location": "Місцезнаходження",
+  "EmploymentType": "Тип зайнятості",
+  "Option": {
+    "OPEN": "Відкрито",
+    "IN_PROGRESS": "Розглядається",
+    "PAUSED": "Призупинено",
+    "CLOSED": "Закрито",
+    "FULL_TIME": "Повна зайнятість",
+    "PART_TIME": "Неповна зайнятість",
+    "CONTRACT": "Контракт",
+    "INTERNSHIP": "Стажування"
+  },
+  "InvalidStatus": "Невалідний статус",
+  "Experience": "Досвід",
+  "Years": "років",
+  "Salary": "Зарплата",
+  "From": "Від",
+  "To": "По",
+  "Currency": "Валюта",
+  "VacancyStatus": "Статус вакансії",
+  "Candidates": "Кандидати",
+  "Meetings": "Зустрічі"
+}

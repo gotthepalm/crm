@@ -152,7 +152,6 @@ model Vacancy {
   employmentType  EmploymentType?
   salaryFrom      Int?
   salaryTo        Int?
-  currency        String?
   experienceYears Int?
   status          VacancyStatus
   candidates      Candidate[]

@@ -1,35 +1,30 @@
-'use client';
-
 import CrmHeader from '@/src/components/CrmHeader';
 import Link from 'next/link';
 import Image from 'next/image';
 import LanguageSwitcher from '@/src/components/LanguageSwitcher';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
+import { prisma } from '@/lib/prisma';
+import Vacancy from '@/src/app/[locale]/crm/vacancies/Vacancy';
 
-// type Vacancy = {
-// 	id: number;
-// 	vacancyName: string;
-// 	vacancyDescription: string;
-// 	priority: string;
-// 	department: string;
-// 	vacancyQuantity: number;
-// 	hiredQuantity: number;
-// 	data: string;
-// };
-//
-// const vacancies: Vacancy[] = [
-// 	{
-// 		id: 1,
-// 		vacancyName: 'Crypto Facebook Assistant',
-// 		vacancyDescription: '...',
-// 		priority: 'Hight',
-// 		department: 'Facebook',
-// 		vacancyQuantity: 6,
-// 		hiredQuantity: 4,
-// 		data: '06.03.2026',
-// 	},
-// ];
+export default async function Candidates() {
+	const session = await auth()
+	if (!session?.user) redirect('/')
+	const user = await prisma.user.findUnique({
+		where: { id: session?.user?.id },
+		include: {
+			userCrm: {
+				include: {
+					vacancies: {
+						orderBy: {
+							id: 'asc'
+						}
+					}
+				}
+			}
+		}
+	})
 
-export default function Candidates() {
 	return (
 		<>
 			<CrmHeader>
@@ -51,15 +46,16 @@ export default function Candidates() {
 
 			<main className='w-full max-w-[1500px] mt-20 p-5'>
 				<Link
-					href={'/crm/candidates/add'}
+					href={'/crm/vacancies/add'}
 					className='flex justify-center items-center gap-3 bg-white hover:bg-purple-700 hover:text-white border border-zinc-300 text-[22px] p-3 mb-5 rounded-2xl w-full component-transition cursor-pointer'
 				>
 					<span className='text-4xl font-light'>+</span>
 					Add Vacancy
 				</Link>
 				<li className='list-none w-full mx-auto grid grid-cols-3 gap-5'>
-					{/*{user?.userCrm &&*/}
-					{/*	user.userCrm.candidates.map((candidate, i) => <Candidate key={i} candidate={candidate} />)}*/}
+					{user?.userCrm &&
+						user.userCrm.vacancies.map((vacancy, i) => <Vacancy key={i} vacancy={vacancy} />)
+					}
 				</li>
 			</main>
 

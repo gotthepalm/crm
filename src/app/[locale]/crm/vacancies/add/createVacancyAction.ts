@@ -1,0 +1,58 @@
+'use server';
+
+import { z } from 'zod';
+import { EmploymentType, VacancyStatus } from '@/src/generated/prisma/enums';
+import { auth } from '@/auth';
+import { prisma } from '@/lib/prisma';
+
+export type ActionState =
+	| { result: 'success' }
+	| { result: 'validation-error'; errors: Record<string, string[]>; values: Record<string, FormDataEntryValue> }
+	| { result: 'db-error' }
+	| { result: 'no-session' };
+
+export async function createVacancy(formData: FormData) {
+	const emptyToUndefined = (v: unknown) => (v === '' ? undefined : v);
+	const vacancySchema = z.object({
+		position: z.string().min(1).max(40),
+		description: z.preprocess(emptyToUndefined, z.string().trim().optional()),
+		location: z.preprocess(emptyToUndefined, z.string().trim().optional()),
+		employmentType: z.preprocess(emptyToUndefined, z.enum(EmploymentType).optional()),
+		salaryFrom: z.preprocess(emptyToUndefined, z.coerce.number().min(0).max(2_147_483_647).optional()),
+		salaryTo: z.preprocess(emptyToUndefined, z.coerce.number().min(0).max(2_147_483_647).optional()),
+		experienceYears: z.preprocess(emptyToUndefined, z.coerce.number().min(0).max(2_147_483_647).optional()),
+		status: z.enum(VacancyStatus),
+	});
+	const session = await auth();
+
+	if (!session?.user) {
+		return { result: 'no-session' } satisfies ActionState;
+	}
+
+	const data = Object.fromEntries(formData);
+	const parsedData = vacancySchema.safeParse(data);
+
+	// errors: parsedData.error.flatten().fieldErrors, values: data
+
+	if (!parsedData.success) {
+		return {
+			result: 'validation-error',
+			errors: parsedData.error.flatten().fieldErrors,
+			values: data,
+		} satisfies ActionState;
+	}
+
+	try {
+		await prisma.vacancy.create({
+			data: {
+				...parsedData.data,
+				userCrm: {
+					connect: { userId: session.user.id },
+				},
+			},
+		});
+		return { result: 'success' } satisfies ActionState;
+	} catch {
+		return { result: 'db-error' } satisfies ActionState;
+	}
+}
