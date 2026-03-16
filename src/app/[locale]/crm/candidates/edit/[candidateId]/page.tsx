@@ -3,32 +3,47 @@
 import CrmHeader from '@/src/components/CrmHeader';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useActionState } from 'react';
-import { ActionState, createCandidate } from '@/src/app/[locale]/crm/candidates/_actions/createCandidateAction';
-import { useRouter } from 'next/navigation';
+import { useActionState, useEffect, useState } from 'react';
+import { useParams, useRouter } from 'next/navigation';
 import LanguageSwitcher from '@/src/components/LanguageSwitcher';
 import { useLocale, useTranslations } from 'use-intl';
+import { ActionState, editCandidate } from '@/src/app/[locale]/crm/candidates/_actions/editCandidateAction';
+import { getCandidateValues } from '@/src/app/[locale]/crm/candidates/_actions/getCandidateValuesAction';
+import { CandidateModel } from '@/src/generated/prisma/models/Candidate';
 
-export default function CandidatesAdd() {
+export default function EditCandidate() {
+	const [candidateValues, setCandidateValues] = useState<CandidateModel | null>(null)
+	const params = useParams<{candidateId: string}>()
 	const router = useRouter();
 	const t = useTranslations('AddCandidate');
 	const locale = useLocale()
 	const [state, action] = useActionState<ActionState | null, FormData>(async (_prev, formData) => {
-		const state = await createCandidate(formData, locale);
+		const state = await editCandidate(formData, locale, Number(params.candidateId));
 		if (state.result === 'success') {
 			router.push('/crm/candidates');
 		}
 		return state;
 	}, null);
 
-	function getValue(name: string) {
-		if (state?.result !== "validation-error") return undefined
+	function getValue(name: keyof CandidateModel) {
+		if (state?.result !== "validation-error") {
+			if (candidateValues) {
+				const v = candidateValues[name]
+
+				if (v === undefined || v === null) return undefined
+				return v.toString()
+			}
+			return undefined
+		}
 
 		const v = state.values[name]
 
 		if (v === undefined || v === null) return undefined
 		return v.toString()
 	}
+	useEffect(() => {
+		getCandidateValues(Number(params.candidateId)).then(value => setCandidateValues(value))
+	}, [params.candidateId])
 
 	return (
 		<>
@@ -43,7 +58,7 @@ export default function CandidatesAdd() {
 							className='cursor-pointer bg-violet-700 text-white hover:bg-violet-800 transition-colors duration-200 px-6
 						py-2 rounded-2xl text-lg flex items-center font-medium border gap-2'
 						>
-							{t('Create')}
+							{t('Save')}
 						</label>
 						<Link
 							href={'/crm/candidates'}
@@ -109,7 +124,7 @@ export default function CandidatesAdd() {
 										type='tel'
 										name='phone'
 										defaultValue={
-										getValue('phone')}
+											getValue('phone')}
 									/>
 								</div>
 								<div className='flex flex-col gap-2'>
