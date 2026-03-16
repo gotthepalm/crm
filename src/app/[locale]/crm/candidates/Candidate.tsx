@@ -1,9 +1,11 @@
 import { CandidateModel } from '@/src/generated/prisma/models/Candidate';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
+import Link from 'next/link';
+import { deleteCandidate } from '@/src/app/[locale]/crm/candidates/_actions/deleteCandidateAction';
 
 export default async function Candidate({ candidate }: { candidate: CandidateModel }) {
-	const t = await getTranslations("CandidateCard")
+	const t = await getTranslations('CandidateCard');
 	function handleStatus() {
 		switch (candidate.status) {
 			case 'NEW':
@@ -79,7 +81,7 @@ export default async function Candidate({ candidate }: { candidate: CandidateMod
 				{candidate.portfolioUrl && (
 					<a href={candidate.portfolioUrl} className='flex gap-2 items-center hover:underline'>
 						<Image src='/images/portfolio.svg' width={25} height={25} alt='' />
-						{t("Portfolio")}
+						{t('Portfolio')}
 					</a>
 				)}
 				{candidate.gitHubUrl && (
@@ -96,6 +98,19 @@ export default async function Candidate({ candidate }: { candidate: CandidateMod
 				)}
 			</div>
 			{candidate.note && <p className='flex-1 text-sm text-gray-600 border-t pt-3'>{candidate.note}</p>}
+			<div className='self-end mt-auto flex gap-2'>
+				<form action={async () => {
+					'use server'
+					await deleteCandidate(candidate.id)
+				}}>
+					<button type='submit'>
+						<Image src='/images/delete.svg' width={25} height={25} alt='delete'></Image>
+					</button>
+				</form>
+				<Link href={`/crm/candidates/edit/${candidate.id}`}>
+					<Image src='/images/pencil.svg' width={25} height={25} alt='edit'></Image>
+				</Link>
+			</div>
 		</article>
 	);
 }
