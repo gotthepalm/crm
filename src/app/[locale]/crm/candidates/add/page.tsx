@@ -85,16 +85,15 @@ export default function CandidatesAdd() {
 										<select
 											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 											name='status'
-											defaultValue={
-												getValue('status')}
+											defaultValue={getValue('status')}
 										>
-											<option value='NEW'>New</option>
-											<option value='SCREENING'>Screening</option>
-											<option value='INTERVIEW'>Interview</option>
-											<option value='TECH_INTERVIEW'>Tech Interview</option>
-											<option value='OFFER'>Offer</option>
-											<option value='HIRED'>Hired</option>
-											<option value='REJECTED'>Rejected</option>
+											<option value='NEW'>{t("Option.New")}</option>
+											<option value='SCREENING'>{t("Option.Screening")}</option>
+											<option value='INTERVIEW'>{t("Option.Interview")}</option>
+											<option value='TECH_INTERVIEW'>{t("Option.TechInterview")}</option>
+											<option value='OFFER'>{t("Option.Offer")}</option>
+											<option value='HIRED'>{t("Option.Hired")}</option>
+											<option value='REJECTED'>{t("Option.Rejected")}</option>
 										</select>
 									</div>
 									<div className='text-[14px] h-[14px] text-red-500'>
@@ -108,8 +107,7 @@ export default function CandidatesAdd() {
 										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='tel'
 										name='phone'
-										defaultValue={
-										getValue('phone')}
+										defaultValue={getValue('phone')}
 									/>
 								</div>
 								<div className='flex flex-col gap-2'>
@@ -133,8 +131,7 @@ export default function CandidatesAdd() {
 										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='text'
 										name='position'
-										defaultValue={
-											getValue('position')}
+										defaultValue={getValue('position')}
 									/>
 								</div>
 								<div className='flex items-center justify-between text-zinc-600'>
@@ -143,8 +140,7 @@ export default function CandidatesAdd() {
 										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='text'
 										name='location'
-										defaultValue={
-											getValue('location')}
+										defaultValue={getValue('location')}
 									/>
 								</div>
 								<div className='flex flex-col gap-2'>
@@ -155,8 +151,7 @@ export default function CandidatesAdd() {
 												className='w-10 text-black'
 												type='number'
 												name='experienceYears'
-												defaultValue={
-													getValue('experienceYears')}
+												defaultValue={getValue('experienceYears')}
 											/>
 											{t('Years')}
 										</div>
@@ -269,9 +264,10 @@ export default function CandidatesAdd() {
 										/>
 									</div>
 									<div className='text-[14px] h-[14px] text-red-500'>
-										{state?.result === 'validation-error' && state.errors.portfolioUrl?.map((err, index) => (
-											<div key={index}>{err}</div>
-										))}
+										{state?.result === 'validation-error' &&
+											state.errors.portfolioUrl?.map((err, index) => (
+												<div key={index}>{err}</div>
+											))}
 									</div>
 								</div>
 								<div className='w-full flex flex-col items-start justify-between text-zinc-600 col-span-full'>

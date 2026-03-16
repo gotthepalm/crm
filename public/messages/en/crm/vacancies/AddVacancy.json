@@ -1,0 +1,29 @@
+{
+  "Create": "Create",
+  "Cancel": "Cancel",
+  "FormTitle": "Create vacancy",
+  "Position": "Position",
+  "Description": "Description",
+  "Location": "Location",
+  "EmploymentType": "Employment type",
+  "Option": {
+    "OPEN": "Open",
+    "IN_PROGRESS": "In progress",
+    "PAUSED": "Paused",
+    "CLOSED": "Closed",
+    "FULL_TIME": "Full-time",
+    "PART_TIME": "Part-time",
+    "CONTRACT": "Contract",
+    "INTERNSHIP": "Internship"
+  },
+  "InvalidStatus": "Invalid status",
+  "Experience": "Experience",
+  "Years": "years",
+  "Salary": "Salary",
+  "From": "From",
+  "To": "To",
+  "Currency": "Currency",
+  "VacancyStatus": "Vacancy status",
+  "Candidates": "Candidates",
+  "Meetings": "Meetings"
+}
