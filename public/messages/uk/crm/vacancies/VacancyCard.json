@@ -1,0 +1,14 @@
+{
+  "employmentType": {
+    "FULL_TIME": "Повна зайнятість",
+    "PART_TIME": "Неповна зайнятість",
+    "CONTRACT": "Контракт",
+    "INTERNSHIP": "Стажування"
+  },
+  "status": {
+    "OPEN": "Відкрито",
+    "IN_PROGRESS": "Розглядається",
+    "PAUSED": "Призупинено",
+    "CLOSED": "Закрито"
+  }
+}

@@ -25,7 +25,7 @@ export default async function Candidate({ candidate }: { candidate: CandidateMod
 		}
 	}
 	return (
-		<article className='bg-white flex flex-col rounded-2xl overflow-hidden border border-zinc-300 p-5 mb-5 w-full max-w-xl break-inside-avoid transition'>
+		<article className='bg-white flex flex-col rounded-2xl overflow-hidden border border-zinc-300 p-5 w-full max-w-xl break-inside-avoid transition'>
 			<div className='flex justify-between items-start mb-5'>
 				<div className='space-y-2'>
 					<h3 className='text-[24px] font-semibold'>{candidate.name}</h3>
