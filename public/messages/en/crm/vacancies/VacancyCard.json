@@ -1,0 +1,14 @@
+{
+  "employmentType": {
+    "FULL_TIME": "Full-time",
+    "PART_TIME": "Part-time",
+    "CONTRACT": "Contract",
+    "INTERNSHIP": "Internship"
+  },
+  "status": {
+    "OPEN": "Open",
+    "IN_PROGRESS": "In progress",
+    "PAUSED": "Paused",
+    "CLOSED": "Closed"
+  }
+}

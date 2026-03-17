@@ -14,22 +14,28 @@ export default getRequestConfig(async ({requestLocale}) => {
 		en: {
 			mainPage: (await import('@/public/messages/en/mainPage.json')).default,
 			footer: (await import('@/public/messages/en/footer.json')).default,
+			Sidebar: (await import('@/public/messages/en/crm/Sidebar.json')).default,
 			LanguageSwitcher: (await import('@/public/messages/en/LanguageSwitcher.json')).default,
 			CandidateCard: (await import('@/public/messages/en/crm/candidates/CandidateCard.json')).default,
 			Candidates: (await import('@/public/messages/en/crm/candidates/Candidates.json')).default,
 			AddCandidate: (await import('@/public/messages/en/crm/candidates/AddCandidate.json')).default,
 			CreateCandidate: (await import('@/public/messages/en/crm/candidates/CreateCandidate.json')).default,
-			AddVacancy: (await import('@/public/messages/en/crm/vacancies/AddVacancy.json')).default
+			AddVacancy: (await import('@/public/messages/en/crm/vacancies/AddVacancy.json')).default,
+			VacancyCard: (await import('@/public/messages/en/crm/vacancies/VacancyCard.json')).default,
+			Vacancies: (await import('@/public/messages/en/crm/vacancies/Vacancies.json')).default
 		},
 		uk: {
 			mainPage: (await import('@/public/messages/uk/mainPage.json')).default,
 			footer: (await import('@/public/messages/uk/footer.json')).default,
+			Sidebar: (await import('@/public/messages/uk/crm/Sidebar.json')).default,
 			LanguageSwitcher: (await import('@/public/messages/uk/LanguageSwitcher.json')).default,
 			CandidateCard: (await import('@/public/messages/uk/crm/candidates/CandidateCard.json')).default,
 			Candidates: (await import('@/public/messages/uk/crm/candidates/Candidates.json')).default,
 			AddCandidate: (await import('@/public/messages/uk/crm/candidates/AddCandidate.json')).default,
 			CreateCandidate: (await import('@/public/messages/uk/crm/candidates/CreateCandidate.json')).default,
-			AddVacancy: (await import('@/public/messages/uk/crm/vacancies/AddVacancy.json')).default
+			AddVacancy: (await import('@/public/messages/uk/crm/vacancies/AddVacancy.json')).default,
+			VacancyCard: (await import('@/public/messages/uk/crm/vacancies/VacancyCard.json')).default,
+			Vacancies: (await import('@/public/messages/uk/crm/vacancies/Vacancies.json')).default
 		}
 	};
 
