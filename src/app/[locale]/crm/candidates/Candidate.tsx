@@ -98,7 +98,7 @@ export default async function Candidate({ candidate }: { candidate: CandidateMod
 				)}
 			</div>
 			{candidate.note && <p className='flex-1 text-sm text-gray-600 border-t pt-3'>{candidate.note}</p>}
-			<div className='self-end mt-auto flex gap-2'>
+			<div className='flex justify-end mt-auto gap-2'>
 				<form action={async () => {
 					'use server'
 					await deleteCandidate(candidate.id)

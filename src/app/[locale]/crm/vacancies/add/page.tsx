@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Image from 'next/image';
 import LanguageSwitcher from '@/src/components/LanguageSwitcher';
 import { useTranslations } from 'use-intl';
-import { ActionState, createVacancy } from '@/src/app/[locale]/crm/vacancies/add/createVacancyAction';
+import { ActionState, createVacancy } from '@/src/app/[locale]/crm/vacancies/_actons/createVacancyAction';
 import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
 
