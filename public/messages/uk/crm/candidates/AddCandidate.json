@@ -2,6 +2,7 @@
   "Create": "Створити",
   "Cancel": "Відмінити",
   "FormTitle": "Створити кандидата",
+  "EditFormTitle": "Редагувати кандидата",
   "Name": "Ім'я",
   "NameRequired": "Необхідне ім'я",
   "Status": "Статус",
@@ -29,5 +30,6 @@
   "GitHubUrl": "Посилання на GitHub",
   "PortfolioUrl": "Посилання на портфоліо",
   "Note": "Нотатка",
-  "Save": "Save"
+  "Save": "Зберегти",
+  "Delete": "Видалити"
 }

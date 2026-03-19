@@ -29,7 +29,6 @@ export default function CandidatesAdd() {
 		if (v === undefined || v === null) return undefined
 		return v.toString()
 	}
-
 	return (
 		<>
 			<CrmHeader>
@@ -59,7 +58,7 @@ export default function CandidatesAdd() {
 			<main className='bg-white'>
 				<div className='w-full max-w-[1500px] mx-auto pt-20'>
 					<div className='w-full py-12 px-32'>
-						<h2 className='text-3xl font-medium text-center pb-5 border-b border-zinc-300'>
+						<h2 className='text-3xl font-medium text-center pb-5'>
 							{t('FormTitle')}
 						</h2>
 						<form action={action} className='flex flex-col gap-3.5 mt-10 w-full'>
@@ -85,7 +84,9 @@ export default function CandidatesAdd() {
 										<select
 											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 											name='status'
-											defaultValue={getValue('status')}
+											key={getValue('status')}
+											defaultValue={
+												getValue('status')}
 										>
 											<option value='NEW'>{t("Option.New")}</option>
 											<option value='SCREENING'>{t("Option.Screening")}</option>
@@ -107,7 +108,8 @@ export default function CandidatesAdd() {
 										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='tel'
 										name='phone'
-										defaultValue={getValue('phone')}
+										defaultValue={
+										getValue('phone')}
 									/>
 								</div>
 								<div className='flex flex-col gap-2'>
@@ -131,7 +133,8 @@ export default function CandidatesAdd() {
 										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='text'
 										name='position'
-										defaultValue={getValue('position')}
+										defaultValue={
+											getValue('position')}
 									/>
 								</div>
 								<div className='flex items-center justify-between text-zinc-600'>
@@ -140,7 +143,8 @@ export default function CandidatesAdd() {
 										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										type='text'
 										name='location'
-										defaultValue={getValue('location')}
+										defaultValue={
+											getValue('location')}
 									/>
 								</div>
 								<div className='flex flex-col gap-2'>
@@ -151,7 +155,8 @@ export default function CandidatesAdd() {
 												className='w-10 text-black'
 												type='number'
 												name='experienceYears'
-												defaultValue={getValue('experienceYears')}
+												defaultValue={
+													getValue('experienceYears')}
 											/>
 											{t('Years')}
 										</div>
@@ -264,10 +269,9 @@ export default function CandidatesAdd() {
 										/>
 									</div>
 									<div className='text-[14px] h-[14px] text-red-500'>
-										{state?.result === 'validation-error' &&
-											state.errors.portfolioUrl?.map((err, index) => (
-												<div key={index}>{err}</div>
-											))}
+										{state?.result === 'validation-error' && state.errors.portfolioUrl?.map((err, index) => (
+											<div key={index}>{err}</div>
+										))}
 									</div>
 								</div>
 								<div className='w-full flex flex-col items-start justify-between text-zinc-600 col-span-full'>
