@@ -52,12 +52,17 @@ export async function editCandidate(formData: FormData, locale: string, candidat
 	if (!parsedData.success) {
 		return { result: 'validation-error', errors: parsedData.error.flatten().fieldErrors, values: data } satisfies ActionState;
 	}
-
+	const nulledData = Object.fromEntries(
+		Object.entries(parsedData.data).map(([key, value]) => [
+			key,
+			value === undefined ? null : value
+		])
+	);
 	try {
 		await prisma.candidate.update({
 			where: {id: candidateId},
 			data: {
-				...parsedData.data,
+				...nulledData,
 				userCrm: {
 					connect: { userId: session.user.id },
 				},

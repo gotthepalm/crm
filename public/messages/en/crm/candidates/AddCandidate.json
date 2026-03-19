@@ -2,6 +2,7 @@
   "Create": "Create",
   "Cancel": "Cancel",
   "FormTitle": "Create Candidate",
+  "EditFormTitle": "Edit Candidate",
   "Name": "Name",
   "NameRequired": "Name required",
   "Status": "Status",
@@ -29,5 +30,6 @@
   "GitHubUrl": "GitHub Url",
   "PortfolioUrl": "Portfolio Url",
   "Note": "Note",
-  "Save": "Save"
+  "Save": "Save",
+  "Delete": "Delete"
 }

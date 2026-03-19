@@ -1,11 +1,15 @@
+'use client';
+
 import { CandidateModel } from '@/src/generated/prisma/models/Candidate';
 import Image from 'next/image';
-import { getTranslations } from 'next-intl/server';
-import Link from 'next/link';
-import { deleteCandidate } from '@/src/app/[locale]/crm/candidates/_actions/deleteCandidateAction';
+import { useTranslations } from 'use-intl';
+import { useEffect, useState } from 'react';
+import EditCandidateForm from '@/src/app/[locale]/crm/candidates/EditCandidateForm';
 
-export default async function Candidate({ candidate }: { candidate: CandidateModel }) {
-	const t = await getTranslations('CandidateCard');
+export default function Candidate({ candidate }: { candidate: CandidateModel }) {
+	const [openForm, setOpenForm] = useState<boolean>(false);
+
+	const t = useTranslations('CandidateCard');
 	function handleStatus() {
 		switch (candidate.status) {
 			case 'NEW':
@@ -24,93 +28,101 @@ export default async function Candidate({ candidate }: { candidate: CandidateMod
 				return 'bg-red-100 text-red-700';
 		}
 	}
+	useEffect(() => {
+		document.body.style.overflow = openForm ? 'hidden' : '';
+		return () => {
+			document.body.style.overflow = '';
+		};
+	}, [openForm]);
 	return (
-		<article className='bg-white flex flex-col rounded-2xl overflow-hidden border border-zinc-300 p-5 w-full max-w-xl break-inside-avoid transition'>
-			<div className='flex justify-between items-start mb-5'>
-				<div className='space-y-2'>
-					<h3 className='text-[24px] font-semibold'>{candidate.name}</h3>
-					{candidate.position && <p className='text-[16px] text-black'>{candidate.position}</p>}
+		<>
+			{openForm && (
+				<EditCandidateForm setOpenForm={setOpenForm} candidate={candidate}/>
+			)}
+			<article className='bg-white flex flex-col rounded-2xl overflow-hidden border border-zinc-300 p-5 mb-5 w-full max-w-xl break-inside-avoid transition'>
+				<div className='flex justify-between items-start mb-5'>
+					<div className='space-y-2'>
+						<h3 className='text-[24px] font-semibold'>{candidate.name}</h3>
+						{candidate.position && <p className='text-[16px] text-black'>{candidate.position}</p>}
+					</div>
+
+					<span className={`text-sm font-medium px-3 py-1 rounded-full ${handleStatus()}`}>
+						{t(`Status.${candidate.status}`)}
+					</span>
 				</div>
+				<div className='space-y-2 text-[16px] text-gray-700 mb-4'>
+					{candidate.email && (
+						<p className='flex gap-2'>
+							<Image src='/images/email.svg' width={25} height={25} alt='' />
+							{candidate.email}
+						</p>
+					)}
+					{candidate.phone && (
+						<p className='flex gap-2'>
+							<Image src='/images/phone.svg' width={25} height={25} alt='' />
+							{candidate.phone}
+						</p>
+					)}
+					{candidate.location && (
+						<p className='flex gap-2'>
+							<Image src='/images/location.svg' width={25} height={25} alt='' />
+							{candidate.location}
+						</p>
+					)}
+				</div>
+				<div className='flex gap-6 text-[16px] mb-4'>
+					{candidate.experienceYears && (
+						<p>
+							<span className='font-medium'>{t('Experience')}:</span> {candidate.experienceYears}{' '}
+							{t('Years')}
+						</p>
+					)}
 
-				<span className={`text-sm font-medium px-3 py-1 rounded-full ${handleStatus()}`}>
-					{t(`Status.${candidate.status}`)}
-				</span>
-			</div>
-			<div className='space-y-2 text-[16px] text-gray-700 mb-4'>
-				{candidate.email && (
-					<p className='flex gap-2'>
-						<Image src='/images/email.svg' width={25} height={25} alt='' />
-						{candidate.email}
-					</p>
-				)}
-				{candidate.phone && (
-					<p className='flex gap-2'>
-						<Image src='/images/phone.svg' width={25} height={25} alt='' />
-						{candidate.phone}
-					</p>
-				)}
-				{candidate.location && (
-					<p className='flex gap-2'>
-						<Image src='/images/location.svg' width={25} height={25} alt='' />
-						{candidate.location}
-					</p>
-				)}
-			</div>
-			<div className='flex gap-6 text-[16px] mb-4'>
-				{candidate.experienceYears && (
-					<p>
-						<span className='font-medium'>{t('Experience')}:</span> {candidate.experienceYears} {t('Years')}
-					</p>
-				)}
-
-				{(candidate.salaryExpectationBottom || candidate.salaryExpectationTop) && (
-					<p>
-						<span className='font-medium'>{t('Salary')}:</span> {candidate.salaryExpectationBottom ?? '?'}
-						{' - '}
-						{candidate.salaryExpectationTop ?? '?'} $
-					</p>
-				)}
-			</div>
-			<div className='grid grid-cols-2 text-[16px] mb-4'>
-				{candidate.resumeUrl && (
-					<a href={candidate.resumeUrl} className='flex gap-2 items-center hover:underline'>
-						<Image src='/images/resume.svg' width={25} height={25} alt='' />
-						{t('Resume')}
-					</a>
-				)}
-				{candidate.portfolioUrl && (
-					<a href={candidate.portfolioUrl} className='flex gap-2 items-center hover:underline'>
-						<Image src='/images/portfolio.svg' width={25} height={25} alt='' />
-						{t('Portfolio')}
-					</a>
-				)}
-				{candidate.gitHubUrl && (
-					<a href={candidate.gitHubUrl} className='flex gap-2 items-center hover:underline'>
-						<Image src='/images/github.svg' width={25} height={25} alt='' />
-						GitHub
-					</a>
-				)}
-				{candidate.linkedinUrl && (
-					<a href={candidate.linkedinUrl} className='flex gap-2 items-center hover:underline'>
-						<Image src='/images/linkedin.svg' width={25} height={25} alt='' />
-						LinkedIn
-					</a>
-				)}
-			</div>
-			{candidate.note && <p className='flex-1 text-sm text-gray-600 border-t pt-3'>{candidate.note}</p>}
-			<div className='flex justify-end mt-auto gap-2'>
-				<form action={async () => {
-					'use server'
-					await deleteCandidate(candidate.id)
-				}}>
-					<button type='submit'>
-						<Image src='/images/delete.svg' width={25} height={25} alt='delete'></Image>
+					{(candidate.salaryExpectationBottom || candidate.salaryExpectationTop) && (
+						<p>
+							<span className='font-medium'>{t('Salary')}:</span>{' '}
+							{candidate.salaryExpectationBottom ?? '?'}
+							{' - '}
+							{candidate.salaryExpectationTop ?? '?'} $
+						</p>
+					)}
+				</div>
+				<div className='grid grid-cols-2 text-[16px] mb-4'>
+					{candidate.resumeUrl && (
+						<a href={candidate.resumeUrl} className='flex gap-2 items-center hover:underline'>
+							<Image src='/images/resume.svg' width={25} height={25} alt='' />
+							{t('Resume')}
+						</a>
+					)}
+					{candidate.portfolioUrl && (
+						<a href={candidate.portfolioUrl} className='flex gap-2 items-center hover:underline'>
+							<Image src='/images/portfolio.svg' width={25} height={25} alt='' />
+							{t('Portfolio')}
+						</a>
+					)}
+					{candidate.gitHubUrl && (
+						<a href={candidate.gitHubUrl} className='flex gap-2 items-center hover:underline'>
+							<Image src='/images/github.svg' width={25} height={25} alt='' />
+							GitHub
+						</a>
+					)}
+					{candidate.linkedinUrl && (
+						<a href={candidate.linkedinUrl} className='flex gap-2 items-center hover:underline'>
+							<Image src='/images/linkedin.svg' width={25} height={25} alt='' />
+							LinkedIn
+						</a>
+					)}
+				</div>
+				{candidate.note && <p className='flex-1 text-sm text-gray-600 border-t pt-3'>{candidate.note}</p>}
+				<div className='self-end mt-auto flex gap-4'>
+					<button
+						className='p-1 cursor-pointer hover:bg-zinc-100 flex items-center justify-center rounded-md'
+						onClick={() => setOpenForm(true)}
+					>
+						<Image src='/images/pencil.svg' width={25} height={25} alt='edit'></Image>
 					</button>
-				</form>
-				<Link href={`/crm/candidates/edit/${candidate.id}`}>
-					<Image src='/images/pencil.svg' width={25} height={25} alt='edit'></Image>
-				</Link>
-			</div>
-		</article>
+				</div>
+			</article>
+		</>
 	);
 }
