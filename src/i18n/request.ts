@@ -22,7 +22,8 @@ export default getRequestConfig(async ({requestLocale}) => {
 			CreateCandidate: (await import('@/public/messages/en/crm/candidates/CreateCandidate.json')).default,
 			AddVacancy: (await import('@/public/messages/en/crm/vacancies/AddVacancy.json')).default,
 			VacancyCard: (await import('@/public/messages/en/crm/vacancies/VacancyCard.json')).default,
-			Vacancies: (await import('@/public/messages/en/crm/vacancies/Vacancies.json')).default
+			Vacancies: (await import('@/public/messages/en/crm/vacancies/Vacancies.json')).default,
+			CreateVacancy: (await import('@/public/messages/en/crm/vacancies/CreateVacancy.json')).default
 		},
 		uk: {
 			mainPage: (await import('@/public/messages/uk/mainPage.json')).default,
@@ -35,7 +36,8 @@ export default getRequestConfig(async ({requestLocale}) => {
 			CreateCandidate: (await import('@/public/messages/uk/crm/candidates/CreateCandidate.json')).default,
 			AddVacancy: (await import('@/public/messages/uk/crm/vacancies/AddVacancy.json')).default,
 			VacancyCard: (await import('@/public/messages/uk/crm/vacancies/VacancyCard.json')).default,
-			Vacancies: (await import('@/public/messages/uk/crm/vacancies/Vacancies.json')).default
+			Vacancies: (await import('@/public/messages/uk/crm/vacancies/Vacancies.json')).default,
+			CreateVacancy: (await import('@/public/messages/uk/crm/vacancies/CreateVacancy.json')).default
 		}
 	};
 

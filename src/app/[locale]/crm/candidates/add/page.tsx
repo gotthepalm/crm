@@ -7,14 +7,13 @@ import { useActionState } from 'react';
 import { ActionState, createCandidate } from '@/src/app/[locale]/crm/candidates/_actions/createCandidateAction';
 import { useRouter } from 'next/navigation';
 import LanguageSwitcher from '@/src/components/LanguageSwitcher';
-import { useLocale, useTranslations } from 'use-intl';
+import { useTranslations } from 'use-intl';
 
 export default function CandidatesAdd() {
 	const router = useRouter();
 	const t = useTranslations('AddCandidate');
-	const locale = useLocale()
 	const [state, action] = useActionState<ActionState | null, FormData>(async (_prev, formData) => {
-		const state = await createCandidate(formData, locale);
+		const state = await createCandidate(formData);
 		if (state.result === 'success') {
 			router.push('/crm/candidates');
 		}

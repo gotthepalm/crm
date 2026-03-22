@@ -5,22 +5,37 @@ import Link from 'next/link';
 import Image from 'next/image';
 import LanguageSwitcher from '@/src/components/LanguageSwitcher';
 import { useTranslations } from 'use-intl';
-import { ActionState, createVacancy } from '@/src/app/[locale]/crm/vacancies/add/createVacancyAction';
+import { ActionState, createVacancy } from '@/src/app/[locale]/crm/vacancies/_actions/createVacancyAction';
 import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
+// import { createCandidate } from '@/src/app/[locale]/crm/candidates/_actions/createCandidateAction';
 
 export default function VacanciesAdd() {
 	const t = useTranslations('AddVacancy');
 	const router = useRouter();
-	
+	// const locale = useLocale()
 	const [state, action] = useActionState<ActionState | null, FormData>(async (_prev, formData) => {
 		const state = await createVacancy(formData);
 		if (state.result === 'success') {
 			router.push('/crm/vacancies');
 		}
 		return state;
-	}, null)
-	
+	}, null);
+
+	const isValidationError = state?.result === 'validation-error';
+
+	console.log(isValidationError);
+
+	function getValue(name: string) {
+		if (state?.result !== 'validation-error') return undefined;
+
+		const v = state.values[name];
+
+		if (v === undefined || v === null) return undefined;
+
+		return v.toString();
+	}
+
 	return (
 		<>
 			<CrmHeader>
@@ -55,37 +70,40 @@ export default function VacanciesAdd() {
 						</h2>
 						<form action={action} className='flex flex-col gap-3.5 mt-10 w-full'>
 							<div className='grid grid-cols-2 justify-between gap-8 mb-5'>
-								<div className='flex gap-2'>
+								<div className='flex flex-col justify-baseline items-baseline gap-2'>
 									<div className='w-full flex items-center justify-between text-zinc-600'>
 										{t('Position')}:
 										<input
 											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 											type='text'
 											name='position'
+											defaultValue={getValue('position')}
 										/>
 									</div>
-									<div className='text-[14px] h-[14px] text-red-500'>
-
-									</div>
+									{isValidationError &&
+										state.errors.position?.map((err, index) => (
+											<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
+												{err}
+											</div>
+										))}
 								</div>
-								<div className='flex flex-col gap-2'>
-									<div className='w-full flex items-center justify-between text-zinc-600'>
-										{t('Location')}:
-										<input
-											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
-											type='text'
-											name='location'
-										/>
-									</div>
-									<div className='text-[14px] h-[14px] text-red-500'>
-
-									</div>
+								{/*<div className='flex flex-col gap-2'>*/}
+								<div className='w-full flex items-baseline justify-between text-zinc-600'>
+									{t('Location')}:
+									<input
+										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 ml-4 rounded-xl text-[18px] flex items-center border border-zinc-300'
+										type='text'
+										name='location'
+										defaultValue={getValue('location')}
+									/>
 								</div>
+								{/*</div>*/}
 								<div className='w-full flex flex-col items-start justify-between text-zinc-600 col-span-full'>
 									{t('Description')}:
 									<textarea
 										className='cursor-pointer w-full h-28 mt-2 focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 										name='description'
+										defaultValue={getValue('description')}
 									/>
 								</div>
 								<div className='text-zinc-600 col-span-full'>
@@ -99,12 +117,17 @@ export default function VacanciesAdd() {
 														className='w-full text-black'
 														type='number'
 														name='salaryFrom'
+														defaultValue={getValue('salaryFrom')}
 													/>
 													$
 												</div>
 											</div>
-											<div className='text-[14px] h-[14px] text-red-500'>
-											</div>
+											{isValidationError &&
+												state.errors.salaryFrom?.map((err, index) => (
+													<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
+														{err}
+													</div>
+												))}
 										</div>
 										<div className='flex flex-col gap-2'>
 											<div className='flex w-full items-center justify-between text-zinc-600'>
@@ -114,12 +137,17 @@ export default function VacanciesAdd() {
 														className='w-full text-black'
 														type='number'
 														name='salaryTo'
+														defaultValue={getValue('salaryTo')}
 													/>
 													$
 												</div>
 											</div>
-											<div className='text-[14px] h-[14px] text-red-500'>
-											</div>
+											{isValidationError &&
+												state.errors.salaryTo?.map((err, index) => (
+													<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
+														{err}
+													</div>
+												))}
 										</div>
 									</div>
 								</div>
@@ -131,12 +159,17 @@ export default function VacanciesAdd() {
 												className='w-10 text-black'
 												type='number'
 												name='experienceYears'
+												defaultValue={getValue('experienceYears')}
 											/>
 											{t('Years')}
 										</div>
 									</div>
-									<div className='text-[14px] h-[14px] text-red-500'>
-									</div>
+									{isValidationError &&
+										state.errors.namexperienceYearse?.map((err, index) => (
+											<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
+												{err}
+											</div>
+										))}
 								</div>
 								<div className='flex flex-col gap-2'>
 									<div className='w-full flex items-center justify-between text-zinc-600'>
@@ -144,6 +177,7 @@ export default function VacanciesAdd() {
 										<select
 											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 											name='status'
+											defaultValue={getValue('status')}
 										>
 											<option value='OPEN'>{t('Option.OPEN')}</option>
 											<option value='IN_PROGRESS'>{t('Option.IN_PROGRESS')}</option>
@@ -151,8 +185,12 @@ export default function VacanciesAdd() {
 											<option value='CLOSED'>{t('Option.CLOSED')}</option>
 										</select>
 									</div>
-									<div className='text-[14px] h-[14px] text-red-500'>
-									</div>
+									{isValidationError &&
+										state.errors.status?.map((err, index) => (
+											<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
+												{err}
+											</div>
+										))}
 								</div>
 								<div className='flex flex-col gap-2'>
 									<div className='w-full flex items-center justify-between text-zinc-600'>
@@ -160,6 +198,7 @@ export default function VacanciesAdd() {
 										<select
 											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
 											name='employmentType'
+											defaultValue={getValue('employmentType')}
 										>
 											<option value='FULL_TIME'>{t('Option.FULL_TIME')}</option>
 											<option value='PART_TIME'>{t('Option.PART_TIME')}</option>
@@ -167,33 +206,37 @@ export default function VacanciesAdd() {
 											<option value='INTERNSHIP'>{t('Option.INTERNSHIP')}</option>
 										</select>
 									</div>
-									<div className='text-[14px] h-[14px] text-red-500'>
-									</div>
+									{isValidationError &&
+										state.errors.employmentType?.map((err, index) => (
+											<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
+												{err}
+											</div>
+										))}
 								</div>
-								<div className='flex flex-col gap-2'>
-									<div className='w-full flex items-center justify-between text-zinc-600'>
-										{t('Candidates')}:
-										<input
-											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
-											type='text'
-											name='candidates'
-										/>
-									</div>
-									<div className='text-[14px] h-[14px] text-red-500'>
-									</div>
-								</div>
-								<div className='flex flex-col gap-2'>
-									<div className='w-full flex items-center justify-between text-zinc-600'>
-										{t('Meetings')}:
-										<input
-											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
-											type='text'
-											name='meetings'
-										/>
-									</div>
-									<div className='text-[14px] h-[14px] text-red-500'>
-									</div>
-								</div>
+								{/*<div className='flex flex-col gap-2'>*/}
+								{/*	<div className='w-full flex items-center justify-between text-zinc-600'>*/}
+								{/*		{t('Candidates')}:*/}
+								{/*		<input*/}
+								{/*			className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'*/}
+								{/*			type='text'*/}
+								{/*			name='candidates'*/}
+								{/*		/>*/}
+								{/*	</div>*/}
+								{/*	<div className='text-[14px] h-[14px] text-red-500'>*/}
+								{/*	</div>*/}
+								{/*</div>*/}
+								{/*<div className='flex flex-col gap-2'>*/}
+								{/*	<div className='w-full flex items-center justify-between text-zinc-600'>*/}
+								{/*		{t('Meetings')}:*/}
+								{/*		<input*/}
+								{/*			className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'*/}
+								{/*			type='text'*/}
+								{/*			name='meetings'*/}
+								{/*		/>*/}
+								{/*	</div>*/}
+								{/*	<div className='text-[14px] h-[14px] text-red-500'>*/}
+								{/*	</div>*/}
+								{/*</div>*/}
 							</div>
 							<button type='submit' id='submitButton' hidden={true}></button>
 						</form>

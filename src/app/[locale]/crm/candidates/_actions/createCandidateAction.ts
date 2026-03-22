@@ -12,8 +12,8 @@ export type ActionState =
 	| { result: 'db-error' }
 	| { result: 'no-session' };
 
-export async function createCandidate(formData: FormData, locale: string) {
-	const t = await getTranslations({locale, namespace: 'CreateCandidate'})
+export async function createCandidate(formData: FormData) {
+	const t = await getTranslations('CreateCandidate')
 	const emptyToUndefined = (v: unknown) => (v === '' ? undefined : v);
 	const candidateSchema = z.object({
 		name: z.string().trim().min(1, t('NameRequired')).max(40, t('LongName')),
