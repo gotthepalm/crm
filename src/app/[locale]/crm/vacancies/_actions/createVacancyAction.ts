@@ -4,24 +4,36 @@ import { z } from 'zod';
 import { EmploymentType, VacancyStatus } from '@/src/generated/prisma/enums';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
+import { getTranslations } from 'next-intl/server';
 
 export type ActionState =
 	| { result: 'success' }
-	| { result: 'validation-error'; errors: Record<string, string[]>; values: Record<string, FormDataEntryValue> }
+	| { result: 'validation-error'; errors: Record<string, string[]>, values: Record<string, FormDataEntryValue> }
 	| { result: 'db-error' }
 	| { result: 'no-session' };
 
 export async function createVacancy(formData: FormData) {
+	const t = await getTranslations('CreateVacancy');
 	const emptyToUndefined = (v: unknown) => (v === '' ? undefined : v);
 	const vacancySchema = z.object({
-		position: z.string().min(1).max(40),
+		// position: z.string().trim().min(1, t('PositionRequired')).max(40, t('LongName')),
+		position: z.string().trim().min(1, t('PositionRequired')).max(80, t('LongPosition')),
 		description: z.preprocess(emptyToUndefined, z.string().trim().optional()),
 		location: z.preprocess(emptyToUndefined, z.string().trim().optional()),
-		employmentType: z.preprocess(emptyToUndefined, z.enum(EmploymentType).optional()),
-		salaryFrom: z.preprocess(emptyToUndefined, z.coerce.number().min(0).max(2_147_483_647).optional()),
-		salaryTo: z.preprocess(emptyToUndefined, z.coerce.number().min(0).max(2_147_483_647).optional()),
-		experienceYears: z.preprocess(emptyToUndefined, z.coerce.number().min(0).max(2_147_483_647).optional()),
-		status: z.enum(VacancyStatus),
+		employmentType: z.preprocess(emptyToUndefined, z.enum(EmploymentType, t('InvalidEmploymentType')).optional()),
+		salaryFrom: z.preprocess(
+			emptyToUndefined,
+			z.coerce.number().min(0, t('SmallValue')).max(2_147_483_647, t('BigValue')).optional(),
+		),
+		salaryTo: z.preprocess(
+			emptyToUndefined,
+			z.coerce.number().min(0, t('SmallValue')).max(2_147_483_647, t('BigValue')).optional(),
+		),
+		experienceYears: z.preprocess(
+			emptyToUndefined,
+			z.coerce.number().min(0, t('SmallValue')).max(2_147_483_647, t('BigValue')).optional(),
+		),
+		status: z.enum(VacancyStatus, t('InvalidStatus')),
 	});
 	const session = await auth();
 
@@ -35,11 +47,7 @@ export async function createVacancy(formData: FormData) {
 	// errors: parsedData.error.flatten().fieldErrors, values: data
 
 	if (!parsedData.success) {
-		return {
-			result: 'validation-error',
-			errors: parsedData.error.flatten().fieldErrors,
-			values: data,
-		} satisfies ActionState;
+		return { result: 'validation-error', errors: parsedData.error.flatten().fieldErrors, values: data } satisfies ActionState;
 	}
 
 	try {

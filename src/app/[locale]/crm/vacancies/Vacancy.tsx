@@ -1,7 +1,7 @@
 import { VacancyModel } from '@/src/generated/prisma/models/Vacancy';
 import Image from 'next/image';
 import { getTranslations } from 'next-intl/server';
-import { deleteVacancy } from '@/src/app/[locale]/crm/vacancies/_actons/deleteVacancyAction';
+import { deleteVacancy } from '@/src/app/[locale]/crm/vacancies/_actions/deleteVacancyAction';
 
 export default async function Vacancy({ vacancy }: { vacancy: VacancyModel }) {
 	const t = await getTranslations('VacancyCard');

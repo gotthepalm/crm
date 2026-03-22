@@ -1,0 +1,8 @@
+{
+  "PositionRequired": "Position is required",
+  "LongPosition": "Too long position",
+  "InvalidEmploymentType": "Invalid employment type",
+  "SmallValue": "Too small value",
+  "BigValue": "Too big value",
+  "InvalidStatus": "Invalid status"
+}

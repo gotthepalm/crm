@@ -1,0 +1,8 @@
+{
+  "PositionRequired": "Посада обов'язкова",
+  "LongPosition": "Занадто довга посада",
+  "InvalidEmploymentType": "Невалідний тип зайнятості",
+  "SmallValue": "Занадто мале значення",
+  "BigValue": "Занадто велике значення",
+  "InvalidStatus": "Невалідний статус"
+}
