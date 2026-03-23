@@ -2,6 +2,7 @@
   "Create": "Створити",
   "Cancel": "Відмінити",
   "FormTitle": "Створити вакансію",
+  "EditFormTitle": "Редагувати вакансію",
   "Position": "Посада",
   "Description": "Опис",
   "Location": "Місцезнаходження",
@@ -25,5 +26,7 @@
   "Currency": "Валюта",
   "VacancyStatus": "Статус вакансії",
   "Candidates": "Кандидати",
-  "Meetings": "Зустрічі"
+  "Meetings": "Зустрічі",
+  "Save": "Save",
+  "Delete": "Видалити"
 }

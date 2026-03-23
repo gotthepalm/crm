@@ -8,12 +8,10 @@ import { useTranslations } from 'use-intl';
 import { ActionState, createVacancy } from '@/src/app/[locale]/crm/vacancies/_actions/createVacancyAction';
 import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
-// import { createCandidate } from '@/src/app/[locale]/crm/candidates/_actions/createCandidateAction';
 
 export default function VacanciesAdd() {
 	const t = useTranslations('AddVacancy');
 	const router = useRouter();
-	// const locale = useLocale()
 	const [state, action] = useActionState<ActionState | null, FormData>(async (_prev, formData) => {
 		const state = await createVacancy(formData);
 		if (state.result === 'success') {
@@ -24,7 +22,6 @@ export default function VacanciesAdd() {
 
 	const isValidationError = state?.result === 'validation-error';
 
-	console.log(isValidationError);
 
 	function getValue(name: string) {
 		if (state?.result !== 'validation-error') return undefined;

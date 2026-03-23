@@ -2,6 +2,7 @@
   "Create": "Create",
   "Cancel": "Cancel",
   "FormTitle": "Create vacancy",
+  "EditFormTitle": "Edit vacancy",
   "Position": "Position",
   "Description": "Description",
   "Location": "Location",
@@ -25,5 +26,7 @@
   "Currency": "Currency",
   "VacancyStatus": "Vacancy status",
   "Candidates": "Candidates",
-  "Meetings": "Meetings"
+  "Meetings": "Meetings",
+  "Save": "Save",
+  "Delete": "Delete"
 }
