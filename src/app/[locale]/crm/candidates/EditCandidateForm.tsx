@@ -5,7 +5,7 @@ import { ActionState, editCandidate } from '@/src/app/[locale]/crm/candidates/_a
 import { useLocale, useTranslations } from 'use-intl';
 import { CandidateModel } from '@/src/generated/prisma/models/Candidate';
 import { useRouter } from 'next/navigation';
-import { getDbValues } from '@/src/app/[locale]/crm/candidates/_actions/getDbValuesAction';
+import { getDbCandidateValues } from '@/src/app/[locale]/crm/candidates/_actions/getDbCandidateValuesAction';
 import { deleteCandidate } from '@/src/app/[locale]/crm/candidates/_actions/deleteCandidateAction';
 
 export default function EditCandidateForm({
@@ -47,8 +47,9 @@ export default function EditCandidateForm({
 		return v.toString();
 	}
 	useEffect(() => {
-		getDbValues(candidate.id)
-			.then((value) => {setCandidateValues(value)});
+		getDbCandidateValues(candidate.id).then((value) => {
+			setCandidateValues(value);
+		});
 	}, []);
 	return (
 		<div className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
@@ -306,7 +307,7 @@ export default function EditCandidateForm({
 								className='self-end'
 								action={async () => {
 									await deleteCandidate(candidate.id);
-									setOpenForm(false)
+									setOpenForm(false);
 								}}
 							>
 								<button

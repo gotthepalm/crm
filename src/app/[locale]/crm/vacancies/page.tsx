@@ -18,7 +18,7 @@ export default async function Candidates() {
 				include: {
 					vacancies: {
 						orderBy: {
-							id: 'asc'
+							id: 'desc'
 						}
 					}
 				}
