@@ -4,7 +4,7 @@ import CrmHeader from '@/src/components/CrmHeader';
 import { auth } from '@/auth';
 import { prisma } from '@/lib/prisma';
 import { redirect } from 'next/navigation';
-import Candidate from '@/src/app/[locale]/crm/candidates/Candidate';
+import Candidate from '@/src/app/[locale]/crm/candidates/_components/Candidate';
 import LanguageSwitcher from '@/src/components/LanguageSwitcher';
 import { getTranslations } from 'next-intl/server';
 
@@ -13,10 +13,13 @@ export default async function Candidates() {
 	if (!session?.user) redirect('/');
 	const user = await prisma.user.findUnique({
 		where: { id: session?.user?.id },
-		include: {
+		select: {
 			userCrm: {
-				include: {
+				select: {
 					candidates: {
+						include: {
+							vacancy: true
+						},
 						orderBy: {
 							id: 'desc',
 						},
@@ -54,7 +57,7 @@ export default async function Candidates() {
 				</Link>
 				<li className='list-none w-full mx-auto grid grid-cols-3 gap-5'>
 					{user?.userCrm &&
-						user.userCrm.candidates.map((candidate, i) => <Candidate key={i} candidate={candidate} />)}
+						user.userCrm.candidates.map((candidate) => <Candidate key={candidate.id} candidate={candidate} />)}
 				</li>
 			</main>
 		</>

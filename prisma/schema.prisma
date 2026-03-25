@@ -116,16 +116,19 @@ model UserCrm {
 }
 
 model Candidate {
-  id                      Int             @id @default(autoincrement())
-  name                    String
-  position                String?
+  id       Int             @id @default(autoincrement())
+  name     String
+  position String?
+  status   CandidateStatus
+
+  age                     Int?
   email                   String?
   phone                   String?
   location                String?
+  skills                  String?
   salaryExpectationBottom Int?
   salaryExpectationTop    Int?
   experienceYears         Int?
-  status                  CandidateStatus
 
   resumeUrl    String?
   linkedinUrl  String?

@@ -1,37 +1,47 @@
 'use client';
 
-import CrmHeader from '@/src/components/CrmHeader';
-import Link from 'next/link';
-import Image from 'next/image';
-import { useActionState, useEffect, useState } from 'react';
-import { ActionState, createCandidate } from '@/src/app/[locale]/crm/candidates/_actions/createCandidateAction';
-import { useRouter } from 'next/navigation';
-import LanguageSwitcher from '@/src/components/LanguageSwitcher';
+import { Dispatch, SetStateAction, useActionState, useEffect, useState } from 'react';
+import { ActionState, editCandidate } from '@/src/app/[locale]/crm/candidates/_actions/editCandidateAction';
 import { useTranslations } from 'use-intl';
+import { CandidateModel } from '@/src/generated/prisma/models/Candidate';
+import { useRouter } from 'next/navigation';
+import { deleteCandidate } from '@/src/app/[locale]/crm/candidates/_actions/deleteCandidateAction';
+import VacancyForFrom from '@/src/app/[locale]/crm/candidates/_components/VacancyForFrom';
 import { getVacancies } from '@/src/app/[locale]/crm/candidates/_actions/getVacanciesAction';
 import { VacancyModel } from '@/src/generated/prisma/models/Vacancy';
-import VacancyForFrom from '@/src/app/[locale]/crm/candidates/_components/VacancyForFrom';
 
-export default function CandidatesAdd() {
+export default function EditCandidateForm({
+	setOpenForm,
+	candidate,
+}: {
+	setOpenForm: Dispatch<SetStateAction<boolean>>;
+	candidate: CandidateModel;
+}) {
 	const [vacancies, setVacancies] = useState<VacancyModel[] | null>(null);
-	const [vacancyInput, setVacancyInput] = useState<string>('');
+	const [vacancyInput, setVacancyInput] = useState<string>(candidate.vacancyId ? candidate.vacancyId.toString() : '');
 
 	const router = useRouter();
 	const t = useTranslations('AddCandidate');
 
 	const [state, action] = useActionState<ActionState | null, FormData>(async (_prev, formData) => {
-		const state = await createCandidate(formData);
+		const state = await editCandidate(formData, candidate.id);
 		if (state.result === 'success') {
-			router.push('/crm/candidates');
+			router.refresh();
+			setOpenForm(false);
 		}
 		return state;
 	}, null);
 
-	function getValue(name: string) {
-		if (state?.result !== 'validation-error') return undefined;
-
+	function getValue(name: keyof CandidateModel) {
 		// If editCandidate returned 'validation-error', get values from editCandidate
-		const v = state.values[name];
+		if (state?.result === 'validation-error') {
+			const v = state.values[name];
+
+			if (v === undefined || v === null) return undefined;
+			return v.toString();
+		}
+		// Else get values from candidate prop
+		const v = candidate[name];
 
 		if (v === undefined || v === null) return undefined;
 		return v.toString();
@@ -44,42 +54,40 @@ export default function CandidatesAdd() {
 				setVacancies(value.userCrm.vacancies);
 			}
 		});
-	}, []);
+	}, [candidate.id]);
 
 	return (
-		<>
-			<CrmHeader>
-				<div className='w-full h-full px-10 flex items-center justify-between'>
-					<Link href='/' className='flex items-center gap-2'>
-						<Image src={'/images/bloom-icon.svg'} height={40} width={40} alt='bloom icon' />
-					</Link>
-					<div className='flex items-center gap-8'>
-						<label
-							htmlFor='submitButton'
-							className='cursor-pointer bg-violet-700 text-white hover:bg-violet-800 transition-colors duration-200 px-6
-						py-2 rounded-2xl text-lg flex items-center font-medium border gap-2'
-						>
-							{t('Create')}
-						</label>
-						<Link
-							href={'/crm/candidates'}
-							className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-						py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
-						>
-							{t('Cancel')}
-						</Link>
-						<LanguageSwitcher />
-					</div>
-				</div>
-			</CrmHeader>
-			<main className='bg-white'>
-				<div className='w-full max-w-[1500px] mx-auto pt-20'>
-					<div className='w-full py-12 px-32'>
-						<h2 className='text-3xl font-medium text-center pb-5'>{t('FormTitle')}</h2>
-						{state?.result === 'vacancy-not-yours' && <div className='text-red-500'>vacancy not yours</div>}
-						{state?.result === 'db-error' && <div className='text-red-500'>db error</div>}
-						<form action={action} className='flex flex-col gap-3.5 mt-10 w-full'>
-							<div className='grid grid-cols-2 justify-between gap-8 mb-5'>
+		<div className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
+			<div className='max-w-[1600px] w-full h-[90%] mx-auto px-5'>
+				<div className='h-full bg-white rounded-2xl px-30 py-10'>
+					<div className='h-full w-full overflow-y-scroll flex flex-col items-center pr-10'>
+						<div className='w-full pb-5 mb-10'>
+							<div className='w-full flex items-center justify-between'>
+								<h2 className='text-3xl font-medium text-center'>{t('EditFormTitle')}</h2>
+								<div className='flex items-center gap-8'>
+									<label
+										htmlFor='submitButton'
+										className='cursor-pointer text-white bg-violet-600 hover:bg-violet-700 transition-colors duration-200 px-6
+										py-2 rounded-2xl text-lg flex items-center font-medium gap-2'
+									>
+										{t('Save')}
+									</label>
+									<button
+										onClick={() => setOpenForm(false)}
+										className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
+								py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
+									>
+										{t('Cancel')}
+									</button>
+								</div>
+							</div>
+							{state?.result === 'vacancy-not-yours' && (
+								<div className='text-red-500'>vacancy not yours</div>
+							)}
+							{state?.result === 'db-error' && <div className='text-red-500'>db error</div>}
+						</div>
+						<form action={action} className='flex flex-col gap-3.5 w-full mb-10'>
+							<div className='grid grid-cols-2 justify-between gap-8'>
 								<div className='flex flex-col gap-2'>
 									<div className='w-full flex items-center justify-between text-zinc-600'>
 										{t('Name')}:
@@ -100,17 +108,17 @@ export default function CandidatesAdd() {
 										{t('Status')}:
 										<select
 											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
-											name='status'
 											key={getValue('status')}
 											defaultValue={getValue('status')}
+											name='status'
 										>
-											<option value='NEW'>{t('Option.New')}</option>
-											<option value='SCREENING'>{t('Option.Screening')}</option>
-											<option value='INTERVIEW'>{t('Option.Interview')}</option>
-											<option value='TECH_INTERVIEW'>{t('Option.TechInterview')}</option>
-											<option value='OFFER'>{t('Option.Offer')}</option>
-											<option value='HIRED'>{t('Option.Hired')}</option>
-											<option value='REJECTED'>{t('Option.Rejected')}</option>
+											<option value='NEW'>New</option>
+											<option value='SCREENING'>Screening</option>
+											<option value='INTERVIEW'>Interview</option>
+											<option value='TECH_INTERVIEW'>Tech Interview</option>
+											<option value='OFFER'>Offer</option>
+											<option value='HIRED'>Hired</option>
+											<option value='REJECTED'>Rejected</option>
 										</select>
 									</div>
 									<div className='text-[14px] h-[14px] text-red-500'>
@@ -151,7 +159,7 @@ export default function CandidatesAdd() {
 										defaultValue={getValue('position')}
 									/>
 								</div>
-								<div className='flex gap-5 items-center justify-between text-zinc-600'>
+								<div className='flex items-center justify-between text-zinc-600'>
 									{t('Location')}:
 									<input
 										className='cursor-text w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
@@ -181,7 +189,7 @@ export default function CandidatesAdd() {
 								<div className='flex flex-col gap-2'>
 									<div className='w-full flex items-center justify-between text-zinc-600'>
 										{t('Experience')}:
-										<div className='cursor-text w-[80%] focus:outline-0 focus:bg-zinc-100 text-zinc-600 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'>
+										<div className='cursor-text w-[70%] focus:outline-0 focus:bg-zinc-100 text-zinc-600 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'>
 											<input
 												className='w-10 text-black'
 												type='number'
@@ -354,9 +362,27 @@ export default function CandidatesAdd() {
 							)}
 							<button type='submit' id='submitButton' hidden={true}></button>
 						</form>
+						<form
+							className='self-end'
+							action={async () => {
+								await deleteCandidate(candidate.id);
+								setOpenForm(false);
+							}}
+						>
+							<button
+								type='submit'
+								className='cursor-pointer transition-colors duration-200 px-6
+								py-2 rounded-2xl text-lg flex items-center font-medium border hover:bg-red-100 border-red-500 text-red-500 gap-2'
+							>
+								{t('Delete')}
+							</button>
+						</form>
 					</div>
+					{/*) : (
+						<div className='justify-self-center w-9 h-9 border-4 border-black/10 border-l-transparent rounded-full animate-spin'></div>
+					)}*/}
 				</div>
-			</main>
-		</>
+			</div>
+		</div>
 	);
 }

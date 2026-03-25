@@ -15,6 +15,8 @@
     "Hired": "Hired",
     "Rejected": "Rejected"
   },
+  "Age": "Age",
+  "Skills": "Skills",
   "InvalidStatus": "Invalid status",
   "Phone": "Phone",
   "Email": "Email",
@@ -31,5 +33,7 @@
   "PortfolioUrl": "Portfolio Url",
   "Note": "Note",
   "Save": "Save",
-  "Delete": "Delete"
+  "Delete": "Delete",
+  "LinkVacancy": "Link to vacancy",
+  "Unlink": "Unlink"
 }
