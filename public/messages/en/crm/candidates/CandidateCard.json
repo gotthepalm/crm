@@ -12,5 +12,7 @@
   "Years": "years",
   "Salary": "Salary",
   "Resume": "Resume",
-  "Portfolio": "Portfolio"
+  "Portfolio": "Portfolio",
+  "Note": "Note",
+  "Skills": "Skills"
 }

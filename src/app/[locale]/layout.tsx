@@ -1,12 +1,12 @@
 import type { Metadata } from 'next';
-import { Roboto } from 'next/font/google';
 import '@/src/css/index.css';
 import React from 'react';
-import {NextIntlClientProvider, hasLocale} from 'next-intl';
-import {notFound} from 'next/navigation';
-import {routing} from '../../i18n/routing';
+import { NextIntlClientProvider, hasLocale } from 'next-intl';
+import { notFound } from 'next/navigation';
+import { routing } from '../../i18n/routing';
+import { Inter } from 'next/font/google';
 
-const roboto = Roboto({
+const inter = Inter({
 	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
 });
 
@@ -23,20 +23,24 @@ export const metadata: Metadata = {
 	},
 };
 
-export default async function LocaleLayout({children, params}: {
+export default async function LocaleLayout({
+	children,
+	params,
+}: {
 	children: React.ReactNode;
-	params: Promise<{locale: string}>;
+	params: Promise<{ locale: string }>;
 }) {
 	// Ensure that the incoming `locale` is valid
-	const {locale} = await params;
+	const { locale } = await params;
 	if (!hasLocale(routing.locales, locale)) {
 		notFound();
 	}
 	return (
 		<html lang='en'>
-		<body className={`${roboto.className} text-[20px] bg-white min-h-screen flex flex-col`}><NextIntlClientProvider>{children}</NextIntlClientProvider></body>
+			<body className={`${inter.className} text-[20px] bg-white min-h-screen flex flex-col`}>
+				<NextIntlClientProvider>{children}</NextIntlClientProvider>
+			</body>
 		</html>
-
 	);
 
 	// ...
