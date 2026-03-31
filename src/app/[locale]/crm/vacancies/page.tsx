@@ -5,7 +5,7 @@ import LanguageSwitcher from '@/src/components/LanguageSwitcher';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
-import Vacancy from '@/src/app/[locale]/crm/vacancies/Vacancy';
+import Vacancy from '@/src/app/[locale]/crm/vacancies/_components/Vacancy';
 import { getTranslations } from 'next-intl/server';
 
 export default async function Candidates() {
@@ -13,10 +13,17 @@ export default async function Candidates() {
 	if (!session?.user) redirect('/')
 	const user = await prisma.user.findUnique({
 		where: { id: session?.user?.id },
-		include: {
+		select: {
 			userCrm: {
-				include: {
+				select: {
 					vacancies: {
+						include: {
+							candidates: {
+								orderBy: {
+									id: 'desc'
+								}
+							}
+						},
 						orderBy: {
 							id: 'desc'
 						}

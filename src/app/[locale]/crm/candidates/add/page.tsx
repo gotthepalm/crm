@@ -10,7 +10,7 @@ import LanguageSwitcher from '@/src/components/LanguageSwitcher';
 import { useTranslations } from 'use-intl';
 import { getVacancies } from '@/src/app/[locale]/crm/candidates/_actions/getVacanciesAction';
 import { VacancyModel } from '@/src/generated/prisma/models/Vacancy';
-import VacancyForFrom from '@/src/app/[locale]/crm/candidates/_components/VacancyForFrom';
+import VacancyForLinking from '@/src/app/[locale]/crm/candidates/_components/VacancyForLinking';
 
 export default function CandidatesAdd() {
 	const [vacancies, setVacancies] = useState<VacancyModel[] | null>(null);
@@ -37,7 +37,6 @@ export default function CandidatesAdd() {
 		return v.toString();
 	}
 
-	// Getting vacancies
 	useEffect(() => {
 		getVacancies().then((value) => {
 			if (value?.userCrm?.vacancies) {
@@ -76,8 +75,8 @@ export default function CandidatesAdd() {
 				<div className='w-full max-w-[1500px] mx-auto pt-20'>
 					<div className='w-full py-12 px-32'>
 						<h2 className='text-3xl font-medium text-center pb-5'>{t('FormTitle')}</h2>
-						{state?.result === 'vacancy-not-yours' && <div className='text-red-500'>vacancy not yours</div>}
-						{state?.result === 'db-error' && <div className='text-red-500'>db error</div>}
+						{state?.result === 'invalid-vacancy' && <div className='text-red-500'>invalid vacancy</div>}
+						{state?.result === 'db-error' && <div className='text-red-500'>database error</div>}
 						<form action={action} className='flex flex-col gap-3.5 mt-10 w-full'>
 							<div className='grid grid-cols-2 justify-between gap-8 mb-5'>
 								<div className='flex flex-col gap-2'>
@@ -326,23 +325,15 @@ export default function CandidatesAdd() {
 
 							{/*Vacancies linking*/}
 
-							{vacancies && (
+							{vacancies && vacancies.length > 0 && (
 								<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300'>
 									<input type='hidden' value={vacancyInput} name='vacancyId' />
 									<div className='flex justify-between items-center'>
 										<div className='text-zinc-600'>{t('LinkVacancy')}:</div>
-										<button
-											type='button'
-											onClick={() => setVacancyInput('')}
-											className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-											py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
-										>
-											{t('Unlink')}
-										</button>
 									</div>
 									<div className='grid grid-cols-3 gap-5 items-center justify-center'>
 										{vacancies.map((vacancy) => (
-											<VacancyForFrom
+											<VacancyForLinking
 												key={vacancy.id}
 												vacancy={vacancy}
 												vacancyInput={vacancyInput}
