@@ -1,12 +1,12 @@
 'use client';
 
-import { VacancyModel } from '@/src/generated/prisma/models/Vacancy';
 import Image from 'next/image';
 import { useState } from 'react';
 import { useTranslations } from 'use-intl';
-import EditVacancyForm from '@/src/app/[locale]/crm/vacancies/EditVacancyForm';
+import EditVacancyForm from '@/src/app/[locale]/crm/vacancies/_components/EditVacancyForm';
+import { Prisma } from '@/src/generated/prisma/client';
 
-export default function Vacancy({ vacancy }: { vacancy: VacancyModel }) {
+export default function Vacancy({ vacancy }: { vacancy: Prisma.VacancyGetPayload<{ include: { candidates: true } }> }) {
 	const [openForm, setOpenForm] = useState<boolean>(false);
 	const t = useTranslations('VacancyCard');
 	function handleStatus() {

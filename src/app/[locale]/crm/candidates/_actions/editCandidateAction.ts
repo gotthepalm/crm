@@ -9,7 +9,7 @@ import { getTranslations } from 'next-intl/server';
 export type ActionState =
 	| { result: 'success' }
 	| { result: 'validation-error'; errors: Record<string, string[]>; values: Record<string, FormDataEntryValue> }
-	| { result: 'vacancy-not-yours' }
+	| { result: 'invalid-vacancy' }
 	| { result: 'db-error' }
 	| { result: 'no-session' };
 
@@ -18,7 +18,7 @@ export async function editCandidate(formData: FormData, candidateId: number) {
 
 	// Zod validation
 
-	const emptyToUndefined = (v: unknown) => (v === '' ? undefined : v);
+	const emptyToUndefined = (val: unknown) => (typeof val === 'string' && val.trim() === '' ? undefined : val);
 	const candidateSchema = z.object({
 		name: z.string().trim().min(1, t('NameRequired')).max(40, t('LongName')),
 		position: z.preprocess(emptyToUndefined, z.string().trim().optional()),
@@ -76,6 +76,9 @@ export async function editCandidate(formData: FormData, candidateId: number) {
 			values: data,
 		} satisfies ActionState;
 	}
+	if (!vacancyIdParsed.success) {
+		return { result: 'invalid-vacancy' } satisfies ActionState;
+	}
 
 	const nulledData = Object.fromEntries(
 		Object.entries(parsedData.data).map(([key, value]) => [key, value === undefined ? null : value]),
@@ -95,7 +98,7 @@ export async function editCandidate(formData: FormData, candidateId: number) {
 	});
 	if (vacancyIdParsed.data) {
 		if (!userVacancies?.userCrm?.vacancies.some((vacancy) => vacancy.id === vacancyIdParsed.data)) {
-			return { result: 'vacancy-not-yours' } satisfies ActionState;
+			return { result: 'invalid-vacancy' } satisfies ActionState;
 		}
 	}
 

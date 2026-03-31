@@ -6,12 +6,20 @@ import Image from 'next/image';
 import LanguageSwitcher from '@/src/components/LanguageSwitcher';
 import { useTranslations } from 'use-intl';
 import { ActionState, createVacancy } from '@/src/app/[locale]/crm/vacancies/_actions/createVacancyAction';
-import { useActionState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
+import CandidateForLinking from '@/src/app/[locale]/crm/vacancies/_components/CandidateForLinking';
+import { Prisma } from '@/src/generated/prisma/client';
+import { getCandidates } from '@/src/app/[locale]/crm/vacancies/_actions/getCandidatesAction';
 
 export default function VacanciesAdd() {
-	const t = useTranslations('AddVacancy');
+	const [candidates, setCandidates] = useState<Prisma.CandidateGetPayload<{ include: { vacancy: true } }>[] | null>(
+		null,
+	);
+
 	const router = useRouter();
+	const t = useTranslations('AddVacancy');
+
 	const [state, action] = useActionState<ActionState | null, FormData>(async (_prev, formData) => {
 		const state = await createVacancy(formData);
 		if (state.result === 'success') {
@@ -28,11 +36,18 @@ export default function VacanciesAdd() {
 
 		const v = state.values[name];
 
+		// If editCandidate returned 'validation-error', get values from editCandidate
 		if (v === undefined || v === null) return undefined;
-
 		return v.toString();
 	}
 
+	useEffect(() => {
+		getCandidates().then((value) => {
+			if (value?.userCrm?.candidates) {
+				setCandidates(value.userCrm.candidates);
+			}
+		});
+	}, []);
 	return (
 		<>
 			<CrmHeader>
@@ -59,12 +74,12 @@ export default function VacanciesAdd() {
 					</div>
 				</div>
 			</CrmHeader>
-			<main className='bg-white'>
+			<main className='bg-white h-full'>
 				<div className='w-full max-w-[1500px] mx-auto pt-20'>
 					<div className='w-full py-12 px-32'>
-						<h2 className='text-3xl font-medium text-center pb-5 border-b border-zinc-300'>
-							{t('FormTitle')}
-						</h2>
+						<h2 className='text-3xl font-medium text-center pb-5'>{t('FormTitle')}</h2>
+						{state?.result === 'invalid-candidates' && <div className='text-red-500'>invalid candidates</div>}
+						{state?.result === 'db-error' && <div className='text-red-500'>database error</div>}
 						<form action={action} className='flex flex-col gap-3.5 mt-10 w-full'>
 							<div className='grid grid-cols-2 justify-between gap-8 mb-5'>
 								<div className='flex flex-col justify-baseline items-baseline gap-2'>
@@ -84,7 +99,6 @@ export default function VacanciesAdd() {
 											</div>
 										))}
 								</div>
-								{/*<div className='flex flex-col gap-2'>*/}
 								<div className='w-full flex items-baseline justify-between text-zinc-600'>
 									{t('Location')}:
 									<input
@@ -94,7 +108,6 @@ export default function VacanciesAdd() {
 										defaultValue={getValue('location')}
 									/>
 								</div>
-								{/*</div>*/}
 								<div className='w-full flex flex-col items-start justify-between text-zinc-600 col-span-full'>
 									{t('Description')}:
 									<textarea
@@ -210,31 +223,23 @@ export default function VacanciesAdd() {
 											</div>
 										))}
 								</div>
-								{/*<div className='flex flex-col gap-2'>*/}
-								{/*	<div className='w-full flex items-center justify-between text-zinc-600'>*/}
-								{/*		{t('Candidates')}:*/}
-								{/*		<input*/}
-								{/*			className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'*/}
-								{/*			type='text'*/}
-								{/*			name='candidates'*/}
-								{/*		/>*/}
-								{/*	</div>*/}
-								{/*	<div className='text-[14px] h-[14px] text-red-500'>*/}
-								{/*	</div>*/}
-								{/*</div>*/}
-								{/*<div className='flex flex-col gap-2'>*/}
-								{/*	<div className='w-full flex items-center justify-between text-zinc-600'>*/}
-								{/*		{t('Meetings')}:*/}
-								{/*		<input*/}
-								{/*			className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'*/}
-								{/*			type='text'*/}
-								{/*			name='meetings'*/}
-								{/*		/>*/}
-								{/*	</div>*/}
-								{/*	<div className='text-[14px] h-[14px] text-red-500'>*/}
-								{/*	</div>*/}
-								{/*</div>*/}
 							</div>
+							{/*Candidates linking*/}
+							{candidates && candidates.length > 0 && (
+								<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300'>
+									<div className='flex justify-between items-center'>
+										<div className='text-zinc-600'>{t('LinkCandidates')}:</div>
+									</div>
+									<div className='grid grid-cols-3 gap-5 justify-center'>
+										{candidates.map((candidate) => (
+											<CandidateForLinking
+												key={candidate.id}
+												candidate={candidate}
+											/>
+										))}
+									</div>
+								</div>
+							)}
 							<button type='submit' id='submitButton' hidden={true}></button>
 						</form>
 					</div>

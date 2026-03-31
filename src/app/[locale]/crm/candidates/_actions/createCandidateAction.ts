@@ -9,7 +9,7 @@ import { getTranslations } from 'next-intl/server';
 export type ActionState =
 	| { result: 'success' }
 	| { result: 'validation-error'; errors: Record<string, string[]>; values: Record<string, FormDataEntryValue> }
-	| { result: 'vacancy-not-yours' }
+	| { result: 'invalid-vacancy' }
 	| { result: 'db-error' }
 	| { result: 'no-session' };
 
@@ -18,7 +18,7 @@ export async function createCandidate(formData: FormData) {
 
 	// Zod validation
 
-	const emptyToUndefined = (v: unknown) => (v === '' ? undefined : v);
+	const emptyToUndefined = (val: unknown) => (typeof val === 'string' && val.trim() === '' ? undefined : val);
 	const candidateSchema = z.object({
 		name: z.string().trim().min(1, t('NameRequired')).max(40, t('LongName')),
 		position: z.preprocess(emptyToUndefined, z.string().trim().optional()),
@@ -73,6 +73,9 @@ export async function createCandidate(formData: FormData) {
 			values: data,
 		} satisfies ActionState;
 	}
+	if (!vacancyIdParsed.success) {
+		return { result: 'invalid-vacancy' } satisfies ActionState;
+	}
 
 	// Checking whether the user has a vacancy to which they want to link a candidate
 
@@ -88,11 +91,11 @@ export async function createCandidate(formData: FormData) {
 	});
 	if (vacancyIdParsed.data) {
 		if (!userVacancies?.userCrm?.vacancies.some((vacancy) => vacancy.id === vacancyIdParsed.data)) {
-			return { result: 'vacancy-not-yours' } satisfies ActionState;
+			return { result: 'invalid-vacancy' } satisfies ActionState;
 		}
 	}
 
-	// Updating candidate
+	// Creating candidate
 
 	try {
 		if (vacancyIdParsed.data) {
@@ -118,8 +121,7 @@ export async function createCandidate(formData: FormData) {
 			},
 		});
 		return { result: 'success' } satisfies ActionState;
-	} catch (error) {
-		console.log(error);
+	} catch {
 		return { result: 'db-error' } satisfies ActionState;
 	}
 }

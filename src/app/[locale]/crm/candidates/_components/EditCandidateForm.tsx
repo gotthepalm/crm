@@ -6,7 +6,7 @@ import { useTranslations } from 'use-intl';
 import { CandidateModel } from '@/src/generated/prisma/models/Candidate';
 import { useRouter } from 'next/navigation';
 import { deleteCandidate } from '@/src/app/[locale]/crm/candidates/_actions/deleteCandidateAction';
-import VacancyForFrom from '@/src/app/[locale]/crm/candidates/_components/VacancyForFrom';
+import VacancyForLinking from '@/src/app/[locale]/crm/candidates/_components/VacancyForLinking';
 import { getVacancies } from '@/src/app/[locale]/crm/candidates/_actions/getVacanciesAction';
 import { VacancyModel } from '@/src/generated/prisma/models/Vacancy';
 
@@ -47,14 +47,13 @@ export default function EditCandidateForm({
 		return v.toString();
 	}
 
-	// Getting vacancies
 	useEffect(() => {
 		getVacancies().then((value) => {
 			if (value?.userCrm?.vacancies) {
 				setVacancies(value.userCrm.vacancies);
 			}
 		});
-	}, [candidate.id]);
+	}, []);
 
 	return (
 		<div className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
@@ -81,10 +80,10 @@ export default function EditCandidateForm({
 									</button>
 								</div>
 							</div>
-							{state?.result === 'vacancy-not-yours' && (
-								<div className='text-red-500'>vacancy not yours</div>
+							{state?.result === 'invalid-vacancy' && (
+								<div className='text-red-500'>invalid vacancy</div>
 							)}
-							{state?.result === 'db-error' && <div className='text-red-500'>db error</div>}
+							{state?.result === 'db-error' && <div className='text-red-500'>database error</div>}
 						</div>
 						<form action={action} className='flex flex-col gap-3.5 w-full mb-10'>
 							<div className='grid grid-cols-2 justify-between gap-8'>
@@ -331,26 +330,16 @@ export default function EditCandidateForm({
 									/>
 								</div>
 							</div>
-
 							{/*Vacancies linking*/}
-
-							{vacancies && (
+							{vacancies && vacancies.length > 0 && (
 								<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300'>
 									<input type='hidden' value={vacancyInput} name='vacancyId' />
 									<div className='flex justify-between items-center'>
 										<div className='text-zinc-600'>{t('LinkVacancy')}:</div>
-										<button
-											type='button'
-											onClick={() => setVacancyInput('')}
-											className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-											py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
-										>
-											{t('Unlink')}
-										</button>
 									</div>
-									<div className='grid grid-cols-3 gap-5 items-center justify-center'>
+									<div className='grid grid-cols-3 gap-5 justify-center'>
 										{vacancies.map((vacancy) => (
-											<VacancyForFrom
+											<VacancyForLinking
 												key={vacancy.id}
 												vacancy={vacancy}
 												vacancyInput={vacancyInput}
@@ -378,9 +367,6 @@ export default function EditCandidateForm({
 							</button>
 						</form>
 					</div>
-					{/*) : (
-						<div className='justify-self-center w-9 h-9 border-4 border-black/10 border-l-transparent rounded-full animate-spin'></div>
-					)}*/}
 				</div>
 			</div>
 		</div>

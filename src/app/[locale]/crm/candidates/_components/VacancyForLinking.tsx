@@ -5,7 +5,7 @@ import { useTranslations } from 'use-intl';
 import { VacancyModel } from '@/src/generated/prisma/models/Vacancy';
 import { Dispatch, SetStateAction } from 'react';
 
-export default function VacancyForFrom({
+export default function VacancyForLinking({
 	vacancy,
 	vacancyInput,
 	setVacancyInput,
@@ -18,20 +18,20 @@ export default function VacancyForFrom({
 	function handleStatus() {
 		switch (vacancy.status) {
 			case 'OPEN':
-				return 'bg-green-100 text-green-700';
+				return 'bg-green-100 text-green-700 border-green-400';
 			case 'IN_PROGRESS':
-				return 'bg-blue-100 text-blue-700';
+				return 'bg-blue-100 text-blue-700 border-blue-400';
 			case 'PAUSED':
-				return 'bg-lime-100 text-lime-700';
+				return 'bg-lime-100 text-lime-700 border-lime-400';
 			case 'CLOSED':
-				return 'bg-red-100 text-red-700';
+				return 'bg-red-100 text-red-700 border-red-400';
 		}
 	}
 	return (
 		<div
-			onClick={() => setVacancyInput(vacancy.id.toString())}
-			className={`${vacancyInput === vacancy.id.toString() ? 'bg-zinc-100' : 'bg-white'} flex flex-col rounded-2xl
-			border border-zinc-300 p-5 w-full h-full max-w-xl break-inside-avoid transition relative cursor-pointer select-none`}
+			onClick={() => setVacancyInput((prev) => (prev === vacancy.id.toString() ? '' : vacancy.id.toString()))}
+			className={`${vacancyInput === vacancy.id.toString() ? 'bg-violet-100 border-violet-300' : 'bg-white border-zinc-300'} flex flex-col rounded-2xl
+			border  p-5 w-full h-full max-w-xl break-inside-avoid transition cursor-pointer select-none`}
 		>
 			<div className='flex justify-between items-start mb-5'>
 				<div className='space-y-2'>
@@ -40,7 +40,7 @@ export default function VacancyForFrom({
 						<p className='text-[16px] text-black'>{t(`employmentType.${vacancy.employmentType}`)}</p>
 					)}
 				</div>
-				<span className={`text-sm font-medium px-3 py-1 border border-zinc-300 rounded-full ${handleStatus()}`}>
+				<span className={`text-sm font-medium px-3 py-1 rounded-full border ${handleStatus()}`}>
 					{t(`status.${vacancy.status}`)}
 				</span>
 			</div>

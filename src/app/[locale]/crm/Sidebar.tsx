@@ -11,7 +11,7 @@ export default async function Sidebar() {
 	const t = await getTranslations("Sidebar")
 	const navItems: navItem[] = [
 		{ name: t('Candidates'), href: '/crm/candidates', icon: 'emoji_people' },
-		{ name: t('Vacancies'), href: '/crm/vacancies', icon: 'article_person' },
+		{ name: t('Vacancies'), href: '/crm/vacancies', icon: 'vacancy' },
 		{ name: t('Meetings'), href: '/crm/meetings', icon: 'adaptive_audio_mic' },
 		{ name: t('Notes'), href: '/crm/notes', icon: 'stylus_note' },
 		{ name: t('Sources'), href: '/crm/sources', icon: 'dataset' },

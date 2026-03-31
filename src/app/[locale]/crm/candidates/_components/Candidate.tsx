@@ -4,13 +4,8 @@ import Image from 'next/image';
 import { useTranslations } from 'use-intl';
 import { useEffect, useState } from 'react';
 import EditCandidateForm from '@/src/app/[locale]/crm/candidates/_components/EditCandidateForm';
-import { Inter } from 'next/font/google';
 import Link from 'next/link';
 import { Prisma } from '@/src/generated/prisma/client';
-
-const inter = Inter({
-	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
-});
 
 export default function Candidate({
 	candidate,
@@ -48,8 +43,8 @@ export default function Candidate({
 		<>
 			{openForm && <EditCandidateForm setOpenForm={setOpenForm} candidate={candidate} />}
 			<article
-				className={`${inter.className} w-full max-w-[480px] bg-white border border-zinc-300 rounded-2xl
-			 	p-5 flex flex-col text-zinc-500 text-[16px] font-medium`}
+				className='w-full max-w-[480px] bg-white border border-zinc-300 rounded-2xl
+			 	p-5 flex flex-col text-zinc-500 text-[16px] font-medium'
 			>
 				{/*Header*/}
 				<div className='flex text-black justify-between items-start mb-3 pb-3 border-b border-zinc-300'>
@@ -58,14 +53,14 @@ export default function Candidate({
 						{candidate?.vacancy?.position ? (
 							<Link
 								href={`/crm/vacancies`}
-								className='inline-flex items-center gap-2 bg-violet-200 font-medium px-4 py-1 rounded-xl'
+								className='inline-flex items-center component-transition gap-2 border border-violet-300 bg-violet-100 hover:bg-violet-200 font-medium px-4 py-1 rounded-xl'
 							>
+								<Image src='/images/vacancy-black.svg' width={22} height={22} alt='' />
 								{candidate.vacancy.position}
-								<Image src='/images/arrow-right.svg' width={22} height={22} alt='' />
 							</Link>
 						) : (
 							candidate.position && (
-								<div className='inline-flex items-center gap-2 bg-violet-200 font-medium px-4 py-1 rounded-xl'>
+								<div className='inline-flex items-center gap-2 font-medium bg-violet-100 px-4 py-1 rounded-xl'>
 									{candidate.position}
 								</div>
 							)
@@ -173,7 +168,10 @@ export default function Candidate({
 				)}
 				{/*Edit button*/}
 				<div className='flex justify-end mt-auto'>
-					<button onClick={() => setOpenForm(true)} className='cursor-pointer p-1 rounded-md hover:bg-zinc-200 transition'>
+					<button
+						onClick={() => setOpenForm(true)}
+						className='cursor-pointer p-1 rounded-md hover:bg-zinc-200 transition'
+					>
 						<Image src='/images/pencil.svg' width={25} height={25} alt='edit' />
 					</button>
 				</div>
