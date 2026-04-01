@@ -1,0 +1,23 @@
+{
+  "EditFormTitle": "Edit meeting",
+  "Create": "Create",
+  "Cancel": "Cancel",
+  "Save": "Save",
+  "Delete": "Delete",
+  "FormTitle": "Create meeting",
+  "Date": "Date",
+  "Time": "Time",
+  "Link": "Link",
+  "InterviewType": {
+    "HR": "HR Interview",
+    "TECH": "Tech Interview",
+    "LIVE_CODING": "Live Coding",
+    "SYSTEM_DESIGN": "System Design",
+    "BEHAVIORAL": "Behavioral Interview",
+    "FINAL": "Final Interview",
+    "OTHER": "Other"
+  },
+  "Note": "Note",
+  "Interviewers": "Interviewers",
+  "AddInterviewer": "Add interviewer"
+}

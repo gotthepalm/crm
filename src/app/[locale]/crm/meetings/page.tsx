@@ -1,32 +1,64 @@
-"use client";
-import { useState } from "react";
+import CrmHeader from '@/src/components/CrmHeader';
+import Link from 'next/link';
+import Image from 'next/image';
+import LanguageSwitcher from '@/src/components/LanguageSwitcher';
+import { getTranslations } from 'next-intl/server';
+import { auth } from '@/auth';
+import { redirect } from 'next/navigation';
+import { prisma } from '@/lib/prisma';
+import Meeting from '@/src/app/[locale]/crm/meetings/Meeting';
 
-export default function Page() {
-  const [open, setOpen] = useState(false);
+export default async function Meetings() {
+	const session = await auth()
+	if (!session?.user) redirect('/')
 
-  return (
-    <>
-      <button
-        className="px-4 py-2 bg-yellow-400 rounded-lg"
-        onClick={() => setOpen(true)}
-      >
-        Open modal
-      </button>
+	const user = await prisma.user.findUnique({
+		where: {id: session.user.id},
+		include: {
+			userCrm: {
+				include: {
+					meetings: {
+						orderBy: {
+							id: 'desc'
+						}
+					}
+				}
+			}
+		}
+	})
+	const t = await getTranslations('Meetings');
 
-      {open && (
-        <div className="fixed inset-0 flex items-center justify-center bg-black/50">
-          <div className="bg-white p-6 rounded-xl shadow-lg">
-            <h2 className="text-lg font-bold mb-4">Modal</h2>
+	return (
+		<>
+			<CrmHeader>
+				<div className='w-full h-full px-10 flex items-center justify-between'>
+					<Link href='/'>
+						<Image src={'/images/bloom-icon.svg'} height={40} width={40} alt='bloom icon' />
+					</Link>
+					<nav className='flex items-center gap-5'>
+						<div
+							className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
+						py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
+						>
+							{t('Filter')}
+						</div>
+						<LanguageSwitcher />
+					</nav>
+				</div>
+			</CrmHeader>
 
-            <button
-              className="px-3 py-2 bg-gray-200 rounded"
-              onClick={() => setOpen(false)}
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
-    </>
-  );
+			<main className='w-full max-w-[1500px] mt-20 mx-auto p-5'>
+				<Link
+					href={'/crm/meetings/add'}
+					className='flex justify-center items-center gap-3 bg-white hover:bg-purple-700 hover:text-white border border-zinc-300 text-[22px] p-3 mb-5 rounded-2xl w-full component-transition cursor-pointer'
+				>
+					<span className='text-4xl font-light'>+</span>
+					{t('AddMeeting')}
+				</Link>
+				<li className='list-none w-full mx-auto grid grid-cols-3 gap-5'>
+					{user?.userCrm && user.userCrm.meetings.map((meeting, i) => <Meeting key={i} meeting={meeting}/>)}
+				</li>
+			</main>
+		</>
+	);
 }

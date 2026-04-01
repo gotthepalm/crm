@@ -45,6 +45,7 @@ export default function CandidatesAdd() {
 		});
 	}, []);
 
+
 	return (
 		<>
 			<CrmHeader>
@@ -71,7 +72,7 @@ export default function CandidatesAdd() {
 					</div>
 				</div>
 			</CrmHeader>
-			<main className='bg-white'>
+			<main className='bg-white h-full'>
 				<div className='w-full max-w-[1500px] mx-auto pt-20'>
 					<div className='w-full py-12 px-32'>
 						<h2 className='text-3xl font-medium text-center pb-5'>{t('FormTitle')}</h2>

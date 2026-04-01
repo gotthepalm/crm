@@ -125,7 +125,8 @@ export async function editCandidate(formData: FormData, candidateId: number) {
 			},
 		});
 		return { result: 'success' } satisfies ActionState;
-	} catch {
+	} catch (error) {
+		console.log(error);
 		return { result: 'db-error' } satisfies ActionState;
 	}
 }
