@@ -1,0 +1,8 @@
+{
+  "DateRequired": "Date is required",
+  "TimeRequired": "Time is required",
+  "InterviewTypeRequired": "Interview type is required",
+  "InvalidUrl": "Invalid url",
+  "FillInput": "Fill in the input",
+  "LongValue": "Too long value"
+}

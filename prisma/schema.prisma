@@ -33,6 +33,16 @@ enum CandidateStatus {
   REJECTED
 }
 
+enum InterviewType {
+  HR
+  TECH
+  LIVE_CODING
+  SYSTEM_DESIGN
+  BEHAVIORAL
+  FINAL
+  OTHER
+}
+
 // AUTH.JS MODELS
 
 model User {
@@ -177,13 +187,16 @@ model Source {
 }
 
 model Meeting {
-  id   Int    @id @default(autoincrement())
-  date String
-  url  String
-  note String
+  id            Int           @id @default(autoincrement())
+  date          String
+  time          String
+  url           String?
+  interviewType InterviewType
+  note          String?
+  interviewers  String[]
 
-  candidateId Int
-  vacancyId   Int
+  candidateId Int?
+  vacancyId   Int?
   candidate   Candidate? @relation(fields: [candidateId], references: [id])
   vacancy     Vacancy?   @relation(fields: [vacancyId], references: [id])
 

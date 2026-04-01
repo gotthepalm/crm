@@ -1,7 +1,7 @@
 'use client';
 
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { useTranslations } from 'use-intl';
 import EditVacancyForm from '@/src/app/[locale]/crm/vacancies/_components/EditVacancyForm';
 import { Prisma } from '@/src/generated/prisma/client';
@@ -21,6 +21,12 @@ export default function Vacancy({ vacancy }: { vacancy: Prisma.VacancyGetPayload
 				return 'bg-red-100 text-red-700';
 		}
 	}
+	useEffect(() => {
+		document.body.style.overflow = openForm ? 'hidden' : '';
+		return () => {
+			document.body.style.overflow = '';
+		};
+	}, [vacancy.id, openForm]);
 	return (
 		<>
 			{openForm && <EditVacancyForm setOpenForm={setOpenForm} vacancy={vacancy} />}
@@ -34,7 +40,6 @@ export default function Vacancy({ vacancy }: { vacancy: Prisma.VacancyGetPayload
 					</div>
 
 					<span className={`text-sm font-medium px-3 py-1 rounded-full ${handleStatus()}`}>
-						{/*{t(`Status.${vacancy.status}`)}*/}
 						{t(`status.${vacancy.status}`)}
 					</span>
 				</div>
