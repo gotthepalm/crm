@@ -9,8 +9,8 @@ import Vacancy from '@/src/app/[locale]/crm/vacancies/_components/Vacancy';
 import { getTranslations } from 'next-intl/server';
 
 export default async function Candidates() {
-	const session = await auth()
-	if (!session?.user) redirect('/')
+	const session = await auth();
+	if (!session?.user) redirect('/');
 	const user = await prisma.user.findUnique({
 		where: { id: session?.user?.id },
 		select: {
@@ -20,19 +20,19 @@ export default async function Candidates() {
 						include: {
 							candidates: {
 								orderBy: {
-									id: 'desc'
-								}
-							}
+									id: 'desc',
+								},
+							},
 						},
 						orderBy: {
-							id: 'desc'
-						}
-					}
-				}
-			}
-		}
-	})
-	const t = await getTranslations("Vacancies")
+							id: 'desc',
+						},
+					},
+				},
+			},
+		},
+	});
+	const t = await getTranslations('Vacancies');
 
 	return (
 		<>
@@ -41,15 +41,7 @@ export default async function Candidates() {
 					<Link href='/'>
 						<Image src={'/images/bloom-icon.svg'} height={40} width={40} alt='bloom icon' />
 					</Link>
-					<nav className='flex items-center gap-5'>
-						<div
-							className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-						py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
-						>
-							{t("Filter")}
-						</div>
-						<LanguageSwitcher />
-					</nav>
+					<LanguageSwitcher />
 				</div>
 			</CrmHeader>
 

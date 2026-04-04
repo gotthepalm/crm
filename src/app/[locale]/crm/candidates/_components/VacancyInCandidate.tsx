@@ -4,17 +4,10 @@ import Image from 'next/image';
 import { useEffect, useState } from 'react';
 import { useTranslations } from 'use-intl';
 import EditVacancyForm from '@/src/app/[locale]/crm/vacancies/_components/EditVacancyForm';
-import { Prisma } from '@/src/generated/prisma/client';
-import { CandidateModel } from '@/src/generated/prisma/models/Candidate';
-import CandidateInVacancy from '@/src/app/[locale]/crm/vacancies/_components/CandidateInVacancy';
+import { VacancyModel } from '@/src/generated/prisma/models/Vacancy';
 
-export default function Vacancy({
-	vacancy,
-}: {
-	vacancy: Prisma.VacancyGetPayload<{ include: { candidates: true } }>;
-}) {
+export default function VacancyInCandidate({ vacancy }: { vacancy: VacancyModel }) {
 	const [openForm, setOpenForm] = useState<boolean>(false);
-	const [openCandidate, setOpenCandidate] = useState<false | CandidateModel>(false);
 
 	const t = useTranslations('VacancyCard');
 	function handleStatus() {
@@ -38,18 +31,10 @@ export default function Vacancy({
 	}, [vacancy.id, openForm]);
 	return (
 		<>
-			{openForm && <EditVacancyForm setOpenForm={setOpenForm} vacancy={vacancy} isVacancyModal={false} />}
-			{openCandidate !== false && (
-				<div
-					onClick={() => setOpenCandidate(false)}
-					className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'
-				>
-					<div onClick={(e) => e.stopPropagation()} className='max-w-200 w-full mx-auto px-5'>
-						<CandidateInVacancy candidate={openCandidate} />
-					</div>
-				</div>
-			)}
-			<article className='bg-white flex flex-col rounded-2xl overflow-hidden text-[16px] font-medium border border-zinc-300 p-5 w-full h-full max-w-xl break-inside-avoid transition'>
+			{openForm && <EditVacancyForm setOpenForm={setOpenForm} vacancy={vacancy} isVacancyModal={true} />}
+			<article
+				className='bg-white flex flex-col rounded-2xl overflow-hidden text-[16px] font-medium border border-zinc-300 p-5 w-full h-full break-inside-avoid transition'
+			>
 				<div className=' flex justify-between items-start mb-5'>
 					<div className='space-y-2'>
 						<h3 className='text-[24px] font-semibold'>{vacancy.position}</h3>
@@ -93,20 +78,6 @@ export default function Vacancy({
 						</div>
 					)}
 				</div>
-				{vacancy.candidates.length !== 0 && (
-					<div className='flex flex-col gap-2 mt-3 pt-3 border-t border-zinc-300'>
-						{vacancy.candidates.map((candidate, index) => (
-							<button
-								onClick={() => setOpenCandidate(candidate)}
-								key={index}
-								className='flex gap-3 font-medium w-fit px-3 py-1 rounded-xl bg-purple-100'
-							>
-								<Image src='/images/emoji_people.svg' alt='' height={20} width={20} />
-								{candidate.name}
-							</button>
-						))}
-					</div>
-				)}
 				<div className='flex justify-end gap-2 mt-auto'>
 					<button
 						className='p-1 cursor-pointer hover:bg-zinc-100 flex items-center justify-center rounded-md'

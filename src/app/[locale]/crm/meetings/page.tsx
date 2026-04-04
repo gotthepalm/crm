@@ -6,26 +6,26 @@ import { getTranslations } from 'next-intl/server';
 import { auth } from '@/auth';
 import { redirect } from 'next/navigation';
 import { prisma } from '@/lib/prisma';
-import Meeting from '@/src/app/[locale]/crm/meetings/Meeting';
+import Meeting from '@/src/app/[locale]/crm/meetings/_components/Meeting';
 
 export default async function Meetings() {
-	const session = await auth()
-	if (!session?.user) redirect('/')
+	const session = await auth();
+	if (!session?.user) redirect('/');
 
 	const user = await prisma.user.findUnique({
-		where: {id: session.user.id},
+		where: { id: session.user.id },
 		include: {
 			userCrm: {
 				include: {
 					meetings: {
 						orderBy: {
-							id: 'desc'
-						}
-					}
-				}
-			}
-		}
-	})
+							id: 'desc',
+						},
+					},
+				},
+			},
+		},
+	});
 	const t = await getTranslations('Meetings');
 
 	return (
@@ -35,15 +35,7 @@ export default async function Meetings() {
 					<Link href='/'>
 						<Image src={'/images/bloom-icon.svg'} height={40} width={40} alt='bloom icon' />
 					</Link>
-					<nav className='flex items-center gap-5'>
-						<div
-							className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-						py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
-						>
-							{t('Filter')}
-						</div>
-						<LanguageSwitcher />
-					</nav>
+					<LanguageSwitcher />
 				</div>
 			</CrmHeader>
 
@@ -56,7 +48,7 @@ export default async function Meetings() {
 					{t('AddMeeting')}
 				</Link>
 				<li className='list-none w-full mx-auto grid grid-cols-3 gap-5'>
-					{user?.userCrm && user.userCrm.meetings.map((meeting, i) => <Meeting key={i} meeting={meeting}/>)}
+					{user?.userCrm && user.userCrm.meetings.map((meeting, i) => <Meeting key={i} meeting={meeting} />)}
 				</li>
 			</main>
 		</>
