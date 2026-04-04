@@ -5,16 +5,10 @@ import { useTranslations } from 'use-intl';
 import { useEffect, useState } from 'react';
 import EditCandidateForm from '@/src/app/[locale]/crm/candidates/_components/EditCandidateForm';
 import Link from 'next/link';
-import { Prisma } from '@/src/generated/prisma/client';
-import VacancyInCandidate from '@/src/app/[locale]/crm/candidates/_components/VacancyInCandidate';
+import { CandidateModel } from '@/src/generated/prisma/models/Candidate';
 
-export default function Candidate({
-	candidate,
-}: {
-	candidate: Prisma.CandidateGetPayload<{ include: { vacancy: true } }>;
-}) {
+export default function CandidateInVacancy({ candidate }: {candidate: CandidateModel}) {
 	const [openForm, setOpenForm] = useState<boolean>(false);
-	const [openVacancy, setOpenVacancy] = useState<boolean>(false);
 
 	const t = useTranslations('CandidateCard');
 	function handleStatus() {
@@ -44,43 +38,15 @@ export default function Candidate({
 	}, [candidate.id, openForm]);
 	return (
 		<>
-			{openForm && <EditCandidateForm setOpenForm={setOpenForm} candidate={candidate} isCandidateModal={false}/>}
-			{openVacancy && candidate.vacancy && (
-				<div
-					onClick={() => setOpenVacancy(false)}
-					className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'
-				>
-					<div
-						onClick={(e) => e.stopPropagation()}
-						className='max-w-200 w-full mx-auto px-5'
-					>
-						<VacancyInCandidate vacancy={candidate.vacancy} />
-					</div>
-				</div>
-			)}
+			{openForm && <EditCandidateForm setOpenForm={setOpenForm} candidate={candidate} isCandidateModal={true}/>}
 			<article
-				className='w-full max-w-xl bg-white border border-zinc-300 rounded-2xl
+				className='w-full bg-white border border-zinc-300 rounded-2xl
 			 	p-5 flex flex-col text-zinc-500 text-[16px] font-medium'
 			>
 				{/*Header*/}
 				<div className='flex text-black justify-between items-start mb-3 pb-3 border-b border-zinc-300'>
 					<div>
 						<h3 className='text-2xl font-semibold mb-2'>{candidate.name}</h3>
-						{candidate?.vacancy?.position ? (
-							<button
-								onClick={() => setOpenVacancy(true)}
-								className='inline-flex items-center component-transition gap-2 border border-violet-300 bg-violet-100 hover:bg-violet-200 font-medium px-4 py-1 rounded-xl'
-							>
-								<Image src='/images/vacancy-black.svg' width={22} height={22} alt='' />
-								{candidate.vacancy.position}
-							</button>
-						) : (
-							candidate.position && (
-								<div className='inline-flex items-center gap-2 font-medium bg-violet-100 px-4 py-1 rounded-xl'>
-									{candidate.position}
-								</div>
-							)
-						)}
 					</div>
 					<span className={`text-black text-sm font-medium px-3 py-1 rounded-full ${handleStatus()}`}>
 						{t(`Status.${candidate.status}`)}

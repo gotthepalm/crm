@@ -10,5 +10,8 @@
     "IN_PROGRESS": "In progress",
     "PAUSED": "Paused",
     "CLOSED": "Closed"
-  }
+  },
+  "Experience": "Experience",
+  "Years": "years",
+  "Salary": "Salary"
 }

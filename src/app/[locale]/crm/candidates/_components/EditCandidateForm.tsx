@@ -13,9 +13,11 @@ import { VacancyModel } from '@/src/generated/prisma/models/Vacancy';
 export default function EditCandidateForm({
 	setOpenForm,
 	candidate,
+	isCandidateModal
 }: {
 	setOpenForm: Dispatch<SetStateAction<boolean>>;
 	candidate: CandidateModel;
+	isCandidateModal: boolean;
 }) {
 	const [vacancies, setVacancies] = useState<VacancyModel[] | null>(null);
 	const [vacancyInput, setVacancyInput] = useState<string>(candidate.vacancyId ? candidate.vacancyId.toString() : '');
@@ -56,7 +58,11 @@ export default function EditCandidateForm({
 	}, []);
 
 	return (
-		<div className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
+		<div
+			className={
+				`${!isCandidateModal && 'backdrop-blur-sm bg-black/50'} fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center`
+			}
+		>
 			<div className='max-w-[1600px] w-full h-[90%] mx-auto px-5'>
 				<div className='h-full bg-white rounded-2xl px-30 py-10'>
 					<div className='h-full w-full overflow-y-scroll flex flex-col items-center pr-10'>
@@ -80,9 +86,7 @@ export default function EditCandidateForm({
 									</button>
 								</div>
 							</div>
-							{state?.result === 'invalid-vacancy' && (
-								<div className='text-red-500'>invalid vacancy</div>
-							)}
+							{state?.result === 'invalid-vacancy' && <div className='text-red-500'>invalid vacancy</div>}
 							{state?.result === 'db-error' && <div className='text-red-500'>database error</div>}
 						</div>
 						<form action={action} className='flex flex-col gap-3.5 w-full mb-10'>

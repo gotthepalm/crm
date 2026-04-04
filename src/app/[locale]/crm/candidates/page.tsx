@@ -18,7 +18,7 @@ export default async function Candidates() {
 				select: {
 					candidates: {
 						include: {
-							vacancy: true
+							vacancy: true,
 						},
 						orderBy: {
 							id: 'desc',
@@ -28,7 +28,7 @@ export default async function Candidates() {
 			},
 		},
 	});
-	const t = await getTranslations("Candidates");
+	const t = await getTranslations('Candidates');
 	return (
 		<>
 			<CrmHeader>
@@ -36,15 +36,7 @@ export default async function Candidates() {
 					<Link href='/'>
 						<Image src={'/images/bloom-icon.svg'} height={40} width={40} alt='bloom icon' />
 					</Link>
-					<nav className='flex items-center gap-5'>
-						<div
-							className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-						py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
-						>
-							{t("Filter")}
-						</div>
-						<LanguageSwitcher />
-					</nav>
+					<LanguageSwitcher />
 				</div>
 			</CrmHeader>
 			<main className='w-full max-w-[1500px] mt-20 mx-auto p-5'>
@@ -53,11 +45,13 @@ export default async function Candidates() {
 					className='flex justify-center items-center gap-3 bg-white hover:bg-purple-600 hover:border-transparent hover:text-white border border-zinc-300 text-[22px] p-3 mb-5 rounded-2xl w-full component-transition cursor-pointer'
 				>
 					<span className='text-4xl font-light'>+</span>
-					{t("AddCandidate")}
+					{t('AddCandidate')}
 				</Link>
 				<li className='list-none w-full mx-auto grid grid-cols-3 gap-5'>
 					{user?.userCrm &&
-						user.userCrm.candidates.map((candidate) => <Candidate key={candidate.id} candidate={candidate} />)}
+						user.userCrm.candidates.map((candidate) => (
+							<Candidate key={candidate.id} candidate={candidate} />
+						))}
 				</li>
 			</main>
 		</>
