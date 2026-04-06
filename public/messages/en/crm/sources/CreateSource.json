@@ -1,0 +1,5 @@
+{
+  "NameRequired": "Name is required",
+  "LongName": "Too long name",
+  "InvalidUrl": "Invalid url"
+}
