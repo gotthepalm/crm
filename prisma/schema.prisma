@@ -177,10 +177,9 @@ model Vacancy {
 }
 
 model Source {
-  id   Int     @id @default(autoincrement())
+  id   Int    @id @default(autoincrement())
   name String
   url  String
-  note String?
 
   userCrmId String
   userCrm   UserCrm @relation(fields: [userCrmId], references: [id], onDelete: Cascade)

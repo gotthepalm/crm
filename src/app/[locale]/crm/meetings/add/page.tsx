@@ -68,8 +68,6 @@ export default function MeetingsAdd() {
 		const state = await createMeeting(formData);
 		if (state.result === 'success') {
 			router.push('/crm/meetings');
-		} else if (state.result === 'db-error') {
-			console.log(state);
 		}
 		return state;
 	}, null);

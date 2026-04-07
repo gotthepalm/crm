@@ -50,7 +50,6 @@ export default function VacanciesAdd() {
 
 		const v = state.values[name];
 
-		// If editCandidate returned 'validation-error', get values from editCandidate
 		if (v === undefined || v === null) return undefined;
 		return v.toString();
 	}
