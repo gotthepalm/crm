@@ -5,14 +5,65 @@ import Link from 'next/link';
 import Image from 'next/image';
 import LanguageSwitcher from '@/src/components/LanguageSwitcher';
 import { useTranslations } from 'use-intl';
-import { useActionState, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { ActionState, createMeeting } from '@/src/app/[locale]/crm/meetings/_actions/createMeetingAction';
 import { MeetingModel } from '@/src/generated/prisma/models/Meeting';
+import { Prisma } from '@/src/generated/prisma/client';
+import VacancyForLinking from '@/src/app/[locale]/crm/_components/VacancyForLinking';
+import CandidateForLinking from '@/src/app/[locale]/crm/_components/CandidateForLinking';
+import { getVacancies } from '@/src/app/[locale]/crm/_actions/getVacanciesAction';
+import { getCandidates } from '@/src/app/[locale]/crm/_actions/getCandidatesAction';
 
 export default function MeetingsAdd() {
+	const [vacancies, setVacancies] = useState<
+		| Prisma.VacancyGetPayload<{
+				include: {
+					candidates: {
+						select: {
+							name: true;
+						};
+					};
+					meetings: {
+						select: {
+							id: true;
+							time: true;
+							date: true;
+							interviewType: true;
+						};
+					};
+				};
+		  }>[]
+		| null
+	>(null);
+	const [candidates, setCandidates] = useState<
+		| Prisma.CandidateGetPayload<{
+				include: {
+					vacancy: {
+						select: {
+							position: true;
+						};
+					};
+					meetings: {
+						select: {
+							id: true;
+							time: true;
+							date: true;
+							interviewType: true;
+						};
+					};
+				};
+		  }>[]
+		| null
+	>(null);
+	const [vacancyInput, setVacancyInput] = useState<string>('');
+	const [candidateInput, setCandidateInput] = useState<string>('');
+
+	const [interviewers, setInterviewers] = useState([0]);
+
 	const t = useTranslations('AddMeeting');
 	const router = useRouter();
+
 	const [state, action] = useActionState<ActionState | null, FormData>(async (_prev, formData) => {
 		const state = await createMeeting(formData);
 		if (state.result === 'success') {
@@ -23,40 +74,48 @@ export default function MeetingsAdd() {
 		return state;
 	}, null);
 
-
 	const isValidationError = state?.result === 'validation-error';
+
+	const addInterviewer = () => {
+		setInterviewers([...interviewers, interviewers.length]);
+	};
+	const deleteInterviewer = (id: number) => {
+		setInterviewers((prev) => prev.filter((i) => i !== id));
+	};
 
 	function getValue(name: keyof MeetingModel) {
 		if (state?.result !== 'validation-error') return undefined;
 
+		// If createMeeting returned 'validation-error', get values from createMeeting
 		const v = state.values[name];
 
 		if (v === undefined || v === null) return undefined;
-
 		return v.toString();
 	}
 
 	function getInterviewerValue(index: number): string | undefined {
 		if (state?.result !== 'validation-error') return undefined;
 
+		// If createMeeting returned 'validation-error', get values from createMeeting
 		const v = state.values.interviewers;
-
 		if (!Array.isArray(v)) return undefined;
 
 		const value = v[index];
 		return value !== undefined ? value.toString() : undefined;
 	}
 
-	const [interviewers, setInterviewers] = useState([0]);
-
-	const addInterviewer = () => {
-		setInterviewers([...interviewers, interviewers.length]);
-	};
-
-	const deleteInterviewer = (id: number) => {
-		setInterviewers((prev) => prev.filter((i) => i !== id));
-	};
-
+	useEffect(() => {
+		getVacancies().then((value) => {
+			if (value?.userCrm?.vacancies) {
+				setVacancies(value.userCrm.vacancies);
+			}
+		});
+		getCandidates().then((value) => {
+			if (value?.userCrm?.candidates) {
+				setCandidates(value.userCrm.candidates);
+			}
+		});
+	}, []);
 	return (
 		<>
 			<CrmHeader>
@@ -86,9 +145,10 @@ export default function MeetingsAdd() {
 			<main className='bg-white h-full'>
 				<div className='w-full max-w-[1500px] mx-auto pt-20'>
 					<div className='w-full py-12 px-32'>
-						<h2 className='text-3xl font-medium text-center pb-5 border-b border-zinc-300'>
-							{t('FormTitle')}
-						</h2>
+						<h2 className='text-3xl font-medium text-center pb-5'>{t('FormTitle')}</h2>
+						{state?.result === 'invalid-vacancy' && <div className='text-red-500'>invalid vacancy</div>}
+						{state?.result === 'invalid-candidate' && <div className='text-red-500'>invalid candidate</div>}
+						{state?.result === 'db-error' && <div className='text-red-500'>database error</div>}
 						<form action={action} className='flex flex-col gap-3.5 mt-10 w-full'>
 							<div className='grid grid-cols-2 justify-between gap-8 mb-5'>
 								<div className='flex flex-col justify-baseline items-baseline gap-2'>
@@ -101,12 +161,11 @@ export default function MeetingsAdd() {
 											defaultValue={getValue('date')}
 										/>
 									</div>
-									{isValidationError &&
-										state.errors.date &&
-											<div className='text-[14px] h-[14px] text-red-500 mt-2'>
-												{state.errors.date}
-											</div>
-										}
+									{isValidationError && state.errors.date && (
+										<div className='text-[14px] h-[14px] text-red-500 mt-2'>
+											{state.errors.date}
+										</div>
+									)}
 								</div>
 								<div className='flex flex-col justify-baseline items-baseline gap-2'>
 									<div className='w-full flex items-center justify-between text-zinc-600'>
@@ -118,12 +177,11 @@ export default function MeetingsAdd() {
 											defaultValue={getValue('time')}
 										/>
 									</div>
-									{isValidationError &&
-										state.errors.time &&
+									{isValidationError && state.errors.time && (
 										<div className='text-[14px] h-[14px] text-red-500 mt-2'>
 											{state.errors.time}
 										</div>
-									}
+									)}
 								</div>
 								<div className='flex flex-col justify-baseline items-baseline gap-2'>
 									<div className='w-full flex items-center justify-between text-zinc-600'>
@@ -135,12 +193,9 @@ export default function MeetingsAdd() {
 											defaultValue={getValue('url')}
 										/>
 									</div>
-									{isValidationError &&
-										state.errors.url &&
-										<div className='text-[14px] h-[14px] text-red-500 mt-2'>
-											{state.errors.url}
-										</div>
-									}
+									{isValidationError && state.errors.url && (
+										<div className='text-[14px] h-[14px] text-red-500 mt-2'>{state.errors.url}</div>
+									)}
 								</div>
 								<div className='flex flex-col gap-2'>
 									<div className='w-full flex items-center justify-between text-zinc-600'>
@@ -160,12 +215,11 @@ export default function MeetingsAdd() {
 											<option value='OTHER'>{t('InterviewType.OTHER')}</option>
 										</select>
 									</div>
-									{isValidationError &&
-										state.errors.interviewType &&
+									{isValidationError && state.errors.interviewType && (
 										<div className='text-[14px] h-[14px] text-red-500 mt-2'>
 											{state.errors.interviewType}
 										</div>
-									}
+									)}
 								</div>
 								<div className='w-full flex flex-col items-start justify-between text-zinc-600 col-span-full'>
 									{t('Note')}:
@@ -189,11 +243,11 @@ export default function MeetingsAdd() {
 															defaultValue={getInterviewerValue(interviewerId)}
 														/>
 														{isValidationError &&
-															state.errors.interviewers?.[interviewerId] &&
+															state.errors.interviewers?.[interviewerId] && (
 																<div className='text-[14px] h-[14px] text-red-500 my-2'>
 																	{state.errors.interviewers?.[interviewerId]}
 																</div>
-															}
+															)}
 													</div>
 													<button
 														className=''
@@ -219,6 +273,54 @@ export default function MeetingsAdd() {
 									</button>
 								</div>
 							</div>
+							{/*Vacancy linking*/}
+							{vacancies && vacancies.length > 0 && (
+								<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300'>
+									<input type='hidden' value={vacancyInput} name='vacancyId' />
+									<div className='flex justify-between items-center'>
+										<div className='text-zinc-600'>{t('LinkVacancy')}:</div>
+									</div>
+									<div className='grid grid-cols-3 gap-5 items-center justify-center'>
+										{vacancies.map((vacancy) => (
+											<VacancyForLinking
+												key={vacancy.id}
+												vacancy={vacancy}
+												vacancyInput={vacancyInput}
+												setVacancyInput={setVacancyInput}
+											/>
+										))}
+									</div>
+								</div>
+							)}
+							{/*Candidate linking*/}
+							{candidates && candidates.length > 0 && (
+								<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300'>
+									<input type='hidden' value={candidateInput} name='candidateId' />
+									<div className='flex justify-between items-center'>
+										<div className='text-zinc-600'>{t('LinkCandidates')}:</div>
+									</div>
+									<div className='grid grid-cols-3 gap-5 justify-center'>
+										{candidates.map((candidate) => (
+											<div
+
+												key={candidate.id}
+												onClick={(event) => {
+													event.stopPropagation();
+													event.preventDefault();
+													setCandidateInput((prev) =>
+														prev === candidate.id.toString() ? '' : candidate.id.toString(),
+													);
+												}}
+											>
+												<CandidateForLinking
+													candidate={candidate}
+													isActive={candidateInput === candidate.id.toString()}
+												/>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
 							<button type='submit' id='submitButton' hidden={true}></button>
 						</form>
 					</div>

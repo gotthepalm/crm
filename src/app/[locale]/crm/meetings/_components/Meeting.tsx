@@ -2,15 +2,38 @@
 
 import Image from 'next/image';
 import { useEffect, useState } from 'react';
-import { MeetingModel } from '@/src/generated/prisma/models/Meeting';
 import Link from 'next/link';
 import EditMeetingForm from '@/src/app/[locale]/crm/meetings/_components/EditMeetingForm';
 import { useTranslations } from 'use-intl';
+import { Prisma } from '@/src/generated/prisma/client';
+import FullVacancy from '@/src/app/[locale]/crm/_components/FullVacancy';
+import FullCandidate from '@/src/app/[locale]/crm/_components/FullCandidate';
 
-export default function Meeting({ meeting }: { meeting: MeetingModel }) {
-	const t = useTranslations('MeetingCard');
-
+export default function Meeting({
+	meeting,
+}: {
+	meeting: Prisma.MeetingGetPayload<{
+		include: {
+			vacancy: {
+				select: {
+					id: true;
+					position: true;
+				};
+			};
+			candidate: {
+				select: {
+					id: true;
+					name: true;
+				};
+			};
+		};
+	}>;
+}) {
 	const [openForm, setOpenForm] = useState<boolean>(false);
+	const [openVacancy, setOpenVacancy] = useState<boolean>(false);
+	const [openCandidate, setOpenCandidate] = useState<boolean>(false);
+
+	const t = useTranslations('MeetingCard');
 
 	function handleInterviewType() {
 		switch (meeting.interviewType) {
@@ -32,57 +55,110 @@ export default function Meeting({ meeting }: { meeting: MeetingModel }) {
 	}
 
 	useEffect(() => {
-		document.body.style.overflow = openForm ? 'hidden' : '';
+		document.body.style.overflow = openForm || openVacancy || openCandidate ? 'hidden' : '';
 		return () => {
 			document.body.style.overflow = '';
 		};
-	}, [meeting.id, openForm]);
+	}, [meeting.id, openForm, openVacancy, openCandidate]);
 	return (
 		<>
 			{openForm && <EditMeetingForm setOpenForm={setOpenForm} meeting={meeting} />}
-			<article className='bg-white flex flex-col gap-3 rounded-2xl overflow-hidden text-[16px] font-medium border border-zinc-300 p-5 w-full h-full max-w-xl break-inside-avoid transition'>
-				<div className='flex flex-col gap-3 items-start text-[18px] border-b border-zinc-300 pb-5'>
-					<div className='w-full flex justify-between'>
-						<span className='flex gap-3 font-medium px-3 py-1 rounded-xl bg-violet-200'>
-							<Image src='/images/time.svg' alt='' height={24} width={24} />
-							{meeting.time}
-						</span>
-						<span className='flex gap-3 font-medium px-3 py-1 rounded-xl bg-lime-100'>
-							<Image src='/images/calendar.svg' alt='' height={24} width={24} />
-							{meeting.date}
-						</span>
+			{openVacancy && meeting.vacancy && (
+				<div
+					onClick={() => setOpenVacancy(false)}
+					className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'
+				>
+					<div onClick={(e) => e.stopPropagation()} className='max-w-200 w-full mx-auto px-5'>
+						<FullVacancy vacancyId={meeting.vacancy.id} />
 					</div>
-					<span className={`self-end text-[16px] font-medium px-3 py-1 rounded-xl ${handleInterviewType()}`}>
-						{t(`InterviewType.${meeting.interviewType}`)}
-					</span>
 				</div>
-				{meeting.note && (
-					<div className='mb-3 pb-3 text-zinc-600 border-b border-zinc-300'>
-						<span className='font-medium text-black mr-2'>{t('Note')}:</span>
-						{meeting.note}
+			)}
+			{openCandidate && meeting.candidate && (
+				<div
+					onClick={() => setOpenCandidate(false)}
+					className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'
+				>
+					<div onClick={(e) => e.stopPropagation()} className='max-w-200 w-full mx-auto px-5'>
+						<FullCandidate candidateId={meeting.candidate.id} />
 					</div>
-				)}
+				</div>
+			)}
+			<article className='bg-white flex flex-col gap-3 rounded-2xl overflow-hidden text-[16px] font-medium border border-zinc-300 p-5 w-full h-full max-w-xl break-inside-avoid transition'>
+				<div className='flex justify-between items-center text-[18px] border-b border-zinc-300 pb-5'>
+					<div className='inline-flex items-center border border-blue-300 bg-blue-100 font-medium px-4 py-1 rounded-xl component-transition'>
+						<span className='font-semibold'>{meeting.time}</span>, {meeting.date}
+					</div>
+					<div className={`text-[16px] font-medium px-3 py-1 rounded-xl ${handleInterviewType()}`}>
+						{t(`InterviewType.${meeting.interviewType}`)}
+					</div>
+				</div>
+
+				{/*Interviewers*/}
 				{meeting.interviewers.length !== 0 && (
-					<div className='flex flex-col gap-2'>
+					<div className='flex flex-col gap-2 pb-3 border-b border-zinc-300'>
+						<div className='text-zinc-600'>{t('Interviewers')}:</div>
 						{meeting.interviewers.map((value, index) => (
-							<span key={index} className='flex gap-3 font-medium w-fit px-3 py-1 rounded-xl bg-teal-100'>
+							<span
+								key={index}
+								className='flex gap-3 font-medium w-fit px-3 py-1 rounded-xl border border-zinc-300'
+							>
 								<Image src='/images/interviewers.svg' alt='' height={20} width={20} />
 								{value}
 							</span>
 						))}
 					</div>
 				)}
-				<div className='text-[16px] my-4'>
-					{meeting.url && (
-						<Link
-							className='flex items-center justify-center w-full h-15 leading-25 border border-zinc-300 rounded-xl'
-							href={meeting.url}
-							target={'_blank'}
-						>
-							{t('GoToMeeting')}
-						</Link>
-					)}
-				</div>
+
+				{/*Interviewing*/}
+				{(meeting.candidate?.name || meeting.vacancy?.position) && (
+					<div className='flex flex-col items-start gap-2 pb-3 border-b border-zinc-300'>
+						<div className='text-zinc-600'>{t('InterviewFor')}:</div>
+						<div className='inline-flex items-center'>
+							{meeting.candidate?.name && (
+								<button
+									onClick={() => setOpenCandidate(true)}
+									className='cursor-pointer inline-flex items-center component-transition gap-2 border border-violet-300
+								 bg-violet-100 hover:bg-violet-200 font-medium px-4 py-1 rounded-xl'
+								>
+									<Image src='/images/vacancy.svg' width={22} height={22} alt='' />
+									{meeting.candidate.name}
+								</button>
+							)}
+							{meeting.candidate?.name && meeting.vacancy?.position && (
+								<span className='h-[2px] w-2 bg-purple-300'></span>
+							)}
+							{meeting.vacancy?.position && (
+								<button
+									onClick={() => setOpenVacancy(true)}
+									className='cursor-pointer inline-flex items-center component-transition gap-2 border border-violet-300
+								 bg-violet-100 hover:bg-violet-200 font-medium px-4 py-1 rounded-xl'
+								>
+									<Image src='/images/vacancy.svg' width={22} height={22} alt='' />
+									{meeting.vacancy.position}
+								</button>
+							)}
+						</div>
+					</div>
+				)}
+
+				{/*Note*/}
+				{meeting.note && (
+					<div className='flex flex-col gap-2 pb-3 text-zinc-600'>
+						<span className='font-medium text-black mr-2'>{t('Note')}:</span>
+						<div className='text-[14px]'>{meeting.note}</div>
+					</div>
+				)}
+
+				{/*Url*/}
+				{meeting.url && (
+					<Link
+						className='flex items-center justify-center hover:bg-zinc-100 component-transition w-full py-3 border border-zinc-300 rounded-2xl'
+						href={meeting.url}
+						target={'_blank'}
+					>
+						{t('GoToMeeting')}
+					</Link>
+				)}
 				<div className='flex justify-end mt-auto'>
 					<button
 						className='p-1 cursor-pointer hover:bg-zinc-100 flex items-center justify-center rounded-md'

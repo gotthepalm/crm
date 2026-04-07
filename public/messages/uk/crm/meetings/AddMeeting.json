@@ -19,5 +19,7 @@
   },
   "Note": "Нотатка",
   "Interviewers": "Співбесідуючі",
-  "AddInterviewer": "Додати співбесідуючого"
+  "AddInterviewer": "Додати співбесідуючого",
+  "LinkVacancy": "Прив'язати до вакансії",
+  "LinkCandidates": "Прив'язати до кандидата"
 }

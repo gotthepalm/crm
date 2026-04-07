@@ -7,22 +7,38 @@ import { ActionState, editVacancy } from '@/src/app/[locale]/crm/vacancies/_acti
 import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
 import { deleteVacancy } from '@/src/app/[locale]/crm/vacancies/_actions/deleteVacancyAction';
-import { getCandidates } from '@/src/app/[locale]/crm/vacancies/_actions/getCandidatesAction';
-import CandidateForLinking from '@/src/app/[locale]/crm/vacancies/_components/CandidateForLinking';
+import { getCandidates } from '@/src/app/[locale]/crm/_actions/getCandidatesAction';
+import CandidateForLinking from '@/src/app/[locale]/crm/_components/CandidateForLinking';
 import { Prisma } from '@/src/generated/prisma/client';
 
 export default function EditVacancyForm({
 	setOpenForm,
 	vacancy,
-	isVacancyModal,
 }: {
 	setOpenForm: Dispatch<SetStateAction<boolean>>;
 	vacancy: VacancyModel;
-	isVacancyModal: boolean;
 }) {
-	const [candidates, setCandidates] = useState<Prisma.CandidateGetPayload<{ include: { vacancy: true } }>[] | null>(
-		null,
-	);
+	const [candidates, setCandidates] = useState<
+		| Prisma.CandidateGetPayload<{
+				include: {
+					vacancy: {
+						select: {
+							position: true;
+						};
+					};
+					meetings: {
+						select: {
+							id: true;
+							time: true;
+							date: true;
+							interviewType: true;
+						};
+					};
+				};
+		  }>[]
+		| null
+	>(null);
+	const [isSelectedCandidates, setIsSelectedCandidates] = useState<{ [id: number]: boolean }>({});
 
 	const router = useRouter();
 	const t = useTranslations('AddVacancy');
@@ -35,13 +51,6 @@ export default function EditVacancyForm({
 		}
 		return state;
 	}, null);
-
-	const isValidationError = state?.result === 'validation-error';
-
-	// Candidates that linked to this vacancy
-	const candidatesLinked = candidates
-		?.filter((candidate) => candidate.vacancyId === vacancy.id)
-		.map((candidate) => candidate.id);
 
 	function getValue(name: keyof VacancyModel) {
 		// If editVacancy returned 'validation-error', get values from editVacancy
@@ -62,13 +71,14 @@ export default function EditVacancyForm({
 		getCandidates().then((value) => {
 			if (value?.userCrm?.candidates) {
 				setCandidates(value.userCrm.candidates);
+				setIsSelectedCandidates(
+					Object.fromEntries(value?.userCrm?.candidates?.map((c) => [c.id, c.vacancyId === vacancy.id])),
+				);
 			}
 		});
-	}, []);
+	}, [vacancy.id]);
 	return (
-		<div
-			className={`${!isVacancyModal && 'backdrop-blur-sm bg-black/50'} fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center`}
-		>
+		<div className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
 			<div className='max-w-[1600px] w-full h-[90%] mx-auto px-5'>
 				<div className='h-full bg-white rounded-2xl px-30 py-10'>
 					<div className='h-full w-full overflow-y-scroll flex flex-col items-center pr-10'>
@@ -109,7 +119,7 @@ export default function EditVacancyForm({
 											defaultValue={getValue('position')}
 										/>
 									</div>
-									{isValidationError &&
+									{state?.result === 'validation-error' &&
 										state.errors.position?.map((err, index) => (
 											<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
 												{err}
@@ -151,7 +161,7 @@ export default function EditVacancyForm({
 													$
 												</div>
 											</div>
-											{isValidationError &&
+											{state?.result === 'validation-error' &&
 												state.errors.salaryFrom?.map((err, index) => (
 													<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
 														{err}
@@ -171,7 +181,7 @@ export default function EditVacancyForm({
 													$
 												</div>
 											</div>
-											{isValidationError &&
+											{state?.result === 'validation-error' &&
 												state.errors.salaryTo?.map((err, index) => (
 													<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
 														{err}
@@ -193,7 +203,7 @@ export default function EditVacancyForm({
 											{t('Years')}
 										</div>
 									</div>
-									{isValidationError &&
+									{state?.result === 'validation-error' &&
 										state.errors.namexperienceYearse?.map((err, index) => (
 											<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
 												{err}
@@ -214,7 +224,7 @@ export default function EditVacancyForm({
 											<option value='CLOSED'>{t('Option.CLOSED')}</option>
 										</select>
 									</div>
-									{isValidationError &&
+									{state?.result === 'validation-error' &&
 										state.errors.status?.map((err, index) => (
 											<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
 												{err}
@@ -235,7 +245,7 @@ export default function EditVacancyForm({
 											<option value='INTERNSHIP'>{t('Option.INTERNSHIP')}</option>
 										</select>
 									</div>
-									{isValidationError &&
+									{state?.result === 'validation-error' &&
 										state.errors.employmentType?.map((err, index) => (
 											<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
 												{err}
@@ -251,11 +261,32 @@ export default function EditVacancyForm({
 									</div>
 									<div className='grid grid-cols-3 gap-5 justify-center'>
 										{candidates.map((candidate) => (
-											<CandidateForLinking
+											<div
+												onClick={(event) => {
+													event.stopPropagation();
+													event.preventDefault();
+													setIsSelectedCandidates((prev) =>
+														!prev[candidate.id] && prev[candidate.id] !== undefined
+															? { ...prev, [candidate.id]: true }
+															: { ...prev, [candidate.id]: false },
+													);
+												}}
 												key={candidate.id}
-												candidate={candidate}
-												candidatesLinked={candidatesLinked}
-											/>
+											>
+												<input
+													type='hidden'
+													name='candidates'
+													value={
+														isSelectedCandidates[candidate.id]
+															? candidate.id.toString()
+															: ''
+													}
+												/>
+												<CandidateForLinking
+													candidate={candidate}
+													isActive={isSelectedCandidates[candidate.id]}
+												/>
+											</div>
 										))}
 									</div>
 								</div>

@@ -6,20 +6,37 @@ import { useTranslations } from 'use-intl';
 import { CandidateModel } from '@/src/generated/prisma/models/Candidate';
 import { useRouter } from 'next/navigation';
 import { deleteCandidate } from '@/src/app/[locale]/crm/candidates/_actions/deleteCandidateAction';
-import VacancyForLinking from '@/src/app/[locale]/crm/candidates/_components/VacancyForLinking';
-import { getVacancies } from '@/src/app/[locale]/crm/candidates/_actions/getVacanciesAction';
-import { VacancyModel } from '@/src/generated/prisma/models/Vacancy';
+import VacancyForLinking from '@/src/app/[locale]/crm/_components/VacancyForLinking';
+import { getVacancies } from '@/src/app/[locale]/crm/_actions/getVacanciesAction';
+import { Prisma } from '@/src/generated/prisma/client';
 
 export default function EditCandidateForm({
 	setOpenForm,
 	candidate,
-	isCandidateModal
 }: {
 	setOpenForm: Dispatch<SetStateAction<boolean>>;
 	candidate: CandidateModel;
-	isCandidateModal: boolean;
 }) {
-	const [vacancies, setVacancies] = useState<VacancyModel[] | null>(null);
+	const [vacancies, setVacancies] = useState<
+		| Prisma.VacancyGetPayload<{
+				include: {
+					candidates: {
+						select: {
+							name: true;
+						};
+					};
+					meetings: {
+						select: {
+							id: true;
+							time: true;
+							date: true;
+							interviewType: true;
+						};
+					};
+				};
+		  }>[]
+		| null
+	>(null);
 	const [vacancyInput, setVacancyInput] = useState<string>(candidate.vacancyId ? candidate.vacancyId.toString() : '');
 
 	const router = useRouter();
@@ -58,11 +75,7 @@ export default function EditCandidateForm({
 	}, []);
 
 	return (
-		<div
-			className={
-				`${!isCandidateModal && 'backdrop-blur-sm bg-black/50'} fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center`
-			}
-		>
+		<div className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
 			<div className='max-w-[1600px] w-full h-[90%] mx-auto px-5'>
 				<div className='h-full bg-white rounded-2xl px-30 py-10'>
 					<div className='h-full w-full overflow-y-scroll flex flex-col items-center pr-10'>

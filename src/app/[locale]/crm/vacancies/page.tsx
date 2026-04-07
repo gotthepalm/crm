@@ -19,10 +19,19 @@ export default async function Candidates() {
 					vacancies: {
 						include: {
 							candidates: {
-								orderBy: {
-									id: 'desc',
+								select: {
+									id: true,
+									name: true,
 								},
 							},
+							meetings: {
+								select: {
+									id: true,
+									time: true,
+									date: true,
+									interviewType: true
+								}
+							}
 						},
 						orderBy: {
 							id: 'desc',

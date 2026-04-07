@@ -6,17 +6,36 @@ import { useEffect, useState } from 'react';
 import EditCandidateForm from '@/src/app/[locale]/crm/candidates/_components/EditCandidateForm';
 import Link from 'next/link';
 import { Prisma } from '@/src/generated/prisma/client';
-import VacancyInCandidate from '@/src/app/[locale]/crm/candidates/_components/VacancyInCandidate';
+import FullVacancy from '@/src/app/[locale]/crm/_components/FullVacancy';
+import FullMeeting from '@/src/app/[locale]/crm/_components/FullMeeting';
 
 export default function Candidate({
 	candidate,
 }: {
-	candidate: Prisma.CandidateGetPayload<{ include: { vacancy: true } }>;
+	candidate: Prisma.CandidateGetPayload<{
+		include: {
+			vacancy: {
+				select: {
+					id: true;
+					position: true;
+				};
+			};
+			meetings: {
+				select: {
+					id: true;
+					time: true;
+					date: true;
+					interviewType: true;
+				};
+			};
+		};
+	}>;
 }) {
 	const [openForm, setOpenForm] = useState<boolean>(false);
 	const [openVacancy, setOpenVacancy] = useState<boolean>(false);
-
+	const [openMeeting, setOpenMeeting] = useState<false | number>(false);
 	const t = useTranslations('CandidateCard');
+
 	function handleStatus() {
 		switch (candidate.status) {
 			case 'NEW':
@@ -37,24 +56,31 @@ export default function Candidate({
 	}
 
 	useEffect(() => {
-		document.body.style.overflow = openForm ? 'hidden' : '';
+		document.body.style.overflow = openForm || openVacancy || openMeeting ? 'hidden' : '';
 		return () => {
 			document.body.style.overflow = '';
 		};
-	}, [candidate.id, openForm]);
+	}, [candidate.id, openForm, openVacancy, openMeeting]);
 	return (
 		<>
-			{openForm && <EditCandidateForm setOpenForm={setOpenForm} candidate={candidate} isCandidateModal={false}/>}
+			{openForm && <EditCandidateForm setOpenForm={setOpenForm} candidate={candidate} />}
 			{openVacancy && candidate.vacancy && (
 				<div
 					onClick={() => setOpenVacancy(false)}
 					className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'
 				>
-					<div
-						onClick={(e) => e.stopPropagation()}
-						className='max-w-200 w-full mx-auto px-5'
-					>
-						<VacancyInCandidate vacancy={candidate.vacancy} />
+					<div onClick={(e) => e.stopPropagation()} className='max-w-200 w-full mx-auto px-5'>
+						<FullVacancy vacancyId={candidate.vacancy.id} />
+					</div>
+				</div>
+			)}
+			{openMeeting !== false && (
+				<div
+					onClick={() => setOpenMeeting(false)}
+					className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'
+				>
+					<div onClick={(e) => e.stopPropagation()} className='max-w-200 w-full mx-auto px-5'>
+						<FullMeeting meetingId={openMeeting} />
 					</div>
 				</div>
 			)}
@@ -63,29 +89,48 @@ export default function Candidate({
 			 	p-5 flex flex-col text-zinc-500 text-[16px] font-medium'
 			>
 				{/*Header*/}
-				<div className='flex text-black justify-between items-start mb-3 pb-3 border-b border-zinc-300'>
-					<div>
-						<h3 className='text-2xl font-semibold mb-2'>{candidate.name}</h3>
-						{candidate?.vacancy?.position ? (
-							<button
-								onClick={() => setOpenVacancy(true)}
-								className='inline-flex items-center component-transition gap-2 border border-violet-300 bg-violet-100 hover:bg-violet-200 font-medium px-4 py-1 rounded-xl'
-							>
-								<Image src='/images/vacancy-black.svg' width={22} height={22} alt='' />
-								{candidate.vacancy.position}
-							</button>
-						) : (
-							candidate.position && (
-								<div className='inline-flex items-center gap-2 font-medium bg-violet-100 px-4 py-1 rounded-xl'>
-									{candidate.position}
-								</div>
-							)
-						)}
+				<div className='flex items-start text-black flex-col gap-2 border-b border-zinc-300 mb-3 pb-3'>
+					<div className='flex items-center justify-between w-full'>
+						<h3 className='text-2xl font-semibold'>{candidate.name}</h3>
+						<span className={`text-black text-sm font-medium px-3 py-1 rounded-full ${handleStatus()}`}>
+							{t(`Status.${candidate.status}`)}
+						</span>
 					</div>
-					<span className={`text-black text-sm font-medium px-3 py-1 rounded-full ${handleStatus()}`}>
-						{t(`Status.${candidate.status}`)}
-					</span>
+					{candidate?.vacancy?.position ? (
+						<button
+							onClick={() => setOpenVacancy(true)}
+							className='cursor-pointer inline-flex items-center component-transition gap-2 border border-violet-300
+								 bg-violet-100 hover:bg-violet-200 font-medium px-4 py-1 rounded-xl'
+						>
+							<Image src='/images/vacancy.svg' width={22} height={22} alt='' />
+							{candidate.vacancy.position}
+						</button>
+					) : (
+						candidate.position && (
+							<div className='inline-flex items-center gap-2 font-medium bg-violet-100 px-4 py-1 rounded-xl'>
+								{candidate.position}
+							</div>
+						)
+					)}
 				</div>
+				{candidate.meetings.length !== 0 && (
+					<div className='flex flex-col items-start text-black gap-2 border-b border-zinc-300 mb-3 pb-3'>
+						{candidate.meetings.map((meeting) => (
+							<button
+								onClick={() => setOpenMeeting(meeting.id)}
+								className='cursor-pointer inline-flex items-center component-transition gap-2 border border-blue-300
+								 bg-blue-100 hover:bg-blue-200 font-medium px-4 py-1 rounded-xl'
+								key={meeting.id}
+							>
+								<Image src='/images/adaptive_audio_mic.svg' width={22} height={22} alt='' />
+								{meeting.time}, {meeting.date}
+								<span className='text-zinc-600 text-sm font-semibold'>
+									| {t(`InterviewType.${meeting.interviewType}`)}
+								</span>
+							</button>
+						))}
+					</div>
+				)}
 				{/*Info & links*/}
 				{(candidate.age ||
 					candidate.email ||

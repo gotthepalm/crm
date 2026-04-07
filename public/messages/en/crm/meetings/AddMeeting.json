@@ -19,5 +19,7 @@
   },
   "Note": "Note",
   "Interviewers": "Interviewers",
-  "AddInterviewer": "Add interviewer"
+  "AddInterviewer": "Add interviewer",
+  "LinkVacancy": "Link to vacancy",
+  "LinkCandidates": "Link to candidate"
 }

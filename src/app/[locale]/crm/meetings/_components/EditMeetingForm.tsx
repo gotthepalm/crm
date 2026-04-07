@@ -1,6 +1,6 @@
 'use client';
 
-import { Dispatch, SetStateAction, useState } from 'react';
+import { Dispatch, SetStateAction, useEffect, useState } from 'react';
 import { useTranslations } from 'use-intl';
 import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -8,16 +8,87 @@ import { MeetingModel } from '@/src/generated/prisma/models/Meeting';
 import deleteMeeting from '@/src/app/[locale]/crm/meetings/_actions/deleteMeetingAction';
 import { ActionState, editMeeting } from '@/src/app/[locale]/crm/meetings/_actions/editMeetingAction';
 import Image from 'next/image';
+import VacancyForLinking from '@/src/app/[locale]/crm/_components/VacancyForLinking';
+import CandidateForLinking from '@/src/app/[locale]/crm/_components/CandidateForLinking';
+import { getVacancies } from '@/src/app/[locale]/crm/_actions/getVacanciesAction';
+import { getCandidates } from '@/src/app/[locale]/crm/_actions/getCandidatesAction';
+import { Prisma } from '@/src/generated/prisma/client';
 
 export default function EditMeetingForm({
 	setOpenForm,
 	meeting,
 }: {
 	setOpenForm: Dispatch<SetStateAction<boolean>>;
-	meeting: MeetingModel;
+	meeting: Prisma.MeetingGetPayload<{
+		include: {
+			vacancy: {
+				select: {
+					position: true;
+				};
+			};
+			candidate: {
+				select: {
+					name: true;
+				};
+			};
+		};
+	}>;
 }) {
+	const [vacancies, setVacancies] = useState<
+		| Prisma.VacancyGetPayload<{
+				include: {
+					candidates: {
+						select: {
+							name: true;
+						};
+					};
+					meetings: {
+						select: {
+							id: true;
+							time: true;
+							date: true;
+							interviewType: true;
+						};
+					};
+				};
+		  }>[]
+		| null
+	>(null);
+	const [candidates, setCandidates] = useState<
+		| Prisma.CandidateGetPayload<{
+				include: {
+					vacancy: {
+						select: {
+							position: true;
+						};
+					};
+					meetings: {
+						select: {
+							id: true;
+							time: true;
+							date: true;
+							interviewType: true;
+						};
+					};
+				};
+		  }>[]
+		| null
+	>(null);
+	const [vacancyInput, setVacancyInput] = useState<string>(meeting.vacancyId ? meeting.vacancyId.toString() : '');
+	const [candidateInput, setCandidateInput] = useState<string>(
+		meeting.candidateId ? meeting.candidateId.toString() : '',
+	);
+
+	const [interviewers, setInterviewers] = useState(() => {
+		if (meeting?.interviewers?.length) {
+			return meeting.interviewers.map((_, index) => index);
+		}
+		return [0];
+	});
+
 	const t = useTranslations('AddMeeting');
 	const router = useRouter();
+
 	const [state, action] = useActionState<ActionState | null, FormData>(async (_prev, formData) => {
 		const state = await editMeeting(formData, meeting.id);
 		if (state.result === 'success') {
@@ -27,15 +98,22 @@ export default function EditMeetingForm({
 		return state;
 	}, null);
 
-	const isValidationError = state?.result === 'validation-error';
+	const addInterviewer = () => {
+		setInterviewers([...interviewers, interviewers.length]);
+	};
+	const deleteInterviewer = (id: number) => {
+		setInterviewers((prev) => prev.filter((i) => i !== id));
+	};
 
 	function getValue(name: keyof MeetingModel) {
+		// If editMeeting aren't returned 'validation-error', get values from meeting prop
 		if (state?.result !== 'validation-error') {
 			const v = meeting[name];
 
 			if (v === undefined || v === null) return undefined;
 			return v.toString();
 		}
+		// Else, get values from editMeeting
 		const v = state.values[name];
 
 		if (v === undefined || v === null) return undefined;
@@ -43,6 +121,7 @@ export default function EditMeetingForm({
 	}
 
 	function getInterviewerValue(index: number) {
+		// If editMeeting aren't returned 'validation-error', get values from meeting prop
 		if (state?.result !== 'validation-error') {
 			const v = meeting.interviewers;
 
@@ -51,6 +130,7 @@ export default function EditMeetingForm({
 			const value = v[index];
 			return value !== undefined ? value.toString() : undefined;
 		}
+		// Else, get values from editMeeting
 		const v = state.values.interviewers;
 
 		if (!Array.isArray(v)) return undefined;
@@ -59,47 +139,48 @@ export default function EditMeetingForm({
 		return value !== undefined ? value.toString() : undefined;
 	}
 
-	const [interviewers, setInterviewers] = useState(() => {
-		if (meeting?.interviewers?.length) {
-			return meeting.interviewers.map((_, index) => index);
-		}
-		return [0];
-	});
-
-	const addInterviewer = () => {
-		setInterviewers([...interviewers, interviewers.length]);
-	};
-
-	const deleteInterviewer = (id: number) => {
-		setInterviewers((prev) => prev.filter((i) => i !== id));
-	};
-
+	useEffect(() => {
+		getVacancies().then((value) => {
+			if (value?.userCrm?.vacancies) {
+				setVacancies(value.userCrm.vacancies);
+			}
+		});
+		getCandidates().then((value) => {
+			if (value?.userCrm?.candidates) {
+				setCandidates(value.userCrm.candidates);
+			}
+		});
+	}, []);
 	return (
 		<div className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
 			<div className='max-w-[1600px] w-full h-[90%] mx-auto px-5'>
 				<div className='h-full bg-white rounded-2xl px-30 py-10'>
 					<div className='h-full w-full overflow-y-scroll flex flex-col items-center pr-10'>
-						<div className='w-full flex items-center justify-between pb-5 mb-10'>
-							<h2 className='text-3xl font-medium text-center'>{t('EditFormTitle')}</h2>
-							{state?.result === 'db-error' && <div className='text-red-500'>database error</div>}
-							<div className='flex items-center gap-8'>
-								<label
-									htmlFor='submitButton'
-									className='cursor-pointer text-white bg-violet-600 hover:bg-violet-700 transition-colors duration-200 px-6
+						<div className='w-full pb-5 mb-10'>
+							<div className='w-full flex items-center justify-between'>
+								<h2 className='text-3xl font-medium text-center'>{t('EditFormTitle')}</h2>
+								<div className='flex items-center gap-8'>
+									<label
+										htmlFor='submitButton'
+										className='cursor-pointer text-white bg-violet-600 hover:bg-violet-700 transition-colors duration-200 px-6
 										py-2 rounded-2xl text-lg flex items-center font-medium gap-2'
-								>
-									{t('Save')}
-								</label>
-								<button
-									onClick={() => setOpenForm(false)}
-									className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
+									>
+										{t('Save')}
+									</label>
+									<button
+										onClick={() => setOpenForm(false)}
+										className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
 								py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
-								>
-									{t('Cancel')}
-								</button>
+									>
+										{t('Cancel')}
+									</button>
+								</div>
 							</div>
+							{state?.result === 'invalid-vacancy' && <div className='text-red-500'>invalid vacancy</div>}
+							{state?.result === 'invalid-candidate' && <div className='text-red-500'>invalid candidate</div>}
+							{state?.result === 'db-error' && <div className='text-red-500'>database error</div>}
 						</div>
-						<form action={action} className='flex flex-col gap-3.5 mt-10 w-full'>
+						<form action={action} className='flex flex-col gap-3.5 mb-10 w-full'>
 							<div className='grid grid-cols-2 justify-between gap-8 mb-5'>
 								<div className='flex flex-col justify-baseline items-baseline gap-2'>
 									<div className='w-full flex items-center justify-between text-zinc-600'>
@@ -111,7 +192,7 @@ export default function EditMeetingForm({
 											defaultValue={getValue('date')}
 										/>
 									</div>
-									{isValidationError && state.errors.date && (
+									{state?.result === 'validation-error' && state.errors.date && (
 										<div className='text-[14px] h-[14px] text-red-500 mt-2'>
 											{state.errors.interviewType}
 										</div>
@@ -127,7 +208,7 @@ export default function EditMeetingForm({
 											defaultValue={getValue('time')}
 										/>
 									</div>
-									{isValidationError && state.errors.time && (
+									{state?.result === 'validation-error' && state.errors.time && (
 										<div className='text-[14px] h-[14px] text-red-500 mt-2'>
 											{state.errors.interviewType}
 										</div>
@@ -143,7 +224,7 @@ export default function EditMeetingForm({
 											defaultValue={getValue('url')}
 										/>
 									</div>
-									{isValidationError && state.errors.url && (
+									{state?.result === 'validation-error' && state.errors.url && (
 										<div className='text-[14px] h-[14px] text-red-500 mt-2'>
 											{state.errors.interviewType}
 										</div>
@@ -168,7 +249,7 @@ export default function EditMeetingForm({
 										</select>
 									</div>
 									<div className='text-[14px] h-[14px] text-red-500'>
-										{isValidationError && state.errors.interviewType && (
+										{state?.result === 'validation-error' && state.errors.interviewType && (
 											<div className='text-[14px] h-[14px] text-red-500 mt-2'>
 												{state.errors.interviewType}
 											</div>
@@ -196,7 +277,7 @@ export default function EditMeetingForm({
 															name='interviewers'
 															defaultValue={getInterviewerValue(interviewerId)}
 														/>
-														{isValidationError &&
+														{state?.result === 'validation-error' &&
 															state.errors.interviewers?.[interviewerId] && (
 																<div className='text-[14px] h-[14px] text-red-500 my-2'>
 																	{state.errors.interviewers?.[interviewerId]}
@@ -227,6 +308,53 @@ export default function EditMeetingForm({
 									</button>
 								</div>
 							</div>
+							{/*Vacancy linking*/}
+							{vacancies && vacancies.length > 0 && (
+								<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300'>
+									<input type='hidden' value={vacancyInput} name='vacancyId' />
+									<div className='flex justify-between items-center'>
+										<div className='text-zinc-600'>{t('LinkVacancy')}:</div>
+									</div>
+									<div className='grid grid-cols-3 gap-5 items-center justify-center'>
+										{vacancies.map((vacancy) => (
+											<VacancyForLinking
+												key={vacancy.id}
+												vacancy={vacancy}
+												vacancyInput={vacancyInput}
+												setVacancyInput={setVacancyInput}
+											/>
+										))}
+									</div>
+								</div>
+							)}
+							{/*Candidate linking*/}
+							{candidates && candidates.length > 0 && (
+								<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300'>
+									<input type='hidden' value={candidateInput} name='candidateId' />
+									<div className='flex justify-between items-center'>
+										<div className='text-zinc-600'>{t('LinkCandidates')}:</div>
+									</div>
+									<div className='grid grid-cols-3 gap-5 justify-center'>
+										{candidates.map((candidate) => (
+											<div
+												key={candidate.id}
+												onClick={(event) => {
+													event.stopPropagation();
+													event.preventDefault();
+													setCandidateInput((prev) =>
+														prev === candidate.id.toString() ? '' : candidate.id.toString(),
+													);
+												}}
+											>
+												<CandidateForLinking
+													candidate={candidate}
+													isActive={candidateInput === candidate.id.toString()}
+												/>
+											</div>
+										))}
+									</div>
+								</div>
+							)}
 							<button type='submit' id='submitButton' hidden={true}></button>
 						</form>
 						<form

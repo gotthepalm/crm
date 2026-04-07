@@ -14,10 +14,24 @@ export default async function Meetings() {
 
 	const user = await prisma.user.findUnique({
 		where: { id: session.user.id },
-		include: {
+		select: {
 			userCrm: {
-				include: {
+				select: {
 					meetings: {
+						include: {
+							vacancy: {
+								select: {
+									id: true,
+									position: true
+								}
+							},
+							candidate: {
+								select: {
+									id: true,
+									name: true
+								}
+							}
+						},
 						orderBy: {
 							id: 'desc',
 						},
