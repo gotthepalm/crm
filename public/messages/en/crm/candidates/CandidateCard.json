@@ -8,6 +8,15 @@
     "HIRED": "Hired",
     "REJECTED":  "Rejected"
   },
+  "InterviewType": {
+    "HR": "HR Interview",
+    "TECH": "Tech Interview",
+    "LIVE_CODING": "Live Coding",
+    "SYSTEM_DESIGN": "System Design",
+    "BEHAVIORAL": "Behavioral Interview",
+    "FINAL": "Final Interview",
+    "OTHER": "Other"
+  },
   "Experience": "Experience",
   "Years": "years",
   "Salary": "Salary",

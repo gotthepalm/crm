@@ -4,5 +4,7 @@
   "InterviewTypeRequired": "Interview type is required",
   "InvalidUrl": "Invalid url",
   "FillInput": "Fill in the input",
-  "LongValue": "Too long value"
+  "LongValue": "Too long value",
+  "SmallValue": "Too small value",
+  "BigValue": "Too big value"
 }

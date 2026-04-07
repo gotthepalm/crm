@@ -8,12 +8,31 @@ import { ActionState, createCandidate } from '@/src/app/[locale]/crm/candidates/
 import { useRouter } from 'next/navigation';
 import LanguageSwitcher from '@/src/components/LanguageSwitcher';
 import { useTranslations } from 'use-intl';
-import { getVacancies } from '@/src/app/[locale]/crm/candidates/_actions/getVacanciesAction';
-import { VacancyModel } from '@/src/generated/prisma/models/Vacancy';
-import VacancyForLinking from '@/src/app/[locale]/crm/candidates/_components/VacancyForLinking';
+import { getVacancies } from '@/src/app/[locale]/crm/_actions/getVacanciesAction';
+import VacancyForLinking from '@/src/app/[locale]/crm/_components/VacancyForLinking';
+import { Prisma } from '@/src/generated/prisma/client';
 
 export default function CandidatesAdd() {
-	const [vacancies, setVacancies] = useState<VacancyModel[] | null>(null);
+	const [vacancies, setVacancies] = useState<
+		| Prisma.VacancyGetPayload<{
+		include: {
+			candidates: {
+				select: {
+					name: true;
+				};
+			};
+			meetings: {
+				select: {
+					id: true;
+					time: true;
+					date: true;
+					interviewType: true;
+				};
+			};
+		};
+	}>[]
+		| null
+	>(null);
 	const [vacancyInput, setVacancyInput] = useState<string>('');
 
 	const router = useRouter();

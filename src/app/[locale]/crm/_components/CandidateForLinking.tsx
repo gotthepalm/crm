@@ -2,19 +2,32 @@
 
 import Image from 'next/image';
 import { useTranslations } from 'use-intl';
-import { useState } from 'react';
 import Link from 'next/link';
 import { Prisma } from '@/src/generated/prisma/client';
 
 export default function CandidateForLinking({
 	candidate,
-	candidatesLinked
+	isActive,
 }: {
-	candidate: Prisma.CandidateGetPayload<{ include: { vacancy: true } }>;
-	candidatesLinked?: number[] | undefined
+	candidate: Prisma.CandidateGetPayload<{
+		include: {
+			vacancy: {
+				select: {
+					position: true;
+				};
+			};
+			meetings: {
+				select: {
+					id: true;
+					time: true;
+					date: true;
+					interviewType: true;
+				};
+			};
+		};
+	}>;
+	isActive: boolean
 }) {
-	const isLinked = candidatesLinked?.includes(candidate.id)
-	const [isSelected, setIsSelected] = useState<boolean>(isLinked !== undefined && isLinked)
 	const t = useTranslations('CandidateCard');
 	function handleStatus() {
 		switch (candidate.status) {
@@ -36,38 +49,51 @@ export default function CandidateForLinking({
 	}
 	return (
 		<div
-			onClick={(event) => {
-				event.stopPropagation();
-				event.preventDefault();
-				setIsSelected((prev) => !prev);
-			}}
-			className={`${isSelected ? 'bg-violet-100 border-violet-300' : 'bg-white border-zinc-300'} component-transition w-full max-w-[480px] border rounded-2xl p-5 flex flex-col text-zinc-500 text-[16px] font-medium cursor-pointer select-none`}
+			className={`${isActive ? 'bg-violet-100 border-violet-300' : 'bg-white border-zinc-300'} component-transition h-full
+			 w-full border rounded-2xl p-5 flex flex-col text-zinc-500 text-[16px] font-medium cursor-pointer select-none`}
 		>
-			<input type='hidden' name='candidates' value={isSelected ? candidate.id.toString() : ''} />
 			{/*Header*/}
 			<div className='flex text-black justify-between items-start mb-3 pb-3 border-b border-zinc-300'>
 				<div>
 					<h3 className='text-2xl font-semibold mb-2'>{candidate.name}</h3>
 					{candidate?.vacancy?.position ? (
-						<Link
-							href={`/crm/vacancies`}
-							className={`${isSelected ? 'bg-violet-200' : 'bg-violet-100'} component-transition inline-flex items-center gap-2 border border-violet-300 font-medium px-4 py-1 rounded-xl`}
+						<div
+							className={`${isActive ? 'bg-violet-200' : 'bg-violet-100'} flex gap-3
+							 font-medium px-3 py-1 rounded-xl border border-violet-300 component-transition`}
 						>
-							<Image src='/images/vacancy-black.svg' width={22} height={22} alt='' />
+							<Image src='/images/vacancy.svg' width={22} height={22} alt='' />
 							{candidate.vacancy.position}
-						</Link>
+						</div>
 					) : (
 						candidate.position && (
-							<div className={`${isSelected ? 'bg-violet-200' : 'bg-violet-100'} component-transition inline-flex items-center gap-2 font-medium px-4 py-1 rounded-xl`}>
+							<div className={`${isActive ? 'bg-violet-200' : 'bg-violet-100'} flex gap-3
+							 font-medium px-3 py-1 rounded-xl component-transition`}>
 								{candidate.position}
 							</div>
 						)
 					)}
 				</div>
-				<span className={`text-black text-sm font-medium px-3 py-1 rounded-full border ${handleStatus()}`}>
+				<span className={`text-black text-sm font-medium px-3 py-1 rounded-full ${handleStatus()}`}>
 					{t(`Status.${candidate.status}`)}
 				</span>
 			</div>
+			{candidate.meetings.length !== 0 && (
+				<div className='flex flex-col items-start text-black gap-2 border-b border-zinc-300 mb-3 pb-3'>
+					{candidate.meetings.map((meeting) => (
+						<div
+							className={`${isActive ? 'bg-blue-200' : 'bg-blue-100'}
+							 inline-flex items-center gap-2 border border-blue-300 bg-blue-100 font-medium px-4 py-1 rounded-xl component-transition`}
+							key={meeting.id}
+						>
+							<Image src='/images/adaptive_audio_mic.svg' width={22} height={22} alt='' />
+							{meeting.time}, {meeting.date}
+							<span className='text-zinc-600 text-sm font-semibold'>
+								| {t(`InterviewType.${meeting.interviewType}`)}
+							</span>
+						</div>
+					))}
+				</div>
+			)}
 			{/*Info & links*/}
 			{(candidate.age ||
 				candidate.email ||

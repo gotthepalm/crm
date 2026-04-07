@@ -11,6 +11,9 @@ import { getTranslations } from 'next-intl/server';
 export default async function Candidates() {
 	const session = await auth();
 	if (!session?.user) redirect('/');
+
+	const t = await getTranslations('Candidates');
+
 	const user = await prisma.user.findUnique({
 		where: { id: session?.user?.id },
 		select: {
@@ -18,7 +21,20 @@ export default async function Candidates() {
 				select: {
 					candidates: {
 						include: {
-							vacancy: true,
+							vacancy: {
+								select: {
+									id: true,
+									position: true
+								}
+							},
+							meetings: {
+								select: {
+									id: true,
+									time: true,
+									date: true,
+									interviewType: true
+								}
+							}
 						},
 						orderBy: {
 							id: 'desc',
@@ -28,7 +44,6 @@ export default async function Candidates() {
 			},
 		},
 	});
-	const t = await getTranslations('Candidates');
 	return (
 		<>
 			<CrmHeader>

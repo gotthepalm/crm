@@ -54,7 +54,6 @@ export async function createCandidate(formData: FormData) {
 	// Checking session
 
 	const session = await auth();
-
 	if (!session?.user) {
 		return { result: 'no-session' } satisfies ActionState;
 	}

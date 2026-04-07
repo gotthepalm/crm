@@ -8,14 +8,31 @@ import { useTranslations } from 'use-intl';
 import { ActionState, createVacancy } from '@/src/app/[locale]/crm/vacancies/_actions/createVacancyAction';
 import { useActionState, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
-import CandidateForLinking from '@/src/app/[locale]/crm/vacancies/_components/CandidateForLinking';
+import CandidateForLinking from '@/src/app/[locale]/crm/_components/CandidateForLinking';
 import { Prisma } from '@/src/generated/prisma/client';
-import { getCandidates } from '@/src/app/[locale]/crm/vacancies/_actions/getCandidatesAction';
+import { getCandidates } from '@/src/app/[locale]/crm/_actions/getCandidatesAction';
 
 export default function VacanciesAdd() {
-	const [candidates, setCandidates] = useState<Prisma.CandidateGetPayload<{ include: { vacancy: true } }>[] | null>(
+	const [candidates, setCandidates] = useState<Prisma.CandidateGetPayload<{
+		include: {
+			vacancy: {
+				select: {
+					position: true;
+				};
+			};
+			meetings: {
+				select: {
+					id: true;
+					time: true;
+					date: true;
+					interviewType: true;
+				};
+			};
+		};
+	}>[] | null>(
 		null,
 	);
+	const [isSelectedCandidates, setIsSelectedCandidates] = useState<{ [id: number]: boolean }>({});
 
 	const router = useRouter();
 	const t = useTranslations('AddVacancy');
@@ -27,9 +44,6 @@ export default function VacanciesAdd() {
 		}
 		return state;
 	}, null);
-
-	const isValidationError = state?.result === 'validation-error';
-
 
 	function getValue(name: string) {
 		if (state?.result !== 'validation-error') return undefined;
@@ -44,6 +58,9 @@ export default function VacanciesAdd() {
 		getCandidates().then((value) => {
 			if (value?.userCrm?.candidates) {
 				setCandidates(value.userCrm.candidates);
+				setIsSelectedCandidates(
+					Object.fromEntries(value?.userCrm?.candidates?.map((c) => [c.id, false])),
+				);
 			}
 		});
 	}, []);
@@ -91,7 +108,7 @@ export default function VacanciesAdd() {
 											defaultValue={getValue('position')}
 										/>
 									</div>
-									{isValidationError &&
+									{state?.result === 'validation-error' &&
 										state.errors.position?.map((err, index) => (
 											<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
 												{err}
@@ -131,7 +148,7 @@ export default function VacanciesAdd() {
 													$
 												</div>
 											</div>
-											{isValidationError &&
+											{state?.result === 'validation-error' &&
 												state.errors.salaryFrom?.map((err, index) => (
 													<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
 														{err}
@@ -151,7 +168,7 @@ export default function VacanciesAdd() {
 													$
 												</div>
 											</div>
-											{isValidationError &&
+											{state?.result === 'validation-error' &&
 												state.errors.salaryTo?.map((err, index) => (
 													<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
 														{err}
@@ -173,7 +190,7 @@ export default function VacanciesAdd() {
 											{t('Years')}
 										</div>
 									</div>
-									{isValidationError &&
+									{state?.result === 'validation-error' &&
 										state.errors.namexperienceYearse?.map((err, index) => (
 											<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
 												{err}
@@ -194,7 +211,7 @@ export default function VacanciesAdd() {
 											<option value='CLOSED'>{t('Option.CLOSED')}</option>
 										</select>
 									</div>
-									{isValidationError &&
+									{state?.result === 'validation-error' &&
 										state.errors.status?.map((err, index) => (
 											<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
 												{err}
@@ -215,7 +232,7 @@ export default function VacanciesAdd() {
 											<option value='INTERNSHIP'>{t('Option.INTERNSHIP')}</option>
 										</select>
 									</div>
-									{isValidationError &&
+									{state?.result === 'validation-error' &&
 										state.errors.employmentType?.map((err, index) => (
 											<div key={index} className='text-[14px] h-[14px] text-red-500 mt-2'>
 												{err}
@@ -231,10 +248,32 @@ export default function VacanciesAdd() {
 									</div>
 									<div className='grid grid-cols-3 gap-5 justify-center'>
 										{candidates.map((candidate) => (
-											<CandidateForLinking
+											<div
+												onClick={(event) => {
+													event.stopPropagation();
+													event.preventDefault();
+													setIsSelectedCandidates((prev) =>
+														!prev[candidate.id] && prev[candidate.id] !== undefined
+															? { ...prev, [candidate.id]: true }
+															: { ...prev, [candidate.id]: false },
+													);
+												}}
 												key={candidate.id}
-												candidate={candidate}
-											/>
+											>
+												<input
+													type='hidden'
+													name='candidates'
+													value={
+														isSelectedCandidates[candidate.id]
+															? candidate.id.toString()
+															: ''
+													}
+												/>
+												<CandidateForLinking
+													candidate={candidate}
+													isActive={isSelectedCandidates[candidate.id]}
+												/>
+											</div>
 										))}
 									</div>
 								</div>

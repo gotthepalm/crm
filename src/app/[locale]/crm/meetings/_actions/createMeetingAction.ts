@@ -14,11 +14,16 @@ export type ActionState =
 			errors: Record<string, string | (string | undefined)[]>;
 			values: Record<string, FormDataEntryValue | FormDataEntryValue[]>;
 	  }
+	| { result: 'invalid-vacancy' }
+	| { result: 'invalid-candidate' }
 	| { result: 'db-error' }
 	| { result: 'no-session' };
 
 export async function createMeeting(formData: FormData) {
 	const t = await getTranslations('CreateMeeting');
+
+	// Zod validation
+
 	const emptyToUndefined = (v: unknown) => (v === '' ? undefined : v);
 	const meetingSchema = z.object({
 		date: z.string().min(1, t('DateRequired')),
@@ -28,19 +33,33 @@ export async function createMeeting(formData: FormData) {
 		note: z.preprocess(emptyToUndefined, z.string().optional()),
 		interviewers: z.array(z.string().trim().min(1, t('FillInput')).max(30, t('LongValue'))),
 	});
-	const session = await auth();
+	const vacancyIdSchema = z.preprocess(
+		emptyToUndefined,
+		z.coerce.number().min(0, t('SmallValue')).max(2_147_483_647, t('BigValue')).optional(),
+	);
+	const candidateIdSchema = z.preprocess(
+		emptyToUndefined,
+		z.coerce.number().min(0, t('SmallValue')).max(2_147_483_647, t('BigValue')).optional(),
+	);
 
+	// Checking session
+
+	const session = await auth();
 	if (!session?.user) {
 		return { result: 'no-session' } satisfies ActionState;
 	}
 
-	const interviewers = formData.getAll('interviewers');
+	// Getting and validating data
 
+	const interviewers = formData.getAll('interviewers');
 	const data = {
 		...Object.fromEntries(formData),
 		interviewers,
 	};
+
 	const parsedData = meetingSchema.safeParse(data);
+	const vacancyIdParsed = vacancyIdSchema.safeParse(formData.get('vacancyId'));
+	const candidateIdParsed = candidateIdSchema.safeParse(formData.get('candidateId'));
 
 	function mapErrors(issues: ZodError['issues']) {
 		const errors: Record<string, string | (string | undefined)[]> = {};
@@ -57,8 +76,7 @@ export async function createMeeting(formData: FormData) {
 					errors[field] = [];
 				}
 				(errors[field] as (string | undefined)[])[index] = issue.message;
-			}
-			else {
+			} else {
 				errors[field] = issue.message;
 			}
 		}
@@ -73,8 +91,105 @@ export async function createMeeting(formData: FormData) {
 			values: data,
 		} satisfies ActionState;
 	}
+	if (!vacancyIdParsed.success) {
+		return { result: 'invalid-vacancy' } satisfies ActionState;
+	}
+	if (!candidateIdParsed.success) {
+		return { result: 'invalid-candidate' } satisfies ActionState;
+	}
+
+	// Checking whether the user has a vacancy to which they want to link a meeting
+
+	const userVacancies = await prisma.user.findUnique({
+		where: { id: session.user.id },
+		select: {
+			userCrm: {
+				select: {
+					vacancies: {
+						select: {
+							id: true
+						}
+					},
+				},
+			},
+		},
+	});
+	if (vacancyIdParsed.data) {
+		if (!userVacancies?.userCrm?.vacancies.some((vacancy) => vacancy.id === vacancyIdParsed.data)) {
+			return { result: 'invalid-vacancy' } satisfies ActionState;
+		}
+	}
+
+	// Checking whether the user has a candidate to which they want to link a meeting
+
+	const userCandidates = await prisma.user.findUnique({
+		where: { id: session.user.id },
+		select: {
+			userCrm: {
+				select: {
+					candidates: {
+						select: {
+							id: true
+						}
+					},
+				},
+			},
+		},
+	});
+	if (candidateIdParsed.data) {
+		if (!userCandidates?.userCrm?.candidates.some((candidate) => candidate.id === candidateIdParsed.data)) {
+			return { result: 'invalid-candidate' } satisfies ActionState;
+		}
+	}
+
+	// Creating meeting
 
 	try {
+		if (vacancyIdParsed.data && candidateIdParsed.data) {
+			await prisma.meeting.create({
+				data: {
+					...parsedData.data,
+					userCrm: {
+						connect: { userId: session.user.id },
+					},
+					vacancy: {
+						connect: { id: vacancyIdParsed.data },
+					},
+					candidate: {
+						connect: {id: candidateIdParsed.data}
+					}
+				},
+			});
+			return { result: 'success' } satisfies ActionState;
+		}
+		if (vacancyIdParsed.data) {
+			await prisma.meeting.create({
+				data: {
+					...parsedData.data,
+					userCrm: {
+						connect: { userId: session.user.id },
+					},
+					vacancy: {
+						connect: { id: vacancyIdParsed.data },
+					}
+				},
+			});
+			return { result: 'success' } satisfies ActionState;
+		}
+		if (candidateIdParsed.data) {
+			await prisma.meeting.create({
+				data: {
+					...parsedData.data,
+					userCrm: {
+						connect: { userId: session.user.id },
+					},
+					candidate: {
+						connect: { id: candidateIdParsed.data },
+					}
+				},
+			});
+			return { result: 'success' } satisfies ActionState;
+		}
 		await prisma.meeting.create({
 			data: {
 				...parsedData.data,
