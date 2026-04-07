@@ -86,7 +86,7 @@ export default function Meeting({
 			<article className='bg-white flex flex-col gap-3 rounded-2xl overflow-hidden text-[16px] font-medium border border-zinc-300 p-5 w-full h-full max-w-xl break-inside-avoid transition'>
 				<div className='flex justify-between items-center text-[18px] border-b border-zinc-300 pb-5'>
 					<div className='inline-flex items-center border border-blue-300 bg-blue-100 font-medium px-4 py-1 rounded-xl component-transition'>
-						<span className='font-semibold'>{meeting.time}</span>, {meeting.date}
+						<span className='font-semibold'>{meeting.time}</span>&nbsp;|&nbsp;{meeting.date}
 					</div>
 					<div className={`text-[16px] font-medium px-3 py-1 rounded-xl ${handleInterviewType()}`}>
 						{t(`InterviewType.${meeting.interviewType}`)}
@@ -113,7 +113,7 @@ export default function Meeting({
 				{(meeting.candidate?.name || meeting.vacancy?.position) && (
 					<div className='flex flex-col items-start gap-2 pb-3 border-b border-zinc-300'>
 						<div className='text-zinc-600'>{t('InterviewFor')}:</div>
-						<div className='inline-flex items-center'>
+						<div className='flex items-center justify-between w-full'>
 							{meeting.candidate?.name && (
 								<button
 									onClick={() => setOpenCandidate(true)}
@@ -123,9 +123,6 @@ export default function Meeting({
 									<Image src='/images/vacancy.svg' width={22} height={22} alt='' />
 									{meeting.candidate.name}
 								</button>
-							)}
-							{meeting.candidate?.name && meeting.vacancy?.position && (
-								<span className='h-[2px] w-2 bg-purple-300'></span>
 							)}
 							{meeting.vacancy?.position && (
 								<button

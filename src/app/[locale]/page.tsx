@@ -68,7 +68,7 @@ export default async function Home() {
 						<p className='mt-6 text-lg text-gray-500 max-w-2xl'>{t('PageDescr')}</p>
 						<div className='mt-10'>
 							<Link
-								href={session?.user ? '/crm' : '/login'}
+								href={session?.user ? '/crm/candidates' : '/login'}
 								className='text-white cursor-pointer bg-violet-700 hover:bg-violet-800 transition-colors duration-200 px-8 py-4 rounded-xl text-lg font-medium'
 							>
 								{t('ButtonText')}

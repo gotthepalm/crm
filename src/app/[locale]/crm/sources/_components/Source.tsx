@@ -14,7 +14,7 @@ export default function Source({ source }: { source: SourceModel }) {
 		<>
 			{openForm && <EditSourceForm setOpenForm={setOpenForm} source={source} />}
 			<article className='relative'>
-				<Link key={source.id} href={source.url} target='blank' className=' flex flex-col items-center gap-3 p-5 font-medium bg-white rounded-2xl border border-zinc-300'>
+				<Link key={source.id} href={source.url} target='blank' className='flex flex-col items-center gap-3 p-5 font-medium bg-white rounded-2xl border border-zinc-300'>
 					<img
 						src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
 						alt=''
