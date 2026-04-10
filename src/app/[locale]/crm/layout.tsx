@@ -1,4 +1,4 @@
-import Sidebar from './Sidebar';
+import Sidebar from './_components/Sidebar';
 import React from 'react';
 import Link from 'next/link';
 import Image from 'next/image';

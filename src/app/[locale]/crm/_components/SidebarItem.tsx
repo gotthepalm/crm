@@ -2,8 +2,9 @@
 
 import Image from 'next/image';
 import Link from 'next/link';
-import { navItem } from '@/src/app/[locale]/crm/Sidebar';
+
 import { usePathname } from 'next/navigation';
+import { navItem } from '@/src/app/[locale]/crm/_components/Sidebar';
 
 export default function SidebarItem({ item }: { item: navItem }) {
 	const pathname = usePathname()
@@ -14,7 +15,7 @@ export default function SidebarItem({ item }: { item: navItem }) {
 		normalizedPathname === item.href ||
 		normalizedPathname.startsWith(item.href + '/')
 
-    return (
+	return (
 		<Link
 			key={item.name}
 			href={item.href}
@@ -24,5 +25,5 @@ export default function SidebarItem({ item }: { item: navItem }) {
 			<Image src={`/images/${item.icon}.svg`} alt='' height={24} width={24} />
 			{item.name}
 		</Link>
-    );
+	);
 }

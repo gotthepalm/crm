@@ -1,11 +1,11 @@
-import SidebarItem from '@/src/app/[locale]/crm/SidebarItem';
 import { getTranslations } from 'next-intl/server';
+import SidebarItem from '@/src/app/[locale]/crm/_components/SidebarItem';
 
-	export type navItem = {
-		name: string;
-		href: string;
-		icon: string;
-	}
+export type navItem = {
+	name: string;
+	href: string;
+	icon: string;
+}
 
 export default async function Sidebar() {
 	const t = await getTranslations("Sidebar")
@@ -14,7 +14,7 @@ export default async function Sidebar() {
 		{ name: t('Vacancies'), href: '/crm/vacancies', icon: 'vacancy' },
 		{ name: t('Meetings'), href: '/crm/meetings', icon: 'adaptive_audio_mic' },
 		{ name: t('Sources'), href: '/crm/sources', icon: 'dataset' },
-		{ name: t('Settings'), href: '/crm/settings', icon: 'settings' },
+		// { name: t('Settings'), href: '/crm/settings', icon: 'settings' },
 	]
 	return (
 		<aside className='w-60 bg-white border-r border-gray-200 px-5 py-10 fixed h-full'>

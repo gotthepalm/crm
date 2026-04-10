@@ -123,7 +123,7 @@ export default function Candidate({
 								key={meeting.id}
 							>
 								<Image src='/images/adaptive_audio_mic.svg' width={22} height={22} alt='' />
-								{meeting.time}, {meeting.date}
+								<span className='font-semibold'>{meeting.time}</span>|&nbsp;{meeting.date}
 								<span className='text-zinc-600 text-sm font-semibold'>
 									| {t(`InterviewType.${meeting.interviewType}`)}
 								</span>

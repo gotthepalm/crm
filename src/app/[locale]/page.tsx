@@ -7,6 +7,7 @@ import Footer from '@/src/components/Footer';
 import { Gelasio } from 'next/font/google';
 import { getTranslations } from 'next-intl/server';
 import LanguageSwitcher from '@/src/components/LanguageSwitcher';
+import ThemeSwitcher from '@/src/components/ThemeSwitcher';
 
 const gelasio = Gelasio({
 	weight: ['400', '500', '600', '700'],
@@ -49,12 +50,15 @@ export default async function Home() {
 						) : (
 							<Link
 								href={'/login'}
-								className='text-white cursor-pointer bg-violet-700 hover:bg-violet-800 transition-colors duration-200 px-6 py-3 rounded-xl text-lg font-medium'
+								className='text-white cursor-pointer bg-violet-700 hover:bg-violet-800 component-transition px-6 py-3 rounded-xl text-lg font-medium'
 							>
 								{t('LogIn')}
 							</Link>
 						)}
 						<LanguageSwitcher />
+						{/*<button className='hover:text-black/60 hover:[text-shadow:0_0_8px_rgba(130,0,219,0.6)] component-transition'>light</button>*/}
+						{/*<button className='hover:text-black/60 hover:[text-shadow:0_0_8px_rgba(130,0,219,0.6)] component-transition'>dark</button>*/}
+						<ThemeSwitcher/>
 					</div>
 				</div>
 			</header>
@@ -69,7 +73,7 @@ export default async function Home() {
 						<div className='mt-10'>
 							<Link
 								href={session?.user ? '/crm/candidates' : '/login'}
-								className='text-white cursor-pointer bg-violet-700 hover:bg-violet-800 transition-colors duration-200 px-8 py-4 rounded-xl text-lg font-medium'
+								className='text-white cursor-pointer bg-violet-700 dark:bg-white hover:bg-violet-800 transition-colors duration-200 px-8 py-4 rounded-xl text-lg font-medium'
 							>
 								{t('ButtonText')}
 							</Link>
