@@ -120,15 +120,15 @@ export default function Meeting({
 									className='cursor-pointer inline-flex items-center component-transition gap-2 border border-violet-300
 								 bg-violet-100 hover:bg-violet-200 font-medium px-4 py-1 rounded-xl'
 								>
-									<Image src='/images/vacancy.svg' width={22} height={22} alt='' />
+									<Image src='/images/emoji_people.svg' width={22} height={22} alt='' />
 									{meeting.candidate.name}
 								</button>
 							)}
 							{meeting.vacancy?.position && (
 								<button
 									onClick={() => setOpenVacancy(true)}
-									className='cursor-pointer inline-flex items-center component-transition gap-2 border border-violet-300
-								 bg-violet-100 hover:bg-violet-200 font-medium px-4 py-1 rounded-xl'
+									className='cursor-pointer inline-flex items-center component-transition gap-2 border border-amber-200
+								 bg-amber-50 hover:bg-amber-100 font-medium px-4 py-1 rounded-xl'
 								>
 									<Image src='/images/vacancy.svg' width={22} height={22} alt='' />
 									{meeting.vacancy.position}

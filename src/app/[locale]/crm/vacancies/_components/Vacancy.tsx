@@ -44,11 +44,11 @@ export default function Vacancy({
 	}
 
 	useEffect(() => {
-		document.body.style.overflow = openForm || openCandidate ? 'hidden' : '';
+		document.body.style.overflow = openForm || openCandidate || openMeeting ? 'hidden' : '';
 		return () => {
 			document.body.style.overflow = '';
 		};
-	}, [vacancy.id, openForm, openCandidate]);
+	}, [vacancy.id, openForm, openCandidate, openMeeting]);
 	return (
 		<>
 			{openForm && <EditVacancyForm setOpenForm={setOpenForm} vacancy={vacancy} />}
@@ -144,7 +144,7 @@ export default function Vacancy({
 								key={meeting.id}
 							>
 								<Image src='/images/adaptive_audio_mic.svg' width={22} height={22} alt='' />
-								{meeting.time}, {meeting.date}
+								<span className='font-semibold'>{meeting.time}</span>|&nbsp;{meeting.date}
 								<span className='text-zinc-600 text-sm font-semibold'>
 									| {t(`InterviewType.${meeting.interviewType}`)}
 								</span>

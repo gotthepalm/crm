@@ -3,12 +3,19 @@
 import { SourceModel } from '@/src/generated/prisma/models/Source';
 import Link from 'next/link';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import EditSourceForm from '@/src/app/[locale]/crm/sources/_components/EditSourceForm';
 
 export default function Source({ source }: { source: SourceModel }) {
 	const domain = new URL(source.url).hostname;
 	const [openForm, setOpenForm] = useState<boolean>(false);
+
+	useEffect(() => {
+		document.body.style.overflow = openForm ? 'hidden' : '';
+		return () => {
+			document.body.style.overflow = '';
+		};
+	}, [source.id, openForm]);
 
 	return (
 		<>

@@ -26,7 +26,7 @@ export default function LogIn() {
 							className='w-full'
 							action={async () => {
 								'use server';
-								await signIn('google', { redirectTo: '/crm' });
+								await signIn('google', { redirectTo: '/crm/candidates' });
 							}}
 						>
 							<button

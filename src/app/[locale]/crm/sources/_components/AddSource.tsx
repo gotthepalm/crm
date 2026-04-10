@@ -1,7 +1,7 @@
 'use client';
 
 import { useTranslations } from 'use-intl';
-import { useActionState, useState } from 'react';
+import { useActionState, useEffect, useState } from 'react';
 import { ActionState, createSource } from '@/src/app/[locale]/crm/sources/_actions/createSourceAction';
 import { useRouter } from 'next/navigation';
 
@@ -31,6 +31,13 @@ export default function AddSource() {
 		if (v === undefined || v === null) return undefined;
 		return v.toString();
 	}
+
+	useEffect(() => {
+		document.body.style.overflow = openForm ? 'hidden' : '';
+		return () => {
+			document.body.style.overflow = '';
+		};
+	}, [openForm]);
 
 	return (
 		<>

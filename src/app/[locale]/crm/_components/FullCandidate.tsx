@@ -74,12 +74,12 @@ export default function FullCandidate({ candidateId }: { candidateId: number }) 
 						<div className='flex flex-col items-start text-black gap-2 border-b border-zinc-300 mb-3 pb-3'>
 							{candidate.meetings.map((meeting) => (
 								<div
-									className='inline-flex items-center gap-2 border border-blue-300
-								 bg-blue-100 font-medium px-4 py-1 rounded-xl'
+									className='cursor-pointer inline-flex items-center component-transition gap-2 border border-blue-300
+								 bg-blue-100 hover:bg-blue-200 font-medium px-4 py-1 rounded-xl'
 									key={meeting.id}
 								>
 									<Image src='/images/adaptive_audio_mic.svg' width={22} height={22} alt='' />
-									{meeting.time}, {meeting.date}
+									<span className='font-semibold'>{meeting.time}</span>|&nbsp;{meeting.date}
 									<span className='text-zinc-600 text-sm font-semibold'>
 										| {t(`InterviewType.${meeting.interviewType}`)}
 									</span>
