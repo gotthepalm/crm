@@ -5,6 +5,7 @@ import { NextIntlClientProvider, hasLocale } from 'next-intl';
 import { notFound } from 'next/navigation';
 import { routing } from '../../i18n/routing';
 import { Inter } from 'next/font/google';
+import { ThemeProvider } from 'next-themes';
 
 const inter = Inter({
 	weight: ['100', '200', '300', '400', '500', '600', '700', '800', '900'],
@@ -30,18 +31,19 @@ export default async function LocaleLayout({
 	children: React.ReactNode;
 	params: Promise<{ locale: string }>;
 }) {
-	// Ensure that the incoming `locale` is valid
 	const { locale } = await params;
 	if (!hasLocale(routing.locales, locale)) {
 		notFound();
 	}
 	return (
-		<html lang='en'>
-			<body className={`${inter.className} text-[20px] bg-white min-h-screen flex flex-col`}>
-				<NextIntlClientProvider>{children}</NextIntlClientProvider>
+		<html lang='en' suppressHydrationWarning>
+			<body
+				className={`${inter.className} text-[20px] text-black dark:text-white bg-white dark:bg-black min-h-screen flex flex-col`}
+			>
+				<ThemeProvider attribute='class' defaultTheme='light'>
+					<NextIntlClientProvider>{children}</NextIntlClientProvider>
+				</ThemeProvider>
 			</body>
 		</html>
 	);
-
-	// ...
 }

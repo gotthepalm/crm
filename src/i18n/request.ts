@@ -30,7 +30,6 @@ export default getRequestConfig(async ({requestLocale}) => {
 			CreateMeeting: (await import('@/public/messages/en/crm/meetings/CreateMeeting.json')).default,
 			AddSource: (await import('@/public/messages/en/crm/sources/AddSource.json')).default,
 			CreateSource: (await import('@/public/messages/en/crm/sources/CreateSource.json')).default,
-			Settings: (await import('@/public/messages/en/crm/Settings.json')).default
 		},
 		uk: {
 			mainPage: (await import('@/public/messages/uk/mainPage.json')).default,
@@ -51,7 +50,6 @@ export default getRequestConfig(async ({requestLocale}) => {
 			CreateMeeting: (await import('@/public/messages/uk/crm/meetings/CreateMeeting.json')).default,
 			AddSource: (await import('@/public/messages/uk/crm/sources/AddSource.json')).default,
 			CreateSource: (await import('@/public/messages/uk/crm/sources/CreateSource.json')).default,
-			Settings: (await import('@/public/messages/uk/crm/Settings.json')).default
 		}
 	};
 
