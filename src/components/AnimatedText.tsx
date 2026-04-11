@@ -59,8 +59,8 @@ export default function AnimatedText({
 
 	return (
 		<span className='inline-flex items-center'>
-			<span className='text-violet-900 font-semibold text-5xl'>{text}</span>
-			<span className='ml-1 w-[4px] h-12 bg-violet-900' />
+			<span className='text-violet-700 font-semibold text-5xl'>{text}</span>
+			<span className='ml-1 w-[4px] h-12 bg-violet-700' />
 		</span>
 	);
 }

@@ -4,7 +4,7 @@ import { prisma } from '@/lib/prisma';
 
 export async function getVacancy(id: number) {
 
-	// Getting candidate including vacancy
+	// Getting vacancy with their candidates & meetings
 
 	return prisma.vacancy.findUnique({
 		where: {id},

@@ -7,7 +7,7 @@ export async function getCandidates() {
 	const session = await auth();
 	if (!session?.user) return;
 
-	// Getting candidates from user
+	// Getting user candidates with their vacancy & meetings
 
 	return prisma.user.findUnique({
 		where: { id: session.user.id },

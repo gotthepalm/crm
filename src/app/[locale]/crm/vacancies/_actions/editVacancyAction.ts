@@ -101,7 +101,6 @@ export async function editVacancy(formData: FormData, vacancyId: number) {
 
 	try {
 		if (filteredCandidates.length) {
-			console.log(filteredCandidates.length)
 			await prisma.vacancy.update({
 				where: { id: vacancyId },
 				data: {
@@ -127,8 +126,7 @@ export async function editVacancy(formData: FormData, vacancyId: number) {
 			},
 		});
 		return { result: 'success' } satisfies ActionState;
-	} catch (error) {
-		console.log(error)
+	} catch {
 		return { result: 'db-error' } satisfies ActionState;
 	}
 }
