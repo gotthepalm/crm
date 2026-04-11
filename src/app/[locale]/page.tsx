@@ -18,7 +18,7 @@ export default async function Home() {
 	const session = await auth();
 	return (
 		<>
-			<header className='w-full border-b border-zinc-300 dark:border-zinc-700'>
+			<header id='home' className='w-full border-b border-zinc-300 dark:border-zinc-700'>
 				<div className='flex items-center justify-between max-w-[1500px] w-full mx-auto h-[80px] px-5'>
 					<Link href='/' className='flex items-center gap-2'>
 						<Image src={'/images/bloom-icon.svg'} height={50} width={50} alt='bloom icon' />

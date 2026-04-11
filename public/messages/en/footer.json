@@ -1,8 +1,9 @@
 {
   "Home": "Home",
-  "Crm": "Crm",
   "Registration": "Registration",
-  "Companies": "Companies",
-  "Solo": "Solo",
+  "Candidates": "Candidates",
+  "Vacancies": "Vacancies",
+  "Meetings": "Meetings",
+  "Sources": "Sources",
   "Subscribe": "Subscribe to newsletter"
 }

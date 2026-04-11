@@ -1,8 +1,9 @@
 {
   "Home": "Головна",
-  "Crm": "Crm",
   "Registration": "Реєстрація",
-  "Companies": "Компанії",
-  "Solo": "Соло",
+  "Candidates": "Кандидати",
+  "Vacancies": "Вакансії",
+  "Meetings": "Зустрічі",
+  "Sources": "Джерела",
   "Subscribe": "Підписатися на новинну стрічку"
 }
