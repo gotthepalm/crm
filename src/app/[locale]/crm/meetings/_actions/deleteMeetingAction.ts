@@ -3,7 +3,7 @@
 import { prisma } from '@/lib/prisma';
 import { revalidatePath } from 'next/cache';
 
-export default async function deleteMeeting(meetingId: number) {
+export async function deleteMeeting(meetingId: number) {
 	await prisma.meeting.delete({
 		where: {id: meetingId},
 	})

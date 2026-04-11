@@ -60,7 +60,7 @@ export default function AddSource() {
 											<button
 												onClick={() => setOpenForm(false)}
 												className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-						py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
+												py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
 											>
 												{t('Cancel')}
 											</button>
@@ -111,7 +111,7 @@ export default function AddSource() {
 			)}
 			<button
 				onClick={() => setOpenForm(true)}
-				className='flex justify-center items-center gap-3 bg-white hover:bg-purple-700 hover:text-white border border-zinc-300 text-[22px] p-3 mb-5 rounded-2xl w-full component-transition cursor-pointer'
+				className='flex justify-center items-center gap-3 bg-white hover:bg-purple-600 hover:border-transparent hover:text-white border border-zinc-300 text-[22px] p-3 mb-5 rounded-2xl w-full component-transition cursor-pointer'
 			>
 				<span className='text-4xl font-light'>+</span>
 				{t('AddSource')}

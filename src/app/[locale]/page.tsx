@@ -18,11 +18,11 @@ export default async function Home() {
 	const session = await auth();
 	return (
 		<>
-			<header className='w-full border-b border-zinc-300'>
+			<header className='w-full border-b border-zinc-300 dark:border-zinc-700'>
 				<div className='flex items-center justify-between max-w-[1500px] w-full mx-auto h-[80px] px-5'>
-					<Link href='/public' className='flex items-center gap-2'>
+					<Link href='/' className='flex items-center gap-2'>
 						<Image src={'/images/bloom-icon.svg'} height={50} width={50} alt='bloom icon' />
-						<div className={`${gelasio.className} text-4xl font-medium text-center text-black`}>
+						<div className={`${gelasio.className} text-4xl font-medium text-center`}>
 							Bloom CRM
 						</div>
 					</Link>
@@ -36,11 +36,12 @@ export default async function Home() {
 									}}
 								>
 									<button
-										className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-								 py-3 rounded-xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
+										className='cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-200 px-6
+								 py-3 rounded-xl text-lg flex items-center font-medium border border-zinc-300 dark:border-zinc-700 gap-2'
 									>
 										{t('SignOut')}
-										<span className='block cursor-pointer h-5 w-5 bg-[url(/images/sign-out.svg)] bg-contain bg-no-repeat bg-center'></span>
+										<span className='block cursor-pointer h-5 w-5 mask-[url(/images/sign-out.svg)] mask-contain
+										 mask-no-repeat mask-center bg-black dark:bg-white'></span>
 									</button>
 								</form>
 								<div className='h-10 w-10 bg-zinc-400 rounded-full overflow-hidden'>
@@ -56,8 +57,6 @@ export default async function Home() {
 							</Link>
 						)}
 						<LanguageSwitcher />
-						{/*<button className='hover:text-black/60 hover:[text-shadow:0_0_8px_rgba(130,0,219,0.6)] component-transition'>light</button>*/}
-						{/*<button className='hover:text-black/60 hover:[text-shadow:0_0_8px_rgba(130,0,219,0.6)] component-transition'>dark</button>*/}
 						<ThemeSwitcher/>
 					</div>
 				</div>
@@ -66,19 +65,18 @@ export default async function Home() {
 				<div className='p-50 flex items-center justify-center px-6'>
 					<section className='max-w-4xl w-full text-center flex flex-col items-center'>
 						<h1 className='text-4xl flex flex-col items-center sm:text-6xl font-bold leading-tight tracking-tight mb-10'>
-							<div className='text-black'>{t('Title')}</div>
+							<div className='text-black dark:text-white'>{t('Title')}</div>
 							<AnimatedText words={[t('AnimatedText1'), t('AnimatedText2'), t('AnimatedText3')]} />
 						</h1>
-						<p className='mt-6 text-lg text-gray-500 max-w-2xl'>{t('PageDescr')}</p>
+						<p className='mt-6 text-lg text-zinc-500 dark:text-zinc-400 max-w-2xl'>{t('PageDescr')}</p>
 						<div className='mt-10'>
 							<Link
 								href={session?.user ? '/crm/candidates' : '/login'}
-								className='text-white cursor-pointer bg-violet-700 dark:bg-white hover:bg-violet-800 transition-colors duration-200 px-8 py-4 rounded-xl text-lg font-medium'
+								className='text-white cursor-pointer bg-violet-700 hover:bg-violet-800 transition-colors duration-200 px-8 py-4 rounded-xl text-lg font-medium'
 							>
 								{t('ButtonText')}
 							</Link>
 						</div>
-						<p className='mt-4 text-sm text-gray-700'>{t('ButtonDescr')}</p>
 					</section>
 				</div>
 			</main>

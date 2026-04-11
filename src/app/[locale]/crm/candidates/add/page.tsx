@@ -325,9 +325,7 @@ export default function CandidatesAdd() {
 								/>
 							</div>
 						</div>
-
-						{/*Vacancies linking*/}
-
+						{/*Vacancy linking*/}
 						{vacancies && vacancies.length > 0 && (
 							<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300'>
 								<input type='hidden' value={vacancyInput} name='vacancyId' />

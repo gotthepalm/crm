@@ -6,7 +6,7 @@ import { ActionState } from '@/src/app/[locale]/crm/sources/_actions/createSourc
 import { useRouter } from 'next/navigation';
 import { editSource } from '@/src/app/[locale]/crm/sources/_actions/editSourceAction';
 import { SourceModel } from '@/src/generated/prisma/models/Source';
-import deleteSource from '@/src/app/[locale]/crm/sources/_actions/deleteSourceAction';
+import { deleteSource } from '@/src/app/[locale]/crm/sources/_actions/deleteSourceAction';
 
 export default function EditSourceForm({
 	setOpenForm,

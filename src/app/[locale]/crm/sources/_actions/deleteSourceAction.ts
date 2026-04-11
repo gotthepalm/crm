@@ -3,7 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { prisma } from '@/lib/prisma';
 
-export default async function deleteSource(sourceId: number) {
+export async function deleteSource(sourceId: number) {
 	await prisma.source.delete({
 		where: {id: sourceId}
 	})

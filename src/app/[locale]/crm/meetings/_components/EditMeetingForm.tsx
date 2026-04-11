@@ -5,7 +5,6 @@ import { useTranslations } from 'use-intl';
 import { useActionState } from 'react';
 import { useRouter } from 'next/navigation';
 import { MeetingModel } from '@/src/generated/prisma/models/Meeting';
-import deleteMeeting from '@/src/app/[locale]/crm/meetings/_actions/deleteMeetingAction';
 import { ActionState, editMeeting } from '@/src/app/[locale]/crm/meetings/_actions/editMeetingAction';
 import Image from 'next/image';
 import VacancyForLinking from '@/src/app/[locale]/crm/_components/VacancyForLinking';
@@ -13,6 +12,7 @@ import CandidateForLinking from '@/src/app/[locale]/crm/_components/CandidateFor
 import { getVacancies } from '@/src/app/[locale]/crm/_actions/getVacanciesAction';
 import { getCandidates } from '@/src/app/[locale]/crm/_actions/getCandidatesAction';
 import { Prisma } from '@/src/generated/prisma/client';
+import { deleteMeeting } from '@/src/app/[locale]/crm/meetings/_actions/deleteMeetingAction';
 
 export default function EditMeetingForm({
 	setOpenForm,

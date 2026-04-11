@@ -201,7 +201,6 @@ export default function Candidate({
 						<div className=''>{candidate.skills}</div>
 					</div>
 				)}
-
 				{/*Experience & salary*/}
 				{(candidate.experienceYears || candidate.salaryExpectationTop || candidate.salaryExpectationBottom) && (
 					<div className='flex justify-between mb-3 pb-3 border-b border-zinc-300'>

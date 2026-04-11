@@ -14,10 +14,10 @@ export default function LanguageSwitcher() {
 	}
 
 	return (
-		<div className="flex gap-2 items-center">
-			<button className="hover:text-black/60 hover:[text-shadow:0_0_8px_rgba(130,0,219,0.6)] component-transition" onClick={() => changeLanguage("en")}>{t('EN')}</button>
+		<div className="flex items-center">
+			<button className="hover:bg-zinc-100 dark:hover:bg-zinc-800 px-2 py-1 rounded-md cursor-pointer component-transition" onClick={() => changeLanguage("en")}>{t('EN')}</button>
 			|
-			<button className="hover:text-black/60 hover:[text-shadow:0_0_8px_rgba(130,0,219,0.6)] component-transition" onClick={() => changeLanguage("uk")}>{t('UK')}</button>
+			<button className="hover:bg-zinc-100 dark:hover:bg-zinc-800 px-2 py-1 rounded-md cursor-pointer component-transition" onClick={() => changeLanguage("uk")}>{t('UK')}</button>
 		</div>
 	);
 }
