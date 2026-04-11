@@ -16,7 +16,7 @@ export default function SidebarItem({ item }: { item: navItem }) {
 		<Link
 			key={item.name}
 			href={item.href}
-			className={`flex items-center gap-3 px-4 py-3 text-[18px] rounded-xl component-transition 
+			className={`flex items-center gap-3 px-4 py-3 text-[18px] rounded-xl component-transition
 				${isActive ? 'bg-gray-200 font-medium' : 'hover:bg-gray-100'}`}
 		>
 			<Image src={`/images/${item.icon}.svg`} alt='' height={24} width={24} />
