@@ -21,7 +21,12 @@ export default function Source({ source }: { source: SourceModel }) {
 		<>
 			{openForm && <EditSourceForm setOpenForm={setOpenForm} source={source} />}
 			<article className='relative'>
-				<Link key={source.id} href={source.url} target='blank' className='flex flex-col items-center gap-3 p-5 font-medium bg-white rounded-2xl border border-zinc-300'>
+				<Link
+					key={source.id}
+					href={source.url}
+					target='blank'
+					className='flex flex-col items-center gap-3 p-5 font-medium bg-white dark:bg-zinc-900 rounded-2xl border border-zinc-300 dark:border-zinc-700'
+				>
 					<img
 						src={`https://www.google.com/s2/favicons?domain=${domain}&sz=64`}
 						alt=''
@@ -32,7 +37,7 @@ export default function Source({ source }: { source: SourceModel }) {
 				</Link>
 				<div className='absolute top-5 right-5'>
 					<button
-						className='p-1 cursor-pointer hover:bg-zinc-100 flex items-center justify-center rounded-md'
+						className='p-1 cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 component-transition flex items-center justify-center rounded-md'
 						onClick={() => setOpenForm(true)}
 					>
 						<Image src='/images/pencil.svg' width={25} height={25} alt='edit'></Image>

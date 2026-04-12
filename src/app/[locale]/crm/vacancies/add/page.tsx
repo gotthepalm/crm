@@ -61,20 +61,20 @@ export default function VacanciesAdd() {
 		});
 	}, []);
 	return (
-		<div className='bg-white h-full'>
+		<div className='bg-white dark:bg-zinc-900 h-full'>
 			<div className='w-full py-10 px-32'>
 				<div className='flex items-center gap-8 w-full justify-end'>
 					<label
 						htmlFor='submitButton'
 						className='cursor-pointer bg-violet-700 text-white hover:bg-violet-800 transition-colors duration-200 px-6
-						py-2 rounded-2xl text-lg flex items-center font-medium border gap-2'
+						py-2 rounded-2xl text-lg flex items-center font-medium gap-2'
 					>
 						{t('Create')}
 					</label>
 					<Link
 						href={'/crm/vacancies'}
-						className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-						py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
+						className='cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-200 px-6
+						py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 dark:border-zinc-700 gap-2'
 					>
 						{t('Cancel')}
 					</Link>
@@ -85,10 +85,10 @@ export default function VacanciesAdd() {
 				<form action={action} className='flex flex-col gap-3.5 mt-10 w-full'>
 					<div className='grid grid-cols-2 justify-between gap-8 mb-5'>
 						<div className='flex flex-col justify-baseline items-baseline gap-2'>
-							<div className='w-full flex items-center justify-between text-zinc-600'>
+							<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 								{t('Position')}:
 								<input
-									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 									type='text'
 									name='position'
 									defaultValue={getValue('position')}
@@ -101,32 +101,32 @@ export default function VacanciesAdd() {
 									</div>
 								))}
 						</div>
-						<div className='w-full flex items-baseline justify-between text-zinc-600'>
+						<div className='w-full flex items-baseline justify-between text-zinc-600 dark:text-zinc-400'>
 							{t('Location')}:
 							<input
-								className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 ml-4 rounded-xl text-[18px] flex items-center border border-zinc-300'
+								className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 ml-4 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 								type='text'
 								name='location'
 								defaultValue={getValue('location')}
 							/>
 						</div>
-						<div className='w-full flex flex-col items-start justify-between text-zinc-600 col-span-full'>
+						<div className='w-full flex flex-col items-start justify-between text-zinc-600 dark:text-zinc-400 col-span-full'>
 							{t('Description')}:
 							<textarea
-								className='cursor-pointer w-full h-28 mt-2 focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+								className='cursor-pointer w-full h-28 mt-2 focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 								name='description'
 								defaultValue={getValue('description')}
 							/>
 						</div>
-						<div className='text-zinc-600 col-span-full'>
+						<div className='text-zinc-600 dark:text-zinc-400 col-span-full'>
 							{t('Salary')}:
 							<div className='grid grid-cols-2 gap-8 w-full'>
 								<div className='flex flex-col gap-2'>
-									<div className='flex w-full items-center justify-between text-zinc-600'>
+									<div className='flex w-full items-center justify-between text-zinc-600 dark:text-zinc-400'>
 										{t('From')}:
-										<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-zinc-600 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'>
+										<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'>
 											<input
-												className='w-full text-black'
+												className='w-full text-black dark:text-white'
 												type='number'
 												name='salaryFrom'
 												defaultValue={getValue('salaryFrom')}
@@ -142,11 +142,11 @@ export default function VacanciesAdd() {
 										))}
 								</div>
 								<div className='flex flex-col gap-2'>
-									<div className='flex w-full items-center justify-between text-zinc-600'>
+									<div className='flex w-full items-center justify-between text-zinc-600 dark:text-zinc-400'>
 										{t('To')}:
-										<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-zinc-600 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'>
+										<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'>
 											<input
-												className='w-full text-black'
+												className='w-full text-black dark:text-white'
 												type='number'
 												name='salaryTo'
 												defaultValue={getValue('salaryTo')}
@@ -164,11 +164,11 @@ export default function VacanciesAdd() {
 							</div>
 						</div>
 						<div className='flex flex-col gap-2 col-span-full'>
-							<div className='w-full flex items-center justify-between text-zinc-600'>
+							<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 								{t('Experience')}:
-								<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-zinc-600 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'>
+								<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'>
 									<input
-										className='w-10 text-black'
+										className='w-10 text-black dark:text-white'
 										type='number'
 										name='experienceYears'
 										defaultValue={getValue('experienceYears')}
@@ -184,10 +184,10 @@ export default function VacanciesAdd() {
 								))}
 						</div>
 						<div className='flex flex-col gap-2'>
-							<div className='w-full flex items-center justify-between text-zinc-600'>
+							<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 								{t('VacancyStatus')}:
 								<select
-									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 									name='status'
 									defaultValue={getValue('status')}
 								>
@@ -205,10 +205,10 @@ export default function VacanciesAdd() {
 								))}
 						</div>
 						<div className='flex flex-col gap-2'>
-							<div className='w-full flex items-center justify-between text-zinc-600'>
+							<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 								{t('EmploymentType')}:
 								<select
-									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 									name='employmentType'
 									defaultValue={getValue('employmentType')}
 								>
@@ -228,9 +228,9 @@ export default function VacanciesAdd() {
 					</div>
 					{/*Candidates linking*/}
 					{candidates && candidates.length > 0 && (
-						<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300'>
+						<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300 dark:border-zinc-700'>
 							<div className='flex justify-between items-center'>
-								<div className='text-zinc-600'>{t('LinkCandidates')}:</div>
+								<div className='text-zinc-600 dark:text-zinc-400'>{t('LinkCandidates')}:</div>
 							</div>
 							<div className='grid grid-cols-3 gap-5 justify-center'>
 								{candidates.map((candidate) => (

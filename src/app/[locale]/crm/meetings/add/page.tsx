@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Image from 'next/image';
 import { useTranslations } from 'use-intl';
 import { useActionState, useEffect, useState } from 'react';
 import { useRouter } from 'next/navigation';
@@ -113,20 +112,20 @@ export default function MeetingsAdd() {
 		});
 	}, []);
 	return (
-		<div className='bg-white h-full'>
+		<div className='bg-white dark:bg-zinc-900 h-full'>
 			<div className='w-full py-10 px-32'>
 				<div className='flex items-center gap-8 w-full justify-end'>
 					<label
 						htmlFor='submitButton'
 						className='cursor-pointer bg-violet-700 text-white hover:bg-violet-800 transition-colors duration-200 px-6
-						py-2 rounded-2xl text-lg flex items-center font-medium border gap-2'
+						py-2 rounded-2xl text-lg flex items-center font-medium gap-2'
 					>
 						{t('Create')}
 					</label>
 					<Link
 						href={'/crm/meetings'}
-						className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-						py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
+						className='cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-200 px-6
+						py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 dark:border-zinc-700 gap-2'
 					>
 						{t('Cancel')}
 					</Link>
@@ -138,10 +137,10 @@ export default function MeetingsAdd() {
 				<form action={action} className='flex flex-col gap-3.5 mt-10 w-full'>
 					<div className='grid grid-cols-2 justify-between gap-8 mb-5'>
 						<div className='flex flex-col justify-baseline items-baseline gap-2'>
-							<div className='w-full flex items-center justify-between text-zinc-600'>
+							<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 								{t('Date')}:
 								<input
-									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 									type='date'
 									name='date'
 									defaultValue={getValue('date')}
@@ -152,10 +151,10 @@ export default function MeetingsAdd() {
 							)}
 						</div>
 						<div className='flex flex-col justify-baseline items-baseline gap-2'>
-							<div className='w-full flex items-center justify-between text-zinc-600'>
+							<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 								{t('Time')}:
 								<input
-									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 									type='time'
 									name='time'
 									defaultValue={getValue('time')}
@@ -166,10 +165,10 @@ export default function MeetingsAdd() {
 							)}
 						</div>
 						<div className='flex flex-col justify-baseline items-baseline gap-2'>
-							<div className='w-full flex items-center justify-between text-zinc-600'>
+							<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 								{t('Link')}:
 								<input
-									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 									type='url'
 									name='url'
 									defaultValue={getValue('url')}
@@ -180,10 +179,10 @@ export default function MeetingsAdd() {
 							)}
 						</div>
 						<div className='flex flex-col gap-2'>
-							<div className='w-full flex items-center justify-between text-zinc-600'>
+							<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 								Interview:
 								<select
-									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+									className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 									name='interviewType'
 									key={getValue('interviewType')}
 									defaultValue={getValue('interviewType')}
@@ -203,23 +202,23 @@ export default function MeetingsAdd() {
 								</div>
 							)}
 						</div>
-						<div className='w-full flex flex-col items-start justify-between text-zinc-600 col-span-full'>
+						<div className='w-full flex flex-col items-start justify-between text-zinc-600 dark:text-zinc-400 col-span-full'>
 							{t('Note')}:
 							<textarea
-								className='cursor-pointer w-full h-28 mt-2 focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+								className='cursor-pointer w-full h-28 mt-2 focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 								name='note'
 								defaultValue={getValue('note')}
 							/>
 						</div>
 						<div className='flex flex-col justify-baseline items-baseline gap-2'>
-							<div className='text-zinc-600'>
+							<div className='text-zinc-600 dark:text-zinc-400'>
 								{t('Interviewers')}:
 								<li className='list-none flex flex-col gap-2 my-5'>
 									{interviewers.map((interviewerId) => (
 										<div className='flex gap-3' key={interviewerId}>
 											<div className='max-w-85 w-full'>
 												<input
-													className='cursor-pointer focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 mb-2 rounded-xl text-[18px] flex items-center border border-zinc-300'
+													className='cursor-pointer focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 mb-2 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 													type='text'
 													name='interviewers'
 													defaultValue={getInterviewerValue(interviewerId)}
@@ -230,13 +229,13 @@ export default function MeetingsAdd() {
 													</div>
 												)}
 											</div>
-											<button className='' onClick={() => deleteInterviewer(interviewerId)}>
-												<Image
-													src='/images/close.svg'
-													alt='Delete input'
-													height={24}
-													width={24}
-												/>
+											<button
+												className='cursor-pointer'
+												onClick={() => deleteInterviewer(interviewerId)}
+											>
+												<div
+													className={`h-6 w-6 mask-[url(/images/close.svg)] mask-center mask-contain mask-no-repeat bg-zinc-700 dark:bg-white`}
+												></div>
 											</button>
 										</div>
 									))}
@@ -244,7 +243,7 @@ export default function MeetingsAdd() {
 							</div>
 							<button
 								type='button'
-								className='cursor-pointer px-10 py-2 rounded-xl text-[16px] flex items-center border border-zinc-300 bg-purple-700 text-white hover:bg-white hover:text-black component-transition'
+								className='cursor-pointer px-10 py-2 rounded-xl text-[16px] flex items-center border border-zinc-300 dark:border-zinc-700 bg-purple-700 text-white hover:bg-white hover:text-black dark:text-white component-transition'
 								onClick={addInterviewer}
 							>
 								{t('AddInterviewer')}
@@ -253,10 +252,10 @@ export default function MeetingsAdd() {
 					</div>
 					{/*Vacancy linking*/}
 					{vacancies && vacancies.length > 0 && (
-						<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300'>
+						<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300 dark:border-zinc-700'>
 							<input type='hidden' value={vacancyInput} name='vacancyId' />
 							<div className='flex justify-between items-center'>
-								<div className='text-zinc-600'>{t('LinkVacancy')}:</div>
+								<div className='text-zinc-600 dark:text-zinc-400'>{t('LinkVacancy')}:</div>
 							</div>
 							<div className='grid grid-cols-3 gap-5 items-center justify-center'>
 								{vacancies.map((vacancy) => (
@@ -272,10 +271,10 @@ export default function MeetingsAdd() {
 					)}
 					{/*Candidate linking*/}
 					{candidates && candidates.length > 0 && (
-						<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300'>
+						<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300 dark:border-zinc-700'>
 							<input type='hidden' value={candidateInput} name='candidateId' />
 							<div className='flex justify-between items-center'>
-								<div className='text-zinc-600'>{t('LinkCandidates')}:</div>
+								<div className='text-zinc-600 dark:text-zinc-400'>{t('LinkCandidates')}:</div>
 							</div>
 							<div className='grid grid-cols-3 gap-5 justify-center'>
 								{candidates.map((candidate) => (

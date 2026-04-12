@@ -78,9 +78,9 @@ export default function EditVacancyForm({
 		});
 	}, [vacancy.id]);
 	return (
-		<div className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
+		<div className='backdrop-blur-sm bg-black/50 dark:bg-black/75 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
 			<div className='max-w-[1600px] w-full h-[90%] mx-auto px-5'>
-				<div className='h-full bg-white rounded-2xl px-30 py-10'>
+				<div className='h-full bg-white dark:bg-zinc-900 rounded-2xl px-30 py-10'>
 					<div className='h-full w-full overflow-y-scroll flex flex-col items-center pr-10'>
 						<div className='w-full pb-5 mb-10'>
 							<div className='w-full flex items-center justify-between'>
@@ -95,8 +95,8 @@ export default function EditVacancyForm({
 									</label>
 									<button
 										onClick={() => setOpenForm(false)}
-										className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-								py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
+										className='cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-200 px-6
+								py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 dark:border-zinc-700 gap-2'
 									>
 										{t('Cancel')}
 									</button>
@@ -110,10 +110,10 @@ export default function EditVacancyForm({
 						<form action={action} className='flex flex-col gap-3.5 mb-10 w-full'>
 							<div className='grid grid-cols-2 justify-between gap-8 mb-5'>
 								<div className='flex flex-col justify-baseline items-baseline gap-2'>
-									<div className='w-full flex items-center justify-between text-zinc-600'>
+									<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400 dark:text-zinc-400'>
 										{t('Position')}:
 										<input
-											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 											type='text'
 											name='position'
 											defaultValue={getValue('position')}
@@ -126,34 +126,32 @@ export default function EditVacancyForm({
 											</div>
 										))}
 								</div>
-								{/*<div className='flex flex-col gap-2'>*/}
-								<div className='w-full flex items-baseline justify-between text-zinc-600'>
+								<div className='w-full flex items-baseline justify-between text-zinc-600 dark:text-zinc-400'>
 									{t('Location')}:
 									<input
-										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 ml-4 rounded-xl text-[18px] flex items-center border border-zinc-300'
+										className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 ml-4 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 										type='text'
 										name='location'
 										defaultValue={getValue('location')}
 									/>
 								</div>
-								{/*</div>*/}
-								<div className='w-full flex flex-col items-start justify-between text-zinc-600 col-span-full'>
+								<div className='w-full flex flex-col items-start justify-between text-zinc-600 dark:text-zinc-400 col-span-full'>
 									{t('Description')}:
 									<textarea
-										className='cursor-pointer w-full h-28 mt-2 focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+										className='cursor-pointer w-full h-28 mt-2 focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 										name='description'
 										defaultValue={getValue('description')}
 									/>
 								</div>
-								<div className='text-zinc-600 col-span-full'>
+								<div className='text-zinc-600 dark:text-zinc-400 col-span-full'>
 									{t('Salary')}:
 									<div className='grid grid-cols-2 gap-8 w-full'>
 										<div className='flex flex-col gap-2'>
-											<div className='flex w-full items-center justify-between text-zinc-600'>
+											<div className='flex w-full items-center justify-between text-zinc-600 dark:text-zinc-400'>
 												{t('From')}:
-												<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-zinc-600 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'>
+												<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'>
 													<input
-														className='w-full text-black'
+														className='w-full text-black dark:text-white'
 														type='number'
 														name='salaryFrom'
 														defaultValue={getValue('salaryFrom')}
@@ -169,11 +167,11 @@ export default function EditVacancyForm({
 												))}
 										</div>
 										<div className='flex flex-col gap-2'>
-											<div className='flex w-full items-center justify-between text-zinc-600'>
+											<div className='flex w-full items-center justify-between text-zinc-600 dark:text-zinc-400'>
 												{t('To')}:
-												<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-zinc-600 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'>
+												<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'>
 													<input
-														className='w-full text-black'
+														className='w-full text-black dark:text-white'
 														type='number'
 														name='salaryTo'
 														defaultValue={getValue('salaryTo')}
@@ -191,11 +189,11 @@ export default function EditVacancyForm({
 									</div>
 								</div>
 								<div className='flex flex-col gap-2 col-span-full'>
-									<div className='w-full flex items-center justify-between text-zinc-600'>
+									<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 										{t('Experience')}:
-										<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 text-zinc-600 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'>
+										<div className='cursor-pointer w-[70%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-zinc-600 dark:text-zinc-400 px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'>
 											<input
-												className='w-10 text-black'
+												className='w-10 text-black dark:text-white'
 												type='number'
 												name='experienceYears'
 												defaultValue={getValue('experienceYears')}
@@ -211,10 +209,10 @@ export default function EditVacancyForm({
 										))}
 								</div>
 								<div className='flex flex-col gap-2'>
-									<div className='w-full flex items-center justify-between text-zinc-600'>
+									<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 										{t('VacancyStatus')}:
 										<select
-											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 											name='status'
 											defaultValue={getValue('status')}
 										>
@@ -232,10 +230,10 @@ export default function EditVacancyForm({
 										))}
 								</div>
 								<div className='flex flex-col gap-2'>
-									<div className='w-full flex items-center justify-between text-zinc-600'>
+									<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 										{t('EmploymentType')}:
 										<select
-											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+											className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 											name='employmentType'
 											defaultValue={getValue('employmentType')}
 										>
@@ -255,9 +253,9 @@ export default function EditVacancyForm({
 							</div>
 							{/*Candidates linking*/}
 							{candidates && candidates.length > 0 && (
-								<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300'>
+								<div className='flex flex-col gap-5 mt-3 pt-7 border-t border-zinc-300 dark:border-zinc-700'>
 									<div className='flex justify-between items-center'>
-										<div className='text-zinc-600'>{t('LinkCandidates')}:</div>
+										<div className='text-zinc-600 dark:text-zinc-400'>{t('LinkCandidates')}:</div>
 									</div>
 									<div className='grid grid-cols-3 gap-5 justify-center'>
 										{candidates.map((candidate) => (
@@ -303,7 +301,7 @@ export default function EditVacancyForm({
 							<button
 								type='submit'
 								className='cursor-pointer transition-colors duration-200 px-6
-								py-2 rounded-2xl text-lg flex items-center font-medium border hover:bg-red-100 border-red-500 text-red-500 gap-2'
+								py-2 rounded-2xl text-lg flex items-center font-medium border hover:bg-red-100 dark:hover:bg-red-900 border-red-500 text-red-500 gap-2'
 							>
 								{t('Delete')}
 							</button>

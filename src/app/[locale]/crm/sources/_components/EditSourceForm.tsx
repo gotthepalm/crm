@@ -43,9 +43,9 @@ export default function EditSourceForm({
 		return v.toString();
 	}
 	return (
-		<div className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
+		<div className='backdrop-blur-sm bg-black/50 dark:bg-black/75 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
 			<div className='max-w-[1600px] w-full h-[70%] mx-auto px-5'>
-				<div className='h-full bg-white rounded-2xl px-30 py-10'>
+				<div className='h-full bg-white dark:bg-zinc-900 rounded-2xl px-30 py-10'>
 					<div className='h-full w-full flex flex-col items-center pr-10'>
 						<div className='w-full pb-5 mb-10'>
 							<div className='w-full flex items-center justify-between'>
@@ -60,8 +60,8 @@ export default function EditSourceForm({
 									</label>
 									<button
 										onClick={() => setOpenForm(false)}
-										className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-								py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
+										className='cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-200 px-6
+								py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 dark:border-zinc-700 gap-2'
 									>
 										{t('Cancel')}
 									</button>
@@ -70,10 +70,10 @@ export default function EditSourceForm({
 							<form action={action} className='flex flex-col gap-3.5 mt-10 w-full'>
 								<div className='flex flex-col gap-8 mb-5'>
 									<div className='flex flex-col justify-baseline items-baseline gap-2'>
-										<div className='w-full flex items-center justify-between text-zinc-600'>
+										<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 											{t('Name')}:
 											<input
-												className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+												className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 												type='text'
 												name='name'
 												defaultValue={getValue('name')}
@@ -87,10 +87,10 @@ export default function EditSourceForm({
 											))}
 									</div>
 									<div className='flex flex-col justify-baseline items-baseline gap-2'>
-										<div className='w-full flex items-center justify-between text-zinc-600'>
+										<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 											{t('Link')}:
 											<input
-												className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+												className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 												type='url'
 												name='url'
 												defaultValue={getValue('url')}
@@ -116,7 +116,7 @@ export default function EditSourceForm({
 								<button
 									type='submit'
 									className='cursor-pointer transition-colors duration-200 px-6
-								py-2 rounded-2xl text-lg flex items-center font-medium border hover:bg-red-100 border-red-500 text-red-500 gap-2'
+								py-2 rounded-2xl text-lg flex items-center font-medium border hover:bg-red-100 dark:hover:bg-red-900 border-red-500 text-red-500 gap-2'
 								>
 									{t('Delete')}
 								</button>

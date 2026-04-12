@@ -14,7 +14,6 @@ export type ActionState =
 	| { result: 'no-session' };
 
 export async function createVacancy(formData: FormData) {
-
 	// Zod validation
 
 	const t = await getTranslations('CreateVacancy');

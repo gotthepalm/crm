@@ -1,4 +1,4 @@
-'use server'
+'use server';
 
 import { z } from 'zod';
 import { getTranslations } from 'next-intl/server';
@@ -7,7 +7,7 @@ import { prisma } from '@/lib/prisma';
 
 export type ActionState =
 	| { result: 'success' }
-	| { result: 'validation-error'; errors: Record<string, string[]>, values: Record<string, FormDataEntryValue> }
+	| { result: 'validation-error'; errors: Record<string, string[]>; values: Record<string, FormDataEntryValue> }
 	| { result: 'db-error' }
 	| { result: 'no-session' };
 
@@ -16,18 +16,22 @@ export async function createSource(formData: FormData) {
 	const sourceSchema = z.object({
 		name: z.string().trim().min(1, t('NameRequired')).max(40, t('LongName')),
 		url: z.url(t('InvalidUrl')),
-	})
-	const session = await auth()
+	});
+	const session = await auth();
 
 	if (!session?.user) {
-		return { result: 'no-session' } satisfies ActionState
+		return { result: 'no-session' } satisfies ActionState;
 	}
 
-	const data = Object.fromEntries(formData)
-	const parsedData = sourceSchema.safeParse(data)
+	const data = Object.fromEntries(formData);
+	const parsedData = sourceSchema.safeParse(data);
 
 	if (!parsedData.success) {
-		return { result: 'validation-error', errors: parsedData.error.flatten().fieldErrors, values: data } satisfies ActionState
+		return {
+			result: 'validation-error',
+			errors: parsedData.error.flatten().fieldErrors,
+			values: data,
+		} satisfies ActionState;
 	}
 
 	try {
@@ -36,11 +40,11 @@ export async function createSource(formData: FormData) {
 				...parsedData.data,
 				userCrm: {
 					connect: { userId: session.user.id },
-				}
-			}
-		})
-		return { result: 'success' } satisfies ActionState
+				},
+			},
+		});
+		return { result: 'success' } satisfies ActionState;
 	} catch {
-		return { result: 'db-error' } satisfies ActionState
+		return { result: 'db-error' } satisfies ActionState;
 	}
 }

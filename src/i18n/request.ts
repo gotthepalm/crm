@@ -1,13 +1,11 @@
-import {getRequestConfig} from 'next-intl/server';
-import {hasLocale} from 'next-intl';
-import {routing} from './routing';
+import { getRequestConfig } from 'next-intl/server';
+import { hasLocale } from 'next-intl';
+import { routing } from './routing';
 
-export default getRequestConfig(async ({requestLocale}) => {
+export default getRequestConfig(async ({ requestLocale }) => {
 	const requested = await requestLocale;
 
-	const locale = hasLocale(routing.locales, requested)
-		? requested
-		: routing.defaultLocale;
+	const locale = hasLocale(routing.locales, requested) ? requested : routing.defaultLocale;
 
 	const messages = {
 		en: {
@@ -49,11 +47,11 @@ export default getRequestConfig(async ({requestLocale}) => {
 			CreateMeeting: (await import('@/public/messages/uk/crm/meetings/CreateMeeting.json')).default,
 			AddSource: (await import('@/public/messages/uk/crm/sources/AddSource.json')).default,
 			CreateSource: (await import('@/public/messages/uk/crm/sources/CreateSource.json')).default,
-		}
+		},
 	};
 
 	return {
 		locale,
-		messages: messages[locale]
+		messages: messages[locale],
 	};
 });

@@ -9,12 +9,7 @@ type Props = {
 	pauseTime?: number;
 };
 
-export default function AnimatedText({
-	words,
-	typingSpeed = 70,
-	deletingSpeed = 40,
-	pauseTime = 1000,
-}: Props) {
+export default function AnimatedText({ words, typingSpeed = 70, deletingSpeed = 40, pauseTime = 1000 }: Props) {
 	const [text, setText] = useState('');
 	const [wordIndex, setWordIndex] = useState(0);
 	const [phase, setPhase] = useState<'typing' | 'pausing' | 'deleting'>('typing');

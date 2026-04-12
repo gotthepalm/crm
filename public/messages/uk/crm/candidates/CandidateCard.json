@@ -2,11 +2,11 @@
   "Status": {
     "NEW": "Новий",
     "SCREENING": "Скринінг",
-    "INTERVIEW":  "Інтерв'ю",
+    "INTERVIEW": "Інтерв'ю",
     "TECH_INTERVIEW": "Технічне інтерв'ю",
-    "OFFER":  "Оффер",
+    "OFFER": "Оффер",
     "HIRED": "Найнятий",
-    "REJECTED":  "Відхилений"
+    "REJECTED": "Відхилений"
   },
   "InterviewType": {
     "HR": "Співбесіда з HR",
