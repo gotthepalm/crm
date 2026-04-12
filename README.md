@@ -2,6 +2,10 @@
 
 Bloom CRM is a recruitment CRM built on Next.js App Router. The project provides authenticated access to a private workspace for managing candidates, vacancies, meetings, and sourcing channels.
 
+## 🌐 Deployed on Vercel:
+
+https://bloom-crm.vercel.app
+
 ## What the project does
 
 - OAuth sign-in via Google and GitHub
@@ -15,7 +19,7 @@ Bloom CRM is a recruitment CRM built on Next.js App Router. The project provides
 
 When a new user signs in for the first time, the app automatically creates a linked `UserCrm` workspace record.
 
-## Tech stack
+## 🛠️ Tech stack
 
 - Next.js 16
 - React 19
@@ -26,7 +30,7 @@ When a new user signs in for the first time, the app automatically creates a lin
 - Auth.js / NextAuth v5 beta
 - `next-intl`
 
-## Project structure
+## 📁 Project structure
 
 ```text
 src/
@@ -82,7 +86,7 @@ Notes:
 - `BETTER_AUTH_SECRET` is used as the Auth.js secret in `auth.ts`.
 - Google and GitHub providers are enabled in code, so their credentials must be configured for login to work.
 
-## Local development
+## 🧑‍💻 Local development
 
 1. Install dependencies:
 
@@ -121,7 +125,7 @@ npm run start
 npm run lint
 ```
 
-## Database
+## 🗄️ Database
 
 The Prisma schema includes:
 
@@ -141,7 +145,7 @@ Prisma client output is generated into:
 src/generated/prisma
 ```
 
-## Authentication
+## 🔐 Authentication
 
 Authentication is configured in `auth.ts` using:
 
