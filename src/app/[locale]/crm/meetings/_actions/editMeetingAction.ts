@@ -179,25 +179,25 @@ export async function editMeeting(formData: FormData, meetingId: number) {
 						connect: { id: vacancyIdParsed.data },
 					},
 					candidate: {
-						disconnect: true
-					}
+						disconnect: true,
+					},
 				},
 			});
 			return { result: 'success' } satisfies ActionState;
 		}
 		if (candidateIdParsed.data) {
 			await prisma.meeting.update({
-				where: {id: meetingId},
+				where: { id: meetingId },
 				data: {
 					...nulledData,
 					candidate: {
-						connect: {id: candidateIdParsed.data}
+						connect: { id: candidateIdParsed.data },
 					},
 					vacancy: {
-						disconnect: true
-					}
-				}
-			})
+						disconnect: true,
+					},
+				},
+			});
 			return { result: 'success' } satisfies ActionState;
 		}
 		await prisma.meeting.update({

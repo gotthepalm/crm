@@ -1,6 +1,5 @@
 'use client';
 
-import Image from 'next/image';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
 import { navItem } from '@/src/app/[locale]/crm/_components/Sidebar';
@@ -17,9 +16,11 @@ export default function SidebarItem({ item }: { item: navItem }) {
 			key={item.name}
 			href={item.href}
 			className={`flex items-center gap-3 px-4 py-3 text-[18px] rounded-xl component-transition
-				${isActive ? 'bg-gray-200 font-medium' : 'hover:bg-gray-100'}`}
+				${isActive ? 'bg-zinc-200 font-medium dark:bg-zinc-700' : 'hover:bg-zinc-100 dark:hover:bg-zinc-800'}`}
 		>
-			<Image src={`/images/${item.icon}.svg`} alt='' height={24} width={24} />
+			<div
+				className={`h-6 w-6 ${item.icon} mask-center mask-contain mask-no-repeat bg-zinc-700 dark:bg-white`}
+			></div>
 			{item.name}
 		</Link>
 	);

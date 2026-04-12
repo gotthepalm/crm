@@ -2,11 +2,11 @@
   "Status": {
     "NEW": "New",
     "SCREENING": "Screening",
-    "INTERVIEW":  "Interview",
+    "INTERVIEW": "Interview",
     "TECH_INTERVIEW": "Tech Interview",
-    "OFFER":  "Offer",
+    "OFFER": "Offer",
     "HIRED": "Hired",
-    "REJECTED":  "Rejected"
+    "REJECTED": "Rejected"
   },
   "InterviewType": {
     "HR": "HR Interview",

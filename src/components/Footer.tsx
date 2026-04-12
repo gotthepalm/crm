@@ -9,7 +9,7 @@ const gelasio = Gelasio({
 });
 
 export default async function Footer() {
-	const t = await getTranslations("footer")
+	const t = await getTranslations('footer');
 	const session = await auth();
 
 	return (
@@ -60,5 +60,5 @@ export default async function Footer() {
 				<div>©Bloom, Inc.</div>
 			</div>
 		</footer>
-	)
+	);
 }

@@ -107,8 +107,8 @@ export async function createMeeting(formData: FormData) {
 				select: {
 					vacancies: {
 						select: {
-							id: true
-						}
+							id: true,
+						},
 					},
 				},
 			},
@@ -129,8 +129,8 @@ export async function createMeeting(formData: FormData) {
 				select: {
 					candidates: {
 						select: {
-							id: true
-						}
+							id: true,
+						},
 					},
 				},
 			},
@@ -156,8 +156,8 @@ export async function createMeeting(formData: FormData) {
 						connect: { id: vacancyIdParsed.data },
 					},
 					candidate: {
-						connect: {id: candidateIdParsed.data}
-					}
+						connect: { id: candidateIdParsed.data },
+					},
 				},
 			});
 			return { result: 'success' } satisfies ActionState;
@@ -171,7 +171,7 @@ export async function createMeeting(formData: FormData) {
 					},
 					vacancy: {
 						connect: { id: vacancyIdParsed.data },
-					}
+					},
 				},
 			});
 			return { result: 'success' } satisfies ActionState;
@@ -185,7 +185,7 @@ export async function createMeeting(formData: FormData) {
 					},
 					candidate: {
 						connect: { id: candidateIdParsed.data },
-					}
+					},
 				},
 			});
 			return { result: 'success' } satisfies ActionState;

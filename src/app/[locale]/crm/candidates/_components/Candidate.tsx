@@ -39,19 +39,19 @@ export default function Candidate({
 	function handleStatus() {
 		switch (candidate.status) {
 			case 'NEW':
-				return 'bg-blue-100 text-blue-700';
+				return 'bg-blue-100 dark:bg-blue-200 text-blue-700 dark:text-blue-900';
 			case 'SCREENING':
-				return 'bg-teal-100 text-teal-700';
+				return 'bg-teal-100 dark:bg-teal-200 text-teal-700 dark:text-teal-900';
 			case 'OFFER':
-				return 'bg-yellow-100 text-yellow-700';
+				return 'bg-yellow-100 dark:bg-yellow-200 text-yellow-700 dark:text-yellow-900';
 			case 'INTERVIEW':
-				return 'bg-lime-100 text-lime-700';
+				return 'bg-lime-100 dark:bg-lime-200 text-lime-700 dark:text-lime-900';
 			case 'TECH_INTERVIEW':
-				return 'bg-lime-100 text-lime-700';
+				return 'bg-lime-100 dark:bg-lime-200 text-lime-700 dark:text-lime-900';
 			case 'HIRED':
-				return 'bg-green-100 text-green-700';
+				return 'bg-green-100 dark:bg-green-200 text-green-700 dark:text-green-900';
 			case 'REJECTED':
-				return 'bg-red-100 text-red-700';
+				return 'bg-red-100 dark:bg-red-200 text-red-700 dark:text-red-900';
 		}
 	}
 
@@ -67,7 +67,7 @@ export default function Candidate({
 			{openVacancy && candidate.vacancy && (
 				<div
 					onClick={() => setOpenVacancy(false)}
-					className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'
+					className='backdrop-blur-sm bg-black/50 dark:bg-black/75 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'
 				>
 					<div onClick={(e) => e.stopPropagation()} className='max-w-200 w-full mx-auto px-5'>
 						<FullVacancy vacancyId={candidate.vacancy.id} />
@@ -77,7 +77,7 @@ export default function Candidate({
 			{openMeeting !== false && (
 				<div
 					onClick={() => setOpenMeeting(false)}
-					className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'
+					className='backdrop-blur-sm bg-black/50 dark:bg-black/75 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'
 				>
 					<div onClick={(e) => e.stopPropagation()} className='max-w-200 w-full mx-auto px-5'>
 						<FullMeeting meetingId={openMeeting} />
@@ -85,46 +85,50 @@ export default function Candidate({
 				</div>
 			)}
 			<article
-				className='w-full max-w-xl bg-white border border-zinc-300 rounded-2xl
-			 	p-5 flex flex-col text-zinc-500 text-[16px] font-medium'
+				className='w-full max-w-xl bg-white dark:bg-zinc-900 border border-zinc-300 dark:border-zinc-700 rounded-2xl
+			 	p-5 flex flex-col text-zinc-500 dark:text-zinc-400 text-[16px] font-medium'
 			>
 				{/*Header*/}
-				<div className='flex items-start text-black flex-col gap-2 border-b border-zinc-300 mb-3 pb-3'>
+				<div className='flex items-start text-black dark:text-white flex-col gap-2 border-b border-zinc-300 dark:border-zinc-700 mb-3 pb-3'>
 					<div className='flex items-center justify-between w-full'>
 						<h3 className='text-2xl font-semibold'>{candidate.name}</h3>
-						<span className={`text-black text-sm font-medium px-3 py-1 rounded-full ${handleStatus()}`}>
+						<span className={`text-black  text-sm font-medium px-3 py-1 rounded-full ${handleStatus()}`}>
 							{t(`Status.${candidate.status}`)}
 						</span>
 					</div>
 					{candidate?.vacancy?.position ? (
 						<button
 							onClick={() => setOpenVacancy(true)}
-							className='cursor-pointer inline-flex items-center component-transition gap-2 border border-violet-300
-								 bg-violet-100 hover:bg-violet-200 font-medium px-4 py-1 rounded-xl'
+							className='cursor-pointer inline-flex items-center component-transition gap-2 border border-violet-300 dark:border-violet-600
+								 bg-violet-100 dark:bg-violet-950 hover:bg-violet-200 dark:hover:bg-violet-900 font-medium px-4 py-1 rounded-xl'
 						>
-							<Image src='/images/vacancy.svg' width={22} height={22} alt='' />
+							<div
+								className={`h-6 w-6 mask-[url(/images/vacancy.svg)] mask-center mask-contain mask-no-repeat bg-zinc-700 dark:bg-white`}
+							></div>
 							{candidate.vacancy.position}
 						</button>
 					) : (
 						candidate.position && (
-							<div className='inline-flex items-center gap-2 font-medium bg-violet-100 px-4 py-1 rounded-xl'>
+							<div className='inline-flex items-center gap-2 font-medium bg-violet-100 dark:bg-violet-950 px-4 py-1 rounded-xl'>
 								{candidate.position}
 							</div>
 						)
 					)}
 				</div>
 				{candidate.meetings.length !== 0 && (
-					<div className='flex flex-col items-start text-black gap-2 border-b border-zinc-300 mb-3 pb-3'>
+					<div className='flex flex-col items-start text-black dark:text-white gap-2 border-b border-zinc-300 dark:border-zinc-700 mb-3 pb-3'>
 						{candidate.meetings.map((meeting) => (
 							<button
 								onClick={() => setOpenMeeting(meeting.id)}
-								className='cursor-pointer inline-flex items-center component-transition gap-2 border border-blue-300
-								 bg-blue-100 hover:bg-blue-200 font-medium px-4 py-1 rounded-xl'
+								className='cursor-pointer inline-flex items-center component-transition gap-2 border border-blue-300 dark:border-blue-500
+								 bg-blue-100 dark:bg-blue-950 hover:bg-blue-200 dark:hover:bg-blue-900 font-medium px-4 py-1 rounded-xl'
 								key={meeting.id}
 							>
-								<Image src='/images/adaptive_audio_mic.svg' width={22} height={22} alt='' />
+								<div
+									className={`h-6 w-6 mask-[url(/images/adaptive-audio-mic.svg)] mask-center mask-contain mask-no-repeat bg-zinc-700 dark:bg-white`}
+								></div>
 								<span className='font-semibold'>{meeting.time}</span>|&nbsp;{meeting.date}
-								<span className='text-zinc-600 text-sm font-semibold'>
+								<span className='text-zinc-600 dark:text-zinc-400 text-sm font-semibold'>
 									| {t(`InterviewType.${meeting.interviewType}`)}
 								</span>
 							</button>
@@ -140,32 +144,40 @@ export default function Candidate({
 					candidate.linkedinUrl ||
 					candidate.gitHubUrl ||
 					candidate.portfolioUrl) && (
-					<div className='flex justify-between mb-3 pb-3 border-b border-zinc-300'>
+					<div className='flex justify-between mb-3 pb-3 border-b border-zinc-300 dark:border-zinc-700'>
 						<div className='flex flex-col gap-2'>
 							{candidate.age && (
 								<div className='flex items-center gap-2'>
-									<Image src='/images/age.svg' width={22} height={22} alt='' />
+									<div
+										className={`h-6 w-6 mask-[url(/images/age.svg)] mask-center mask-contain mask-no-repeat bg-zinc-600 dark:bg-white`}
+									></div>
 									{candidate.age} {t('Years')}
 								</div>
 							)}
 
 							{candidate.email && (
 								<div className='flex items-center gap-2'>
-									<Image src='/images/email.svg' width={22} height={22} alt='' />
+									<div
+										className={`h-6 w-6 mask-[url(/images/email.svg)] mask-center mask-contain mask-no-repeat bg-zinc-700 dark:bg-white`}
+									></div>
 									{candidate.email}
 								</div>
 							)}
 
 							{candidate.phone && (
 								<div className='flex items-center gap-2'>
-									<Image src='/images/phone.svg' width={22} height={22} alt='' />
+									<div
+										className={`h-6 w-6 mask-[url(/images/phone.svg)] mask-center mask-contain mask-no-repeat bg-zinc-700 dark:bg-white`}
+									></div>
 									{candidate.phone}
 								</div>
 							)}
 
 							{candidate.location && (
 								<div className='flex items-center gap-2'>
-									<Image src='/images/location.svg' width={22} height={22} alt='' />
+									<div
+										className={`h-6 w-6 mask-[url(/images/location.svg)] mask-center mask-contain mask-no-repeat bg-zinc-700 dark:bg-white`}
+									></div>
 									{candidate.location}
 								</div>
 							)}
@@ -196,24 +208,24 @@ export default function Candidate({
 				)}
 				{/*Skills*/}
 				{candidate.skills && (
-					<div className='flex flex-col mb-3 pb-3 border-b border-zinc-300'>
-						<span className='font-medium text-black block mb-1'>{t('Skills')}:</span>
+					<div className='flex flex-col mb-3 pb-3 border-b border-zinc-300 dark:border-zinc-700'>
+						<span className='font-medium text-black dark:text-white block mb-1'>{t('Skills')}:</span>
 						<div className=''>{candidate.skills}</div>
 					</div>
 				)}
 				{/*Experience & salary*/}
 				{(candidate.experienceYears || candidate.salaryExpectationTop || candidate.salaryExpectationBottom) && (
-					<div className='flex justify-between mb-3 pb-3 border-b border-zinc-300'>
+					<div className='flex justify-between mb-3 pb-3 border-b border-zinc-300 dark:border-zinc-700'>
 						{candidate.experienceYears && (
 							<div>
-								<span className='font-medium text-black'>{t('Experience')}:</span>{' '}
+								<span className='font-medium text-black dark:text-white'>{t('Experience')}:</span>{' '}
 								{candidate.experienceYears} {t('Years')}
 							</div>
 						)}
 
 						{(candidate.salaryExpectationBottom || candidate.salaryExpectationTop) && (
 							<div>
-								<span className='font-medium text-black'>{t('Salary')}:</span>{' '}
+								<span className='font-medium text-black dark:text-white'>{t('Salary')}:</span>{' '}
 								{candidate.salaryExpectationBottom ?? '?'}-{candidate.salaryExpectationTop ?? '?'}$
 							</div>
 						)}
@@ -222,7 +234,7 @@ export default function Candidate({
 				{/*Note*/}
 				{candidate.note && (
 					<div>
-						<span className='font-medium text-black block mb-1'>{t('Note')}:</span>
+						<span className='font-medium text-black dark:text-white block mb-1'>{t('Note')}:</span>
 						<div className='text-[14px]'>{candidate.note}</div>
 					</div>
 				)}
@@ -230,7 +242,7 @@ export default function Candidate({
 				<div className='flex justify-end mt-auto'>
 					<button
 						onClick={() => setOpenForm(true)}
-						className='cursor-pointer p-1 rounded-md hover:bg-zinc-200 transition'
+						className='cursor-pointer p-1 rounded-md hover:bg-zinc-200 dark:hover:bg-zinc-800 component-transition'
 					>
 						<Image src='/images/pencil.svg' width={25} height={25} alt='edit' />
 					</button>

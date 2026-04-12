@@ -121,8 +121,8 @@ export async function editVacancy(formData: FormData, vacancyId: number) {
 			data: {
 				...nulledData,
 				candidates: {
-					set: []
-				}
+					set: [],
+				},
 			},
 		});
 		return { result: 'success' } satisfies ActionState;

@@ -13,9 +13,7 @@ export default function LogIn() {
 					<div className='w-full flex flex-col items-center gap-2'>
 						<div className='flex items-center gap-2 mb-12'>
 							<span className='block h-16 w-16 mask-[url(/images/bloom-icon.svg)] mask-contain mask-center mask-no-repeat bg-purple-700'></span>
-							<div className={`${gelasio.className} text-5xl font-medium text-center`}>
-								Bloom CRM
-							</div>
+							<div className={`${gelasio.className} text-5xl font-medium text-center`}>Bloom CRM</div>
 						</div>
 						<div className='flex flex-col items-center mb-6'>
 							<h1 className='text-3xl text-center'>Sign in to continue</h1>

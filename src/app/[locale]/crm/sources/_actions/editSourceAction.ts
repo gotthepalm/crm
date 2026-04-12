@@ -40,7 +40,7 @@ export async function editSource(formData: FormData, sourceId: number) {
 
 	try {
 		await prisma.source.update({
-			where: {id: sourceId},
+			where: { id: sourceId },
 			data: {
 				...nulledData,
 				userCrm: {

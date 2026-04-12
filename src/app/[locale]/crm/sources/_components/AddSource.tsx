@@ -42,9 +42,9 @@ export default function AddSource() {
 	return (
 		<>
 			{openForm && (
-				<div className='backdrop-blur-sm bg-black/50 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
+				<div className='backdrop-blur-sm bg-black/50 dark:bg-black/75 fixed inset-0 z-50 h-100dvh w-100dvw flex items-center justify-center'>
 					<div className='max-w-[1600px] w-full h-[70%] mx-auto px-5'>
-						<div className='h-full bg-white rounded-2xl px-30 py-10'>
+						<div className='h-full bg-white dark:bg-zinc-900 rounded-2xl px-30 py-10'>
 							<div className='h-full w-full flex flex-col items-center pr-10'>
 								<div className='w-full pb-5 mb-10'>
 									<div className='w-full flex items-center justify-between'>
@@ -59,8 +59,8 @@ export default function AddSource() {
 											</label>
 											<button
 												onClick={() => setOpenForm(false)}
-												className='cursor-pointer hover:bg-zinc-100 transition-colors duration-200 px-6
-												py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 gap-2'
+												className='cursor-pointer hover:bg-zinc-100 dark:hover:bg-zinc-800 transition-colors duration-200 px-6
+												py-2 rounded-2xl text-lg flex items-center font-medium border border-zinc-300 dark:border-zinc-700 gap-2'
 											>
 												{t('Cancel')}
 											</button>
@@ -68,10 +68,10 @@ export default function AddSource() {
 									</div>
 									<form action={action} className='mt-10 w-full mb-5'>
 										<div className='flex flex-col justify-baseline items-baseline gap-2 mb-3'>
-											<div className='w-full flex items-center justify-between text-zinc-600'>
+											<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 												{t('Name')}:
 												<input
-													className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+													className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 													type='text'
 													name='name'
 													defaultValue={getValue('name')}
@@ -85,10 +85,10 @@ export default function AddSource() {
 												))}
 										</div>
 										<div className='flex flex-col justify-baseline items-baseline gap-2'>
-											<div className='w-full flex items-center justify-between text-zinc-600'>
+											<div className='w-full flex items-center justify-between text-zinc-600 dark:text-zinc-400'>
 												{t('Link')}:
 												<input
-													className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 text-black px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300'
+													className='cursor-pointer w-[80%] focus:outline-0 focus:bg-zinc-100 dark:focus:bg-zinc-800 text-black dark:text-white px-3 py-1 rounded-xl text-[18px] flex items-center border border-zinc-300 dark:border-zinc-700'
 													type='url'
 													name='url'
 													defaultValue={getValue('url')}
@@ -111,7 +111,8 @@ export default function AddSource() {
 			)}
 			<button
 				onClick={() => setOpenForm(true)}
-				className='flex justify-center items-center gap-3 bg-white hover:bg-purple-600 hover:border-transparent hover:text-white border border-zinc-300 text-[22px] p-3 mb-5 rounded-2xl w-full component-transition cursor-pointer'
+				className='flex justify-center items-center gap-3 bg-white hover:bg-purple-700 dark:bg-zinc-900 hover:text-white
+				 border border-zinc-300 dark:border-zinc-700 hover:border-transparent text-[22px] p-3 mb-5 rounded-2xl w-full component-transition cursor-pointer'
 			>
 				<span className='text-4xl font-light'>+</span>
 				{t('AddSource')}

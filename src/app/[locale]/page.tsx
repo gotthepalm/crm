@@ -22,9 +22,7 @@ export default async function Home() {
 				<div className='flex items-center justify-between max-w-[1500px] w-full mx-auto h-[80px] px-5'>
 					<Link href='/' className='flex items-center gap-2'>
 						<Image src={'/images/bloom-icon.svg'} height={50} width={50} alt='bloom icon' />
-						<div className={`${gelasio.className} text-4xl font-medium text-center`}>
-							Bloom CRM
-						</div>
+						<div className={`${gelasio.className} text-4xl font-medium text-center`}>Bloom CRM</div>
 					</Link>
 					<div className='flex items-center gap-5'>
 						{session?.user ? (
@@ -40,12 +38,16 @@ export default async function Home() {
 								 py-3 rounded-xl text-lg flex items-center font-medium border border-zinc-300 dark:border-zinc-700 gap-2'
 									>
 										{t('SignOut')}
-										<span className='block cursor-pointer h-5 w-5 mask-[url(/images/sign-out.svg)] mask-contain
-										 mask-no-repeat mask-center bg-black dark:bg-white'></span>
+										<span
+											className='block cursor-pointer h-5 w-5 mask-[url(/images/sign-out.svg)] mask-contain
+										 mask-no-repeat mask-center bg-black dark:bg-white'
+										></span>
 									</button>
 								</form>
 								<div className='h-10 w-10 bg-zinc-400 rounded-full overflow-hidden'>
-									{session.user.image && <Image src={session.user.image} height={40} width={40} alt='' />}
+									{session.user.image && (
+										<Image src={session.user.image} height={40} width={40} alt='' />
+									)}
 								</div>
 							</>
 						) : (
@@ -57,7 +59,7 @@ export default async function Home() {
 							</Link>
 						)}
 						<LanguageSwitcher />
-						<ThemeSwitcher/>
+						<ThemeSwitcher />
 					</div>
 				</div>
 			</header>
